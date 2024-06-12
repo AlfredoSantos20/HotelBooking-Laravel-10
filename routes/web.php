@@ -39,6 +39,7 @@ Route::prefix('/hotel-de-luna')->namespace('App\Http\Controllers\Accounts')->gro
 
     //404 NOT FOUND
     Route::get('error',[AccountsController::class, 'error']);
+
     //Group middleware route
     Route::group(['middleware'=>['midware']],function(){
         Route::get('dashboard',[AccountsController::class, 'dashboard']);
@@ -47,4 +48,24 @@ Route::prefix('/hotel-de-luna')->namespace('App\Http\Controllers\Accounts')->gro
         Route::get('user-profile',[AccountsController::class, 'UserProfile']);
     });
     });
+
+    //Fetching Provinces, Cities, Brgys of PHILIPPINES
+    Route::post('api/fetch-provinces', [AccountsController::class, 'fetchProvinces']);
+    Route::post('api/fetch-cities', [AccountsController::class, 'fetchCities']);
+    Route::post('api/fetch-barangay', [AccountsController::class, 'fetchBrgy']);
+
+    // USERS MANAGEMENT
+    Route::prefix('/users-management')->group(function(){
+
+        Route::get('employee',[AccountsController::class, 'employee']);
+        Route::match(['get','post'],'add-edit-employee/{id?}',[AccountsController::class, 'storeEmployee'])->name('add-employee');
+
+        Route::get('add-employee',[AccountsController::class, 'addEmployee']);
+    });
+
+
+
+
+
+
 

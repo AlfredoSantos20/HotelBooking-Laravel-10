@@ -8,6 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+
+
 
     <title>Hotel De Luna</title>
 
@@ -19,6 +22,15 @@
 
     <!-- Custom styles for this template-->
     <link href="{{ url('Backend/css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ url('Backend/css/sb-admin-2.css') }}" rel="stylesheet">
+
+        <!-- THIS IS FOR THE BROWSER'S ICON-->
+        <link rel="shortcut icon" href="{{ url('Backend/img/mylogo.png') }} " />
+
+
+    <!-- DATA TABLES -->
+    <link rel="stylesheet" href="{{ url('Backend/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url('Backend/css/dataTables.bootstrap4.min.css') }}">
 
 </head>
 
@@ -87,7 +99,11 @@
     <!-- Bootstrap core JavaScript-->
     <script src="{{ url('Backend/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ url('Backend/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url('Backend/vendor/datatables/jquery.dataTables.js') }}"></script>
+    <script src="{{ url('Backend/vendor/datatables/jquery.dataTables.min.js') }}"></script>
 
+    <!-- Calling Custom js-->
+    <script src="{{ url('Backend/js/custom.js') }}"></script>
     <!-- Core plugin JavaScript-->
     <script src="{{ url('Backend/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
@@ -95,7 +111,12 @@
     <script src="{{ url('Backend/js/sb-admin-2.min.js') }}"></script>
 
     <!-- Page level plugins -->
+    <script src="{{ url('Backend/vendor/chart.js/Chart.js') }}"></script>
     <script src="{{ url('Backend/vendor/chart.js/Chart.min.js') }}"></script>
+
+        <!-- DataTables plugins -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
     <!-- Page level custom scripts -->
     <script src="{{ url('Backend/js/demo/chart-area-demo.js') }}"></script>

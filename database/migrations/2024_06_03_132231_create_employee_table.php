@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('birthday');
             $table->string('position');
             $table->string('profile_pic');
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }
