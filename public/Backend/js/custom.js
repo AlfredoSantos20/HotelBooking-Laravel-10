@@ -1,43 +1,15 @@
 $(document).ready(function(){
     $('#employee').DataTable();
 
-    //for birthday to age converter
+    //FOR BIRTHDAY TO AGE CONVERTER
     $('#employee_birthday').on('change', function() {
         var birthdate = new Date($(this).val());
         var age = calculateAge(birthdate);
         $('#employee_age').val(age);
     });
 
-    $('#addEmployeeForm').submit(function(e) {
-        e.preventDefault();
 
-        var fname = $('#employee_name').val();
-        var lname = $('#employee_lname').val();
-        var position = $('#employee_position').val();
-
-        $.ajax({
-            url: '{{ route("add-employee") }}',
-            type: 'POST',
-            data: {
-                Fname: fname,
-                Lname: lname,
-                position: position,
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                // Handle success response
-                console.log(response);
-                $('#addEmployee').modal('hide');
-                // Refresh the page or update the table using JavaScript if needed
-            },
-            error: function(xhr, status, error) {
-                // Handle error response
-                console.error(xhr.responseText);
-            }
-        });
-    });
-
-     //for birthday to age converter
+     //FOR BIRTHDAY TO AGE CONVERTER
     function calculateAge(birthdate) {
         var today = new Date();
         var age = today.getFullYear() - birthdate.getFullYear();
@@ -131,5 +103,61 @@ $(document).ready(function(){
         });
     });
 
+    // Form submission via AJAX
+    $('#employeeForm').on('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            var formData = new FormData(this); // Create a FormData object
 
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: $(this).attr('action'), // Get the action URL from the form
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    // Handle success response
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Data has been saved",
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                    // Optionally, you can reload the DataTable or redirect the user
+                    location.reload();
+                },
+                error: function(response) {
+                    // Handle error response
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'An error occurred. Please try again.'
+                    });
+                }
+            });
+        });
+
+
+    // Function to zoom in on image
+    function zoomIn(element) {
+        $(element).css('transform', 'scale(1.2)');
+    }
+
+    // Function to reset image zoom
+    function zoomOut(element) {
+        $(element).css('transform', 'scale(1)');
+    }
+
+    // Event handler for image hover
+    $('.zoomable-image').hover(
+        function() {
+            zoomIn(this);
+        },
+        function() {
+            zoomOut(this);
+        }
+    );
 });

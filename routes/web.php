@@ -56,12 +56,11 @@ Route::prefix('/hotel-de-luna')->namespace('App\Http\Controllers\Accounts')->gro
 
     // USERS MANAGEMENT
     Route::prefix('/users-management')->group(function(){
-
+        Route::group(['middleware'=>['midware']],function(){
         Route::get('employee',[AccountsController::class, 'employee']);
-        Route::match(['get','post'],'add-edit-employee/{id?}',[AccountsController::class, 'storeEmployee'])->name('add-employee');
-
-        Route::get('add-employee',[AccountsController::class, 'addEmployee']);
+        Route::match(['get','post'],'add-edit-employee/{id?}',[AccountsController::class, 'storeEmployee']);
     });
+});
 
 
 

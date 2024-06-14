@@ -42,7 +42,7 @@
                 <div class="card-header py-3" style="background-color:#4e73df;">
                     <h6 class="m-0 font-weight-bold text-white">Employee's List</h6>
 
-                        <a style="max-width: 150px; float: right; display: inline-block;" href="{{ route('add-employee')}}" class="btn btn-block btn btn-outline-light btn-sm"> + Add Employee</a>
+                        <a style="max-width: 150px; float: right; display: inline-block;" href="{{ url('users-management/add-edit-employee')}}" class="btn btn-block btn btn-outline-light btn-sm"> + Add Employee</a>
                 </div>
 
                 <div class="card-body">
@@ -54,9 +54,9 @@
                                     <th class="text-center text-dark"><strong>Name</strong></th>
                                     <th class="text-center text-dark"><strong>Position</strong></th>
                                     <th class="text-center text-dark"><strong>Age</strong></th>
+                                    <th class="text-center text-dark"><strong>Location</strong></th>
                                     <th class="text-center text-dark"><strong>Address</strong></th>
                                     <th class="text-center text-dark"><strong>Phone Number</strong></th>
-                                    <th class="text-center text-dark"><strong>Salary</strong></th>
                                     <th class="text-center text-dark"><strong>Status</strong></th>
 
                                 </tr>
@@ -64,19 +64,25 @@
                             <tbody>
                                 @foreach($employees as $employee)
                                 <tr>
-                                    <td class="text-center text-dark">
+                                    <td>
                                         @if(!empty($employee['profile_pic']))
-
+                                            <a target="_blank" href="{{ url('Backend/img/small/'.$employee['profile_pic']) }}" class="zoomable-image" style="cursor: pointer; display: inline-block; position: relative;">
+                                                <img style="width: 80px; height: 80px; transition: transform 0.2s ease-in-out;" src="{{ asset('Backend/img/small/'.$employee['profile_pic']) }}">
+                                            </a>
                                         @else
-                                        <img style="width: 80px; height: 80px;" src="{{ asset('Backend/img/small/no-image.jpg') }}">
-                                       @endif
+                                            <img style="width: 80px; height: 80px; cursor: pointer; transition: transform 0.2s ease-in-out;" src="{{ asset('front/images/product_image/small/no-image.jpg') }}" class="zoomable-image">
+                                        @endif
                                     </td>
+
                                     <td class="text-center text-dark">{{ $employee['Fname'] }} {{ $employee['Lname'] }}</td>
                                     <td class="text-center text-dark">{{ $employee['position'] }}</td>
                                     <td class="text-center text-dark">{{ $employee['age'] }}</td>
+                                    <td class="text-center text-dark">@if(empty($employee['region']['name']))
+                                            No Assigned Region.
+                                        @else {{ $employee['region']['name'] }},
+                                        @endif {{ $employee['province']['name'] }}, {{ $employee['city']['name'] }}, {{ $employee['barangay']['name'] }}</td>
                                     <td class="text-center text-dark">{{ $employee['address'] }}</td>
                                     <td class="text-center text-dark">{{ $employee['phone_num'] }}</td>
-                                    <td class="text-center text-dark">{{ $employee['salary'] }}</td>
                                     <td class="text-center text-dark">{{ $employee['status'] }}</td>
                                 </tr>
                                 @endforeach

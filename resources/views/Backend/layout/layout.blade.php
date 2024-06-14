@@ -96,6 +96,18 @@
         </div>
     </div>
 
+    <!-- Sweetalert-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.css">
+
+<!-- jQuery (required for SweetAlert) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- SweetAlert JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.js"></script>
+
     <!-- Bootstrap core JavaScript-->
     <script src="{{ url('Backend/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ url('Backend/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
