@@ -66,8 +66,8 @@
                                 <tr>
                                     <td>
                                         @if(!empty($employee['profile_pic']))
-                                            <a target="_blank" href="{{ url('Backend/img/small/'.$employee['profile_pic']) }}" class="zoomable-image" style="cursor: pointer; display: inline-block; position: relative;">
-                                                <img style="width: 80px; height: 80px; transition: transform 0.2s ease-in-out;" src="{{ asset('Backend/img/small/'.$employee['profile_pic']) }}">
+                                            <a target="_blank" href="{{ url('Backend/img/medium/'.$employee['profile_pic']) }}" class="zoomable-image" style="cursor: pointer; display: inline-block; position: relative;">
+                                                <img style="width: 80px; height: 80px; transition: transform 0.2s ease-in-out;" src="{{ asset('Backend/img/medium/'.$employee['profile_pic']) }}">
                                             </a>
                                         @else
                                             <img style="width: 80px; height: 80px; cursor: pointer; transition: transform 0.2s ease-in-out;" src="{{ asset('front/images/product_image/small/no-image.jpg') }}" class="zoomable-image">

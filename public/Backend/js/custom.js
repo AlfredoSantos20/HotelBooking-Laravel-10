@@ -1,6 +1,7 @@
 $(document).ready(function(){
     $('#employee').DataTable();
 
+
     //FOR BIRTHDAY TO AGE CONVERTER
     $('#employee_birthday').on('change', function() {
         var birthdate = new Date($(this).val());
@@ -103,7 +104,7 @@ $(document).ready(function(){
         });
     });
 
-    // Form submission via AJAX
+    // Form submission via AJAX adding-edit-employee
     $('#employeeForm').on('submit', function(event) {
             event.preventDefault(); // Prevent default form submission
             var formData = new FormData(this); // Create a FormData object
@@ -124,7 +125,7 @@ $(document).ready(function(){
                         icon: "success",
                         title: "Data has been saved",
                         showConfirmButton: false,
-                        timer: 3000
+                        timer: 5000 //5 seconds
                     });
                     // Optionally, you can reload the DataTable or redirect the user
                     location.reload();
@@ -141,7 +142,7 @@ $(document).ready(function(){
         });
 
 
-    // Function to zoom in on image
+    // Function to zoom in on image in table
     function zoomIn(element) {
         $(element).css('transform', 'scale(1.2)');
     }
