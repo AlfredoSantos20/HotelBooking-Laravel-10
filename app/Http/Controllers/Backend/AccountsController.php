@@ -12,9 +12,11 @@ use App\Models\Region;
 use Yajra\Address\HasAddress;
 use Auth;
 use Image;
+use Session;
 class AccountsController extends Controller
 {
     public function dashboard(){
+        Session::put('page','dashboard');
         return view('Backend.dashboard');
     }
 
@@ -32,19 +34,21 @@ class AccountsController extends Controller
 
             $rules = [
                 'email' => 'required|email',
-                'password' => 'required'
+                'password' => 'required',
+                'g-recaptcha-response' => 'required|captcha', // Ensure the 'g-recaptcha-response' is present and valid
             ];
             $customMessages = [
                 'email.required' => "Email is Required!",
                 'email.email' => "Valid Email is Required!",
                 'password.required' => "Password is Required!",
+                 'g-recaptcha-response.required' => 'reCaptcha is required!'
 
             ];
             $this->validate($request,$rules,$customMessages);
 
             if(Auth::guard('midware')->attempt(['email'=>$data['email'], 'password'=>$data['password']])){
 
-                //Remember Admin Email & Password with cookies
+                //Remember Email & Password with cookies
                 if(isset($data['remember']) && !empty($data['remember'])){
                     setcookie("email",$data['email'],time()+3600);
                     setcookie("password",$data['password'],time()+3600);
@@ -65,12 +69,13 @@ class AccountsController extends Controller
 
 //START EMPLOYEE
 public function employee() {
+    Session::put('page','employee');
 
     $employees = Employee::with(['region','province','city','barangay'])->where('status',1)->get()->toArray();
     //dd($employees);
     return view('Backend.users.employee')->with(compact('employees'));
 }
-    //END EMPLOYEE
+//END EMPLOYEE
 
     //START FETCHING PHILIPPINES FUNCTIONS
     public function fetchProvinces(Request $request) {
@@ -92,7 +97,9 @@ public function employee() {
 
     //END FETCHING PHILIPPINES FUNCTIONS
 
-    //Add employe to DB FUNCTION
+
+
+    //START Add employe to DB FUNCTION
 
     public function storeEmployee(Request $request, $id = null)
     {
@@ -158,6 +165,9 @@ public function employee() {
             $Employee->email = $data['email'];
             $Employee->status = 1;
 
+            //Save to Accounts TBL
+
+
             // Handle file upload for profile picture
             if ($request->hasFile('profile_pic')) {
                 $image_tmp = $request->file('profile_pic');
@@ -186,7 +196,7 @@ public function employee() {
 
         return view('Backend.users.add_edit_Employee')->with(compact('title', 'Employee', 'regions', 'provinces', 'cities'));
     }
-    // END EMPLOYEE MANAGEMENT
+      //START Add employe to DB FUNCTION
 
 
     //Logout

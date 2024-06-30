@@ -73,9 +73,15 @@
                                                     Me</label>
                                             </div>
                                         </div>
-                                        <button id="AdminLogin" type="submit" class="btn btn-primary btn-user btn-block">
+                                        <div class="form-group">
+                                        {!! NoCaptcha::renderJs() !!}
+                                        {!! NoCaptcha::display() !!}
+                                    </div>
+                                        <div class="form-group">
+                                        <button id="AdminLogin" type="submit" style="background-color:#17A2B8;" class="btn btn-primary btn-user btn-block">
                                             Login
                                         </button>
+                                        </div>
                                    @php /*     <hr>
                                         <a href="index.html" class="btn btn-google btn-user btn-block">
                                             <i class="fab fa-google fa-fw"></i> Login with Google

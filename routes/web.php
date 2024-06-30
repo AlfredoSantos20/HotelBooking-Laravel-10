@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AccountsController;
+use App\Http\Controllers\Backend\BannersController;
+use App\Http\Controllers\Frontend\IndexController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,7 +32,17 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-//Admin Group Route
+
+
+
+//Frontend Group Routes
+
+Route::namespace('App\Http\Controllers\Frontend')->group(function(){
+
+    Route::get('/',[IndexController::class, 'index']);
+ });
+
+//Backend Group Routes
 Route::prefix('/hotel-de-luna')->namespace('App\Http\Controllers\Accounts')->group(function(){
 
     //Hotel login/logout route
@@ -44,7 +56,7 @@ Route::prefix('/hotel-de-luna')->namespace('App\Http\Controllers\Accounts')->gro
     Route::group(['middleware'=>['midware']],function(){
         Route::get('dashboard',[AccountsController::class, 'dashboard']);
 
-        //Admin Profile
+        // Profile
         Route::get('user-profile',[AccountsController::class, 'UserProfile']);
     });
     });
@@ -61,6 +73,16 @@ Route::prefix('/hotel-de-luna')->namespace('App\Http\Controllers\Accounts')->gro
         Route::match(['get','post'],'add-edit-employee/{id?}',[AccountsController::class, 'storeEmployee']);
     });
 });
+    //Banners Management
+    Route::prefix('/banners-management')->group(function(){
+        Route::group(['middleware'=>['midware']],function(){
+        Route::get('banners',[BannersController::class, 'banners']);
+        Route::post('update-banner-status',[BannersController::class, 'updateBannerStatus']);
+        Route::get('delete-banner/{id}',[BannersController::class, 'deleteBanners']);
+       Route::match(['get','post'],'add-edit-banners/{id?}', [BannersController::class, 'AddEditBanner']);
+    });
+});
+
 
 
 

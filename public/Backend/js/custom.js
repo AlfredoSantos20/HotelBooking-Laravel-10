@@ -1,6 +1,6 @@
 $(document).ready(function(){
     $('#employee').DataTable();
-
+    $('#banner').DataTable();
 
     //FOR BIRTHDAY TO AGE CONVERTER
     $('#employee_birthday').on('change', function() {
@@ -106,40 +106,54 @@ $(document).ready(function(){
 
     // Form submission via AJAX adding-edit-employee
     $('#employeeForm').on('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
-            var formData = new FormData(this); // Create a FormData object
+        event.preventDefault(); // Prevent default form submission
+        var formData = new FormData(this); // Create a FormData object
 
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: $(this).attr('action'), // Get the action URL from the form
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    // Handle success response
-                    Swal.fire({
-                        position: "top-end",
-                        icon: "success",
-                        title: "Data has been saved",
-                        showConfirmButton: false,
-                        timer: 5000 //5 seconds
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: $(this).attr('action'), // Get the action URL from the form
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                // Handle success response
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Data has been saved",
+                    showConfirmButton: false,
+                    timer: 5000 //5 seconds
+                });
+                // Optionally, you can reload the DataTable or redirect the user
+                location.reload();
+            },
+            error: function(response) {
+                // Handle error response
+                if (response.status === 422) {
+                    var errors = response.responseJSON.errors;
+                    var errorMessage = '';
+                    $.each(errors, function(key, value) {
+                        errorMessage += value[0] + '\n';
                     });
-                    // Optionally, you can reload the DataTable or redirect the user
-                    location.reload();
-                },
-                error: function(response) {
-                    // Handle error response
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: errorMessage
+                    });
+                } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
                         text: 'An error occurred. Please try again.'
                     });
                 }
-            });
+            }
         });
+    });
+
 
 
     // Function to zoom in on image in table
@@ -161,4 +175,126 @@ $(document).ready(function(){
             zoomOut(this);
         }
     );
+
+// Form submission via AJAX add-edit-banner
+$('#bannerForm').on('submit', function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    var formData = new FormData(this); // Create a FormData object
+
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        url: $(this).attr('action'), // Get the action URL from the form
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            // Handle success response
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: response.message,
+                showConfirmButton: false,
+                timer: 5000 // 5 seconds
+            });
+
+            location.reload();
+        },
+        error: function(response) {
+            // Handle error response
+            if (response.status === 422) {
+                var errors = response.responseJSON.errors;
+                var errorMessage = '';
+                $.each(errors, function(key, value) {
+                    errorMessage += value[0] + '\n';
+                });
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: errorMessage
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'An error occurred. Please try again.'
+                });
+            }
+        }
+    });
 });
+
+//Delete Banner function
+$(document).on("click", ".confirmDelete", function(){
+    var module = $(this).attr('module');
+    var moduleid = $(this).attr('moduleid');
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't retrieve this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            $.ajax({
+                url: "/banners-management/delete-"+module+"/"+moduleid,
+                type: 'DELETE',
+                success: function(response) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    );
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire(
+                        'Error!',
+                        'There was an error deleting your file.',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+});
+
+//Update Banner status
+$(document).on("click", ".updateBannerStatus", function(){
+    var status = $(this).children("i").attr("status");
+    var banner_id = $(this).attr("banner_id");
+
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: 'post',
+        url: '/banners-management/update-banner-status',
+        data: { status: status, banner_id: banner_id },
+        success: function(resp) {
+            if (resp.status == 0) {
+                // Update label badge and icon for Inactive status
+                $("#status-label-" + banner_id).removeClass('badge-success').addClass('badge-danger').text('Inactive');
+                $("#banner-" + banner_id + " i").removeClass('text-success').addClass('text-danger').attr('status', 'Inactive');
+            } else if (resp.status == 1) {
+                // Update label badge and icon for Active status
+                $("#status-label-" + banner_id).removeClass('badge-danger').addClass('badge-success').text('Active');
+                $("#banner-" + banner_id + " i").removeClass('text-danger').addClass('text-success').attr('status', 'Active');
+            }
+        },
+        error: function() {
+            alert("Error occurred while updating status");
+        }
+    });
+});
+
+
+});
+

@@ -1,5 +1,5 @@
  <!-- Sidebar -->
- <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+ <ul style="background:#17A2B8; " class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{url('hotel-de-luna/dashboard')}}">
@@ -8,66 +8,68 @@
     </a>
 
     <!-- Divider -->
-    <hr class="sidebar-divider my-0">
+    <hr class="sidebar-divider my-0 bg-light">
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link" href="{{url('hotel-de-luna/dashboard')}}">
+
+            <a @if(Session::get('page')=="dashboard") style="background:#0a515c !important; color:#fff !important;" @endif class="nav-link" href="{{url('hotel-de-luna/dashboard')}}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
 
     <!-- Divider -->
-    <hr class="sidebar-divider">
+    <hr class="sidebar-divider bg-light">
 
     <!-- Heading -->
-    <div class="sidebar-heading">
+    <div class="sidebar-heading text-light">
         Interface
     </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
+    @if(Auth::guard('midware')->user()->acc_type=="sub-admin")
+
+
+    @else
+
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+
+        <a @if(Session::get('page')=="users-management" || Session::get('page')=="employee" || Session::get('page')=="customers") style="background:#0a515c !important; color:#fff !important;" @endif  class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
             aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-cog"></i>
             <span>Users Management</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{ url('users-management/employee')}}">Employees</a>
-                <a class="collapse-item" href="cards.html">Customers</a>
+                <a @if(Session::get('page')=="employee") style="background:#0a515c !important; color:#fff !important;" @endif class="collapse-item" href="{{ url('users-management/employee')}}">Employees</a>
+                <a @if(Session::get('page')=="customers") style="background:#0a515c !important; color:#fff !important;" @endif class="collapse-item" href="{{ url('users-management/customers')}}">Customers</a>
             </div>
         </div>
     </li>
 
-    <!-- Nav Item - Utilities Collapse Menu -->
+
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+        <a @if(Session::get('page')=="banners-management" || Session::get('page')=="banners") style="background:#0a515c !important; color:#fff !important;" @endif class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
             aria-expanded="true" aria-controls="collapseUtilities">
             <i class="fas fa-fw fa-wrench"></i>
-            <span>Utilities</span>
+            <span>Banners Management</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Custom Utilities:</h6>
-                <a class="collapse-item" href="utilities-color.html">Colors</a>
-                <a class="collapse-item" href="utilities-border.html">Borders</a>
-                <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                <a class="collapse-item" href="utilities-other.html">Other</a>
+                <h6 class="collapse-header text-dark">Banners/Backgrounds</h6>
+                <a @if(Session::get('page')=="banners") style="background:#0a515c !important; color:#fff !important;" @endif class="collapse-item" href="{{ url('banners-management/banners')}}">Banners/Background</a>
+
             </div>
         </div>
     </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
 
     <!-- Heading -->
     <div class="sidebar-heading">
         Addons
     </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
+
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
             aria-expanded="true" aria-controls="collapsePages">
@@ -88,26 +90,28 @@
         </div>
     </li>
 
-    <!-- Nav Item - Charts -->
+
     <li class="nav-item">
         <a class="nav-link" href="charts.html">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Charts</span></a>
     </li>
 
-    <!-- Nav Item - Tables -->
+
     <li class="nav-item">
         <a class="nav-link" href="tables.html">
             <i class="fas fa-fw fa-table"></i>
             <span>Tables</span></a>
     </li>
 
+
+    @endif
     <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
+    <hr class="sidebar-divider d-none d-md-block bg-light">
 
     <!-- Sidebar Toggler (Sidebar) -->
-    <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    <div class="text-center d-none d-md-inline ">
+        <button class="rounded-circle border-0 " id="sidebarToggle"></button>
     </div>
 
 

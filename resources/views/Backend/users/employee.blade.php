@@ -39,7 +39,7 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <!-- Employee Table -->
             <div class="card shadow mb-4">
-                <div class="card-header py-3" style="background-color:#4e73df;">
+                <div class="card-header py-3" style="background-color:#17A2B8;">
                     <h6 class="m-0 font-weight-bold text-white">Employee's List</h6>
 
                         <a style="max-width: 150px; float: right; display: inline-block;" href="{{ url('users-management/add-edit-employee')}}" class="btn btn-block btn btn-outline-light btn-sm"> + Add Employee</a>
@@ -70,11 +70,11 @@
                                                 <img style="width: 80px; height: 80px; transition: transform 0.2s ease-in-out;" src="{{ asset('Backend/img/medium/'.$employee['profile_pic']) }}">
                                             </a>
                                         @else
-                                            <img style="width: 80px; height: 80px; cursor: pointer; transition: transform 0.2s ease-in-out;" src="{{ asset('front/images/product_image/small/no-image.jpg') }}" class="zoomable-image">
+                                            <img style="width: 80px; height: 80px; cursor: pointer; transition: transform 0.2s ease-in-out;" src="{{ asset('Backend/img/small/no-image.jpg') }}" class="zoomable-image">
                                         @endif
                                     </td>
 
-                                    <td class="text-center text-dark">{{ $employee['Fname'] }} {{ $employee['Lname'] }}</td>
+                                    <td class="text-center text-dark">{{ $employee['Fname'] }} @if(empty($employee['Mname'] )) @else {{ $employee['Mname'] }} @endif {{ $employee['Lname'] }} @if(empty($employee['Suffix'])) @else {{ $employee['Suffix'] }} @endif</td>
                                     <td class="text-center text-dark">{{ $employee['position'] }}</td>
                                     <td class="text-center text-dark">{{ $employee['age'] }}</td>
                                     <td class="text-center text-dark">@if(empty($employee['region']['name']))

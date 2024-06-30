@@ -1,0 +1,34 @@
+   .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.986);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            visibility: visible; /* Change initial visibility to visible */
+            opacity: 1; /* Add opacity for fade effect */
+            transition: visibility 0s linear 3s, opacity 3s linear; /* 5s fade-out after load */
+        }
+
+        /* Hide main content initially */
+        #main-content {
+            visibility: hidden;
+            opacity: 0; /* Add opacity for fade effect */
+            transition: visibility 0s linear 3s, opacity 3s linear; /* 5s fade-in */
+        }
+
+        /* Show main content */
+        #main-content.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Hide loader */
+        .loader.hide {
+            visibility: hidden;
+            opacity: 0;
+        }
