@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AccountsController;
 use App\Http\Controllers\Backend\BannersController;
+use App\Http\Controllers\Backend\RoomController;
 use App\Http\Controllers\Frontend\IndexController;
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +81,16 @@ Route::prefix('/hotel-de-luna')->namespace('App\Http\Controllers\Accounts')->gro
         Route::post('update-banner-status',[BannersController::class, 'updateBannerStatus']);
         Route::get('delete-banner/{id}',[BannersController::class, 'deleteBanners']);
        Route::match(['get','post'],'add-edit-banners/{id?}', [BannersController::class, 'AddEditBanner']);
+    });
+});
+
+Route::prefix('/rooms-management')->group(function(){
+    Route::group(['middleware'=>['midware']],function(){
+
+        Route::get('rooms',[RoomController::class, 'rooms']);
+        Route::get('roomtype',[RoomController::class, 'roomtype']);
+        Route::match(['get','post'],'add-edit-rooms/{id?}', [RoomController::class, 'AddEditRoom']);
+        Route::match(['get','post'],'add-edit-roomtype/{id?}', [RoomController::class, 'AddEditRoomtype']);
     });
 });
 

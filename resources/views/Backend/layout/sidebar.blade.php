@@ -35,7 +35,7 @@
 
         <a @if(Session::get('page')=="users-management" || Session::get('page')=="employee" || Session::get('page')=="customers") style="background:#0a515c !important; color:#fff !important;" @endif  class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
             aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="fa-solid fa-users text-light"></i>
             <span>Users Management</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -50,7 +50,7 @@
     <li class="nav-item">
         <a @if(Session::get('page')=="banners-management" || Session::get('page')=="banners") style="background:#0a515c !important; color:#fff !important;" @endif class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
             aria-expanded="true" aria-controls="collapseUtilities">
-            <i class="fas fa-fw fa-wrench"></i>
+            <i class="fa-solid fa-image text-light"></i>
             <span>Banners Management</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
@@ -62,6 +62,23 @@
             </div>
         </div>
     </li>
+
+    <li class="nav-item">
+        <a @if(Session::get('page')=="rooms-management" || Session::get('page')=="rooms") style="background:#0a515c !important; color:#fff !important;" @endif class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#rooms"
+            aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fa-solid fa-house text-light"></i>
+            <span>Room Management</span>
+        </a>
+        <div id="rooms" class="collapse" aria-labelledby="headingUtilities"
+            data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header text-dark">Rooms</h6>
+                <a @if(Session::get('page')=="rooms") style="background:#0a515c !important; color:#fff !important;" @endif class="collapse-item" href="{{ url('rooms-management/rooms')}}">Rooms/Type</a>
+
+            </div>
+        </div>
+    </li>
+
 
 
     <!-- Heading -->

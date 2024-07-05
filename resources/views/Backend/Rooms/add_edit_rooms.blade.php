@@ -14,7 +14,8 @@
             <!-- Employee Table -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3 text-center" style=" background-color:#17A2B8;">
-                    <a style="float:left; color:white;" title="Back to Banners?" href="{{ url('banners-management/banners')}}"><i class="fa-solid fa-arrow-left"></i> </a>
+                    <a style="float:left; color:white;" title="Back to rooms?" href="{{ url('rooms-management/rooms')}}"><i class="fa-solid fa-arrow-left"></i> </a>
+                    <a href="{{url('rooms-management/add-edit-roomtype')}}" style="max-width: 150px; float: right; display: inline-block;" type="button" class="btn btn-block btn-outline-light btn-sm">+ Add RoomType</a>
                     <h6 class="m-0 font-weight-bold text-white">{{ $title }}</h6>
                 </div>
                 @if(Session::has('error_message'))
@@ -46,43 +47,33 @@
                 </div>
             @endif
                     <div class="card-body">
-                        <form id="bannerForm" class="forms-sample" @if(empty($banner['id'])) action="{{ url('banners-management/add-edit-banners') }}" @else action="{{ url('banners-management/add-edit-banners/'.$banner['id']) }}" @endif method="post" enctype="multipart/form-data">@csrf
+                        <form id="roomForm" class="forms-sample" @if(empty($room['id'])) action="{{ url('rooms-management/add-edit-rooms') }}" @else action="{{ url('rooms-management/add-edit-rooms/'.$room['id']) }}" @endif method="post" enctype="multipart/form-data">@csrf
                             @csrf
 
                             <div class="form-group">
-                                <label for="type">Banner Type:</label>
-                                <select name="type" class="form-control" required>
-                                    <option value="">Select Type</option>
-                                    <option value="Slider" @if(isset($banner['type']) && $banner['type'] == 'Slider') selected @endif>Slider</option>
-                                    <option value="header" @if(isset($banner['type']) && $banner['type'] == 'header') selected @endif>Header</option>
-                                    <option value="Fix1" @if(isset($banner['type']) && $banner['type'] == 'Fix1') selected @endif>Fix1</option>
-                                    <option value="Circle" @if(isset($banner['type']) && $banner['type'] == 'Circle') selected @endif>Circle</option>
+                                <label for="title">Room Type:</label>
+                                <select title="Select Room Type" name="room_type" class="form-control" required>
+                                    <option value="" >Select Type</option>
+                                    @foreach($roomType as $type)
+                                    <option value="{{ $type['id'] }}"
+                                        @if(old('room_type') == $type['id'])
+                                            selected
+                                        @elseif(isset($room->room_type) && $room->room_type == $type['id'])
+                                            selected
+                                        @endif>
+                                        {{ $type['title'] }}
+                                    </option>
+                                @endforeach
                                 </select>
                             </div>
 
-
                             <div class="form-group">
-                                <label for="title">Banner Title:</label>
-                                <input type="text" class="form-control" id="title" name="title" value="{{ $banner['title'] ?? '' }}" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="link">Banner Link:</label>
-                                <input type="text" class="form-control" id="link" name="link" value="{{ $banner['link'] ?? '' }}" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="alt">Banner Alternate Text:</label>
-                                <input type="text" class="form-control" id="alt" name="alt" value="{{ $banner['alt'] ?? '' }}" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="image">Banner Image</label>
+                                <label for="image">Room Image</label>
                                 <input type="file" class="form-control-file" id="image" name="image">
-                                @if (!empty($banner['image']))
-                                    <a target="_blank" href="{{ url('Frontend/images/banners/' . $banner['image']) }}">View Image</a>
+                                @if (!empty($room['image']))
+                                    <a target="_blank" href="{{ url('Frontend/images/rooms/' . $room['image']) }}">View Image</a>
                                 @else
-                                    <a target="_blank" href="{{ url('Frontend/images/banners/no-image.jpg') }}">View Image</a>
+                                    <a target="_blank" href="{{ url('Frontend/images/rooms/no-image.jpg') }}">View Image</a>
                                 @endif
                             </div>
 

@@ -63,7 +63,8 @@ class BannersController extends Controller
                 'Slider' => [1123, 700],
                 'header' => [1920, 1267],
                 'Fix1' => [800, 500],
-                'Circle' => [250, 250]
+                'Circle' => [250, 250],
+
             ];
 
             if (array_key_exists($data['type'], $dimensions)) {
