@@ -25,6 +25,8 @@ class AccountsController extends Controller
         return view('Backend.error');
     }
 
+    //Fetching Accounts
+
 
     public function login(Request $request){
 
@@ -66,6 +68,29 @@ class AccountsController extends Controller
     }
 
 
+//Delete Employee
+public function deleteEmployee($id)
+{
+    // Get Employee
+    $employee = Employee::findOrFail($id);
+
+    // Get Employee Image Path
+    $employee_image_path = public_path('Backend/img/medium/');
+
+    // Check if the Employee image exists and delete it
+    if (!empty($employee->profile_pic) && file_exists($employee_image_path . $employee->profile_pic)) {
+        unlink($employee_image_path . $employee->profile_pic);
+    }
+
+    // Delete Employee from database
+    $employee->delete();
+
+    $message = "Employee deleted successfully!";
+    return redirect('users-management/employee')->with('success_message', $message);
+}
+
+
+
 
 //START EMPLOYEE
 public function employee() {
@@ -103,9 +128,9 @@ public function employee() {
 
     public function storeEmployee(Request $request, $id = null)
     {
-        $regions = Region::get(['name', 'region_id'])->toArray();
-        $provinces = Province::get(['name', 'province_id'])->toArray();
-        $cities = City::get(['name', 'city_id'])->toArray();
+
+
+
 
         if ($id == "") {
             $title = "Add Employee";
@@ -119,6 +144,11 @@ public function employee() {
             }
             $message = "Employee updated successfully!";
         }
+
+        $regions = Region::all();
+        $provinces = Province::where('region_id', $Employee->region_id)->get();
+        $cities = City::where('province_id', $Employee->province_id)->get();
+        $barangays = Barangay::where('city_id', $Employee->city_id)->get();
 
         if ($request->isMethod('post')) {
             $data = $request->all();
@@ -194,9 +224,23 @@ public function employee() {
             return redirect()->back()->with('success_message', $message);
         }
 
-        return view('Backend.users.add_edit_Employee')->with(compact('title', 'Employee', 'regions', 'provinces', 'cities'));
+        return view('Backend.users.add_edit_Employee')->with(compact('title', 'Employee', 'regions', 'provinces', 'cities','barangays'));
     }
-      //START Add employe to DB FUNCTION
+
+    //UpdateEmployee Statu
+       public function updateEmployeeStatus(Request $request){
+
+        if($request->ajax()){
+            $data = $request->all();
+            if($data['status']=="Active"){
+                $status = 0;
+            }else{
+                $status = 1;
+            }
+           Employee::where('id',$data['employee_id'])->update(['status'=>$status]);
+            return response()->json(['status'=>$status,'employee_id'=>$data['employee_id']]);
+        }
+    }
 
 
     //Logout

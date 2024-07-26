@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="{{ url('Frontend/css/bootstrap-datepicker.css')}}">
     <link rel="stylesheet" href="{{ url('Frontend/css/jquery.timepicker.css')}}">
     <link rel="stylesheet" href="{{ url('Frontend/css/fancybox.min.css')}}">
-
+    <link rel="stylesheet" href="{{ url('Frontend/css/zoom.css')}}">
     <!-- THIS IS FOR THE BROWSER'S ICON-->
     <link rel="shortcut icon" href="{{ url('Backend/img/mylogo.png') }} " />
 

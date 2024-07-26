@@ -15,7 +15,7 @@
             <div class="card shadow mb-4">
                 <div class="card-header py-3 text-center" style=" background-color:#17A2B8;">
                     <a style="float:left; color:white;" title="Back to rooms?" href="{{ url('rooms-management/rooms')}}"><i class="fa-solid fa-arrow-left"></i> </a>
-                    <a href="{{url('rooms-management/add-edit-roomtype')}}" style="max-width: 150px; float: right; display: inline-block;" type="button" class="btn btn-block btn-outline-light btn-sm">+ Add RoomType</a>
+
                     <h6 class="m-0 font-weight-bold text-white">{{ $title }}</h6>
                 </div>
                 @if(Session::has('error_message'))
@@ -70,11 +70,13 @@
                             <div class="form-group">
                                 <label for="image">Room Image</label>
                                 <input type="file" class="form-control-file" id="image" name="image">
-                                @if (!empty($room['image']))
-                                    <a target="_blank" href="{{ url('Frontend/images/rooms/' . $room['image']) }}">View Image</a>
-                                @else
-                                    <a target="_blank" href="{{ url('Frontend/images/rooms/no-image.jpg') }}">View Image</a>
-                                @endif
+                                <div style="margin-top:20px;">
+                                    @if (!empty($room['image']))
+                                    <img width="25%" src="{{ url('Frontend/images/rooms/' . $room['image']) }}" alt="alt">
+                                 @else
+                                    <img width="25%" src="{{ url('Frontend/images/rooms/no-image.jpg') }}" alt="alt">
+                                 @endif
+                                </div>
                             </div>
 
                             <div style="justify-content:center;" class="modal-footer">

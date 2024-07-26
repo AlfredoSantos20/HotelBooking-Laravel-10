@@ -58,6 +58,8 @@
                                     <th class="text-center text-dark"><strong>Address</strong></th>
                                     <th class="text-center text-dark"><strong>Phone Number</strong></th>
                                     <th class="text-center text-dark"><strong>Status</strong></th>
+                                    <th class="text-center text-dark"><strong>Active/Inactive</strong></th>
+                                    <th class="text-center text-dark"><strong>Edit/Delete</strong></th>
 
                                 </tr>
                             </thead>
@@ -83,7 +85,20 @@
                                         @endif {{ $employee['province']['name'] }}, {{ $employee['city']['name'] }}, {{ $employee['barangay']['name'] }}</td>
                                     <td class="text-center text-dark">{{ $employee['address'] }}</td>
                                     <td class="text-center text-dark">{{ $employee['phone_num'] }}</td>
-                                    <td class="text-center text-dark">{{ $employee['status'] }}</td>
+
+                                    <td class="text-center">
+                                        <label id="status-label-{{ $employee['id'] }}" class="badge {{ $employee['status'] == 1 ? 'badge-success' : 'badge-danger' }}">
+                                            {{ $employee['status'] == 1 ? 'Active' : 'Inactive' }}
+                                        </label>
+                                    </td>
+                                    <td class="text-center text-dark">
+
+                                        <a title="Update Employee Status" class="updateEmployeeStatus" id="employee-{{ $employee['id'] }}" employee_id="{{ $employee['id'] }}" href="javascript:void(0)">
+                                            <i style="font-size: 25px;" class="fa-solid fa-circle-check {{ $employee['status'] == 1 ? 'text-success' : 'text-danger' }}" status="{{ $employee['status'] == 1 ? 'Active' : 'Inactive' }}"></i>
+                                        </a>
+                                    </td>
+                                    <td class="text-center text-dark">   <a href="{{ url ('users-management/add-edit-employee/'.$employee['id']) }}"><i title="Edit Employee?" style="color:rgb(0, 128, 128); font-size:20px;" class="fa-solid fa-pen-to-square"></i></a>
+                                    <a href="javascript:void(0)" class="employeeDelete" module="employee" moduleid="{{ $employee['id'] }}"><i title="Delete Employee?" style="color:red; font-size:20px;" class="fa-solid fa-trash"></i></a> </td>
                                 </tr>
                                 @endforeach
                             </tbody>

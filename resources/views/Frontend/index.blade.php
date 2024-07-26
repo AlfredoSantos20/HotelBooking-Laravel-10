@@ -7,8 +7,8 @@
     <div class="container">
       <div class="row site-hero-inner justify-content-center align-items-center">
         <div class="col-md-10 text-center" data-aos="fade-up">
-          <span class="custom-caption text-uppercase text-white d-block  mb-3">Welcome To 5 <span style="color:gold;" class="fa fa-star"></span>   Hotel</span>
-          <h1 class="heading">The Best Place To Stay</h1>
+          <span class="custom-caption text-uppercase text-white d-block  mb-3">Welcome To</span>
+          <h1 class="heading"> Hotel De Luna</h1>
         </div>
       </div>
     </div>
@@ -130,39 +130,66 @@
       </div>
       <div class="row">
         <div class="col-md-6 col-lg-4" data-aos="fade-up">
-          <a href="#" class="room">
+
             <figure class="img-wrap">
-              <img src="{{ url('Frontend/images/img_1.jpg') }}" alt="Free website template" class="img-fluid mb-3">
+                @if(isset($singleRoomImg[0]['image']))
+                    <a class="zoomable-image" style="cursor: pointer; display: inline-block; position: relative;" target="_blank" href="{{ url('Frontend/images/rooms/'.$singleRoomImg[0]['image']) }}">
+                        <img class="zoomable-img img-fluid mb-3" title="{{ $singleRoom['title'] }}" src="{{ asset('Frontend/images/rooms/'.$singleRoomImg[0]['image']) }}" alt="alt">
+                    </a>
+                @else
+                    <img src="{{ asset('Frontend/images/rooms/no-image.jpg') }}" class="img-fluid mb-3">
+                @endif
             </figure>
-            <div class="p-3 text-center room-info">
+
+            <div style ="justify-content:center;" class="p-3 text-center room-info">
               <h2>Single Room</h2>
-              <span class="text-uppercase letter-spacing-1">90$ / per night</span>
+              <span class="text-uppercase letter-spacing-1">{{$formattedSingleRoomPrice}} | per night</span>
+              <br> <span class="text-uppercase letter-spacing-1">  <i class="fa-solid fa-wifi"></i> wifi  <i class="fa-solid fa-circle-check text-success"></i> Included  </span>
+              <br> <span class="text-uppercase letter-spacing-1"> <i style ="font-size:20px;" class="fa-solid fa-ban-smoking"></i> no smoking policy</span>
             </div>
-          </a>
+
         </div>
 
         <div class="col-md-6 col-lg-4" data-aos="fade-up">
-          <a href="#" class="room">
+
             <figure class="img-wrap">
-              <img src="{{ url('Frontend/images/img_2.jpg') }}" alt="Free website template" class="img-fluid mb-3">
+                @if(isset($famRoomImg[0]['image']))
+                <a class="zoomable-image" style="cursor: pointer; display: inline-block; position: relative;" target="blank_" href="{{ url('Frontend/images/rooms/'.$famRoomImg[0]['image'])}}">
+                  <img  class="zoomable-img img-fluid mb-3" title="{{ $famRoom['title'] }}" src="{{ asset('Frontend/images/rooms/'.$famRoomImg[0]['image']) }}" alt="alt" >
+                </a>
+                  @else
+                  <img  src="{{ asset('Frontend/images/rooms/no-image.jpg') }}"  class="img-fluid mb-3">
+
+                  @endif
             </figure>
             <div class="p-3 text-center room-info">
               <h2>Family Room</h2>
-              <span class="text-uppercase letter-spacing-1">120$ / per night</span>
+              <span class="text-uppercase letter-spacing-1">{{ $formattedFamRoomPrice}} | per night</span>
+              <br> <span class="text-uppercase letter-spacing-1">  <i class="fa-solid fa-wifi"></i> wifi  <i class="fa-solid fa-circle-check text-success"></i> Included  </span>
+              <br> <span class="text-uppercase letter-spacing-1"> <i style ="font-size:20px;" class="fa-solid fa-ban-smoking"></i> no smoking policy</span>
             </div>
-          </a>
+
         </div>
 
         <div class="col-md-6 col-lg-4" data-aos="fade-up">
-          <a href="#" class="room">
+
             <figure class="img-wrap">
-              <img src="{{ url('Frontend/images/img_3.jpg') }}" alt="Free website template" class="img-fluid mb-3">
+                @if(isset($presRoomImg[0]['image']))
+                <a  class="zoomable-image" style="cursor: pointer; display: inline-block; position: relative;" target="blank_" href="{{ url('Frontend/images/rooms/'.$presRoomImg[0]['image'])}}">
+                  <img class="zoomable-img img-fluid mb-3" title="{{ $presRoom['title'] }}" src="{{ asset('Frontend/images/rooms/'.$presRoomImg[0]['image']) }}" alt="alt">
+                </a>
+                  @else
+                  <img src="{{ asset('Frontend/images/rooms/no-image.jpg') }}"  class="img-fluid mb-3">
+
+                  @endif
             </figure>
-            <div class="p-3 text-center room-info">
+            <div style="text-align:justify;" class="p-3 text-center room-info">
               <h2>Presidential Room</h2>
-              <span class="text-uppercase letter-spacing-1">250$ / per night</span>
+              <span class="text-uppercase letter-spacing-1">{{$formattedPresRoomPrice}} | per night </span>
+              <br> <span class="text-uppercase letter-spacing-1">  <i class="fa-solid fa-wifi"></i> wifi  <i class="fa-solid fa-circle-check text-success"></i> Included  </span>
+                <br> <span class="text-uppercase letter-spacing-1"> <i style ="font-size:20px;" class="fa-solid fa-ban-smoking"></i> no smoking policy</span>
             </div>
-          </a>
+
         </div>
 
 
@@ -175,34 +202,22 @@
     <div class="container">
       <div class="row justify-content-center text-center mb-5">
         <div class="col-md-7">
-          <h2 class="heading" data-aos="fade-up">Photos</h2>
+          <h2 class="heading" data-aos="fade-up">Gallery</h2>
           <p data-aos="fade-up" data-aos-delay="100">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
           <div class="home-slider major-caousel owl-carousel mb-5" data-aos="fade-up" data-aos-delay="200">
+            @foreach($sliderBanners as $banner)
             <div class="slider-item">
-              <a href="{{ url('Frontend/images/slider-1.jpg') }}" data-fancybox="images" data-caption="Caption for this image"><img src="{{ url('Frontend/images/slider-1.') }}jpg" alt="Image placeholder" class="img-fluid"></a>
+              <a href="{{ asset('Frontend/images/banners/'.$banner['image']) }}"  data-fancybox="images" data-caption="{{$banner['title']}}">
+                <img @if(!empty($banner['link'])) href="{{ url($banner['link']) }} " @else href="javascript:;" @endif><img title="{{ $banner['title'] }}" alt="alt" src="{{ asset('Frontend/images/banners/'.$banner['image']) }}" class="img-fluid">
+                </a>
             </div>
-            <div class="slider-item">
-              <a href="{{ url('Frontend/images/slider-2.jpg') }}" data-fancybox="images" data-caption="Caption for this image"><img src="{{ url('Frontend/images/slider-2.') }}jpg" alt="Image placeholder" class="img-fluid"></a>
-            </div>
-            <div class="slider-item">
-              <a href="{{ url('Frontend/images/slider-3.jpg') }}" data-fancybox="images" data-caption="Caption for this image"><img src="{{ url('Frontend/images/slider-3.') }}jpg" alt="Image placeholder" class="img-fluid"></a>
-            </div>
-            <div class="slider-item">
-              <a href="{{ url('Frontend/images/slider-4.jpg') }}" data-fancybox="images" data-caption="Caption for this image"><img src="{{ url('Frontend/images/slider-4.') }}jpg" alt="Image placeholder" class="img-fluid"></a>
-            </div>
-            <div class="slider-item">
-              <a href="{{ url('Frontend/images/slider-5.jpg') }}" data-fancybox="images" data-caption="Caption for this image"><img src="{{ url('Frontend/images/slider-5.') }}jpg" alt="Image placeholder" class="img-fluid"></a>
-            </div>
-            <div class="slider-item">
-              <a href="{{ url('Frontend/images/slider-6.jpg') }}" data-fancybox="images" data-caption="Caption for this image"><img src="{{ url('Frontend/images/slider-6.') }}jpg" alt="Image placeholder" class="img-fluid"></a>
-            </div>
-            <div class="slider-item">
-              <a href="{{ url('Frontend/images/slider-7.jpg') }}" data-fancybox="images" data-caption="Caption for this image"><img src="{{ url('Frontend/images/slider-7.') }}jpg" alt="Image placeholder" class="img-fluid"></a>
-            </div>
+            @endforeach
+
+
           </div>
           <!-- END slider -->
         </div>
@@ -441,7 +456,7 @@
   </section>
 
 
-  <section class="section blog-post-entry bg-light">
+  {{-- <section class="section blog-post-entry bg-light">
     <div class="container">
       <div class="row justify-content-center text-center mb-5">
         <div class="col-md-7">
@@ -484,7 +499,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> --}}
 
   <section class="section bg-image overlay" style="background-image: url('{{ url('Frontend/images/hero_4.jp') }}g');">
       <div class="container" >

@@ -93,7 +93,7 @@
                                         </a>
                                     </td>
                                     <td class="text-center text-dark">   <a href="{{ url ('banners-management/add-edit-banners/'.$banner['id']) }}"><i title="Edit Banner?" style="color:rgb(0, 128, 128); font-size:20px;" class="fa-solid fa-pen-to-square"></i></a>
-                                       <a href="javascript:void(0)" class="confirmDelete" module="banner" moduleid="{{ $banner['id'] }}"><i title="Delete Banner?" style="color:red; font-size:20px;" class="fa-solid fa-trash"></i></a> </td>
+                                       <a href="javascript:void(0)" class="bannerDelete" module="banner" moduleid="{{ $banner['id'] }}"><i title="Delete Banner?" style="color:red; font-size:20px;" class="fa-solid fa-trash"></i></a> </td>
                                 </tr>
                                 @endforeach
                             </tbody>

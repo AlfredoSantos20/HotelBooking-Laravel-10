@@ -79,11 +79,14 @@
                             <div class="form-group">
                                 <label for="image">Banner Image</label>
                                 <input type="file" class="form-control-file" id="image" name="image">
+
+                             <div style="margin-top:20px;">
                                 @if (!empty($banner['image']))
-                                    <a target="_blank" href="{{ url('Frontend/images/banners/' . $banner['image']) }}">View Image</a>
-                                @else
-                                    <a target="_blank" href="{{ url('Frontend/images/banners/no-image.jpg') }}">View Image</a>
-                                @endif
+                                <img width="25%" src="{{ url('Frontend/images/banners/' . $banner['image']) }}" alt="alt">
+                             @else
+                                <img width="25%" src="{{ url('Frontend/images/banners/no-image.jpg') }}" alt="alt">
+                             @endif
+                            </div>
                             </div>
 
                             <div style="justify-content:center;" class="modal-footer">

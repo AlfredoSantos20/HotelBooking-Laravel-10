@@ -1,8 +1,27 @@
 <header class="site-header js-site-header">
+    <style>
+        .dropdown-item:hover {
+            cursor: pointer;
+        }
+    </style>
     <div class="container-fluid">
       <div class="row align-items-center">
-        <div class="col-6 col-lg-4 site-logo" data-aos="fade"><a href="{{ url('/')}}">Hotel De Luna</a></div>
+        <div class="col-6 col-lg-4 site-logo dropdown" data-aos="fade"><a type="button" data-toggle="dropdown" href="javascript:;" >
+                @if(Auth::check()) My Account @else Sign-up/Sign-in @endif
+
+            <ul class="dropdown-menu">
+                @if(Auth::check())
+                            {{-- gonna put account settings, logout etc here --}}
+               @else
+                <li><a title="Sign-in" style="font-size:20px;" class="text-dark" href="javascript:;" data-toggle="modal" data-target="#signin">&nbsp; - <i class="fa-solid fa-right-to-bracket"></i> Sign-in</a></li>
+                <li><a title="Sign-up" style="font-size:20px;"  class="text-dark" href="javascript:;" data-toggle="modal" data-target="#signup">&nbsp; - <i class="fa-solid fa-user-plus"></i> Sign-up</a></li>
+              @endif
+            </ul>
+          </div></a>
+
+
         <div class="col-6 col-lg-8">
+
 
 
           <div class="site-menu-toggle js-site-menu-toggle" data-aos="fade">
@@ -11,6 +30,13 @@
             <span></span>
           </div>
 
+          <style>
+            .modal-body {
+            max-height: 400px; /* Adjust this height as needed */
+            overflow-y: auto;
+                        }
+          </style>
+
 
           <div class="site-navbar js-site-navbar">
             <nav role="navigation">
@@ -18,23 +44,13 @@
                 <div class="row full-height align-items-center">
                   <div class="col-md-6 mx-auto">
                     <ul class="list-unstyled menu">
-                      <li class="active"><a style="font-size:30px;" href="index.html">Home</a></li>
+                      <li class="active"><a style="font-size:30px;" href="{{ url('/')}}">Home</a></li>
                       <li><a style="font-size:30px;" href="rooms.html">Rooms</a></li>
                       <li><a style="font-size:30px;" href="about.html">About</a></li>
                       <li><a style="font-size:30px;" href="events.html">Events</a></li>
                       <li><a style="font-size:30px;" href="contact.html">Contact</a></li>
                       <li><a style="font-size:30px;" href="reservation.html">Reservation</a></li>
-                      <hr class="sidebar-divider" style="height:10px;">
-                      <li>
-                        <div>
-                            <button type="button" class="btn btn-primary text-white" data-toggle="modal" data-target="#signin">
-                                Sign-in
-                              </button>
-                              <button type="button" class="btn btn-primary text-white" data-toggle="modal" data-target="#signup">
-                                Sign-up
-                              </button>
-                        </div>
-                    </li>
+
                     </ul>
 
                   </div>
@@ -85,10 +101,15 @@
             </div>
         </div>
 
+        <div class="form-group" style="margin-left:20px;">
+            <a  href="javascript:;" class="text-center" data-toggle="modal" data-target="#forgotpassword"  data-dismiss="modal"><u>Forgot password?</u></a>
+        </div>
 
         <div style="justify-content:center;" class="modal-footer">
           <button type="submit" class="btn btn-primary text-white">Sign-in</button>
         </div>
+        <a href="javascript:;" class="text-center" data-toggle="modal" data-target="#signup"  data-dismiss="modal"><u>Don't have an account yet?</u></a>
+
       </div>
     </div>
 </form>
@@ -151,15 +172,42 @@
                 <input type="password" class="form-control" id="employee_email"  placeholder="Enter Password" name="password" required="">
             </div>
         </div>
-        <div class="form-group" style="margin-left:20px;">
-            <a href="#"><u>Forgot password?</u></a>
-        </div>
 
             <div style="justify-content:center;" class="modal-footer">
                 <button type="submit" class="btn btn-primary text-white">Sign-up</button>
               </div>
-
+              <a  href="javascript:;" class="text-center" data-toggle="modal" data-target="#signin"  data-dismiss="modal"><u>Go to Sign-in?</u></a>
       </div>
     </div>
   </div>
 
+{{-- FORGOT PASSWORD --}}
+
+<div class="modal fade" id="forgotpassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <form action="">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <h5 class="modal-title" id="exampleModalLongTitle">Forgot Password</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="employee_age">Email
+                    <span style="color:red; " class="astk">*</span>
+                </label>
+                <input type="text" class="form-control" id="employee_email"  placeholder="Enter Email" name="email" required="">
+            </div>
+
+        </div>
+        <div style="justify-content:center;" class="modal-footer">
+            <button type="submit" class="btn btn-primary text-white">Recover</button>
+          </div>
+        <a href="javascript:;" class="text-center" data-toggle="modal" data-target="#signin"  data-dismiss="modal"><u>Back to Sign-in?</u></a>
+
+      </div>
+    </div>
+</form>
+  </div>

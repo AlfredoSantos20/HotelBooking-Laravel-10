@@ -31,6 +31,8 @@
 
     @else
 
+
+
     <li class="nav-item">
 
         <a @if(Session::get('page')=="users-management" || Session::get('page')=="employee" || Session::get('page')=="customers") style="background:#0a515c !important; color:#fff !important;" @endif  class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
@@ -40,8 +42,10 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a @if(Session::get('page')=="employee") style="background:#0a515c !important; color:#fff !important;" @endif class="collapse-item" href="{{ url('users-management/employee')}}">Employees</a>
+                <a @if(Session::get('page')=="employee") style="background:#0a515c !important; color:#fff !important;" @endif class="collapse-item" href="{{ url('users-management/accounts')}}">Accounts</a>
                 <a @if(Session::get('page')=="customers") style="background:#0a515c !important; color:#fff !important;" @endif class="collapse-item" href="{{ url('users-management/customers')}}">Customers</a>
+                <a @if(Session::get('page')=="employee") style="background:#0a515c !important; color:#fff !important;" @endif class="collapse-item" href="{{ url('users-management/employee')}}">Employees</a>
+
             </div>
         </div>
     </li>
@@ -64,62 +68,39 @@
     </li>
 
     <li class="nav-item">
-        <a @if(Session::get('page')=="rooms-management" || Session::get('page')=="rooms") style="background:#0a515c !important; color:#fff !important;" @endif class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#rooms"
+        <a @if(Session::get('page')=="rooms-management" || Session::get('page')=="rooms" || Session::get('page')=="room-type") style="background:#0a515c !important; color:#fff !important;" @endif class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#rooms"
             aria-expanded="true" aria-controls="collapseUtilities">
-            <i class="fa-solid fa-house text-light"></i>
+            <i class="fa-solid fa-door-open text-light"></i>
             <span>Room Management</span>
         </a>
         <div id="rooms" class="collapse" aria-labelledby="headingUtilities"
             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header text-dark">Rooms</h6>
-                <a @if(Session::get('page')=="rooms") style="background:#0a515c !important; color:#fff !important;" @endif class="collapse-item" href="{{ url('rooms-management/rooms')}}">Rooms/Type</a>
-
+                <a @if(Session::get('page')=="rooms") style="background:#0a515c !important; color:#fff !important;" @endif class="collapse-item" href="{{ url('rooms-management/rooms')}}">Rooms</a>
+                <a @if(Session::get('page')=="room-type") style="background:#0a515c !important; color:#fff !important;" @endif class="collapse-item" href="{{ url('rooms-management/roomtype')}}">RoomType</a>
             </div>
         </div>
     </li>
 
 
-
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Addons
-    </div>
-
-
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-            aria-expanded="true" aria-controls="collapsePages">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Pages</span>
+        <a @if(Session::get('page')=="foods-management" || Session::get('page')=="mains") style="background:#0a515c !important; color:#fff !important;" @endif class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#food"
+            aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fa-solid fa-utensils text-light"></i>
+            <span>Food Management</span>
         </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="food" class="collapse" aria-labelledby="headingUtilities"
+            data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Login Screens:</h6>
-                <a class="collapse-item" href="login.html">Login</a>
-                <a class="collapse-item" href="register.html">Register</a>
-                <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                <div class="collapse-divider"></div>
-                <h6 class="collapse-header">Other Pages:</h6>
-                <a class="collapse-item" href="404.html">404 Page</a>
-                <a class="collapse-item" href="blank.html">Blank Page</a>
+                <h6 class="collapse-header text-dark">Menu</h6>
+                <a @if(Session::get('page')=="mains") style="background:#0a515c !important; color:#fff !important;" @endif class="collapse-item" href="{{ url('foods-management/foods')}}">Mains</a>
+
             </div>
         </div>
     </li>
 
 
-    <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Charts</span></a>
-    </li>
-
-
-    <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Tables</span></a>
-    </li>
 
 
     @endif

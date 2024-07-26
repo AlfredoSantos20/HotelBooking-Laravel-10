@@ -67,10 +67,21 @@ Route::prefix('/hotel-de-luna')->namespace('App\Http\Controllers\Accounts')->gro
     Route::post('api/fetch-cities', [AccountsController::class, 'fetchCities']);
     Route::post('api/fetch-barangay', [AccountsController::class, 'fetchBrgy']);
 
+
+    //ACCOUNTS MANAGEMENT
+    Route::prefix('/users-management')->group(function(){
+    Route::group(['middleware'=>['midware']],function(){
+
+    Route::get('accounts',[AccountsController::class, 'accounts']);
+
+    });
+});
     // USERS MANAGEMENT
     Route::prefix('/users-management')->group(function(){
         Route::group(['middleware'=>['midware']],function(){
         Route::get('employee',[AccountsController::class, 'employee']);
+        Route::get('delete-employee/{id}',[AccountsController::class, 'deleteEmployee']);
+        Route::post('update-employee-status',[AccountsController::class, 'updateEmployeeStatus']);
         Route::match(['get','post'],'add-edit-employee/{id?}',[AccountsController::class, 'storeEmployee']);
     });
 });
@@ -87,10 +98,16 @@ Route::prefix('/hotel-de-luna')->namespace('App\Http\Controllers\Accounts')->gro
 Route::prefix('/rooms-management')->group(function(){
     Route::group(['middleware'=>['midware']],function(){
 
+        //Rooms
         Route::get('rooms',[RoomController::class, 'rooms']);
-        Route::get('roomtype',[RoomController::class, 'roomtype']);
+        Route::post('update-room-status',[RoomController::class, 'updateRoomStatus']);
+        Route::get('delete-room/{id}',[RoomController::class, 'deleteRoom']);
         Route::match(['get','post'],'add-edit-rooms/{id?}', [RoomController::class, 'AddEditRoom']);
+
+        //RoomType
+        Route::get('roomtype',[RoomController::class, 'roomtype']);
         Route::match(['get','post'],'add-edit-roomtype/{id?}', [RoomController::class, 'AddEditRoomtype']);
+        Route::post('update-roomtype-status',[RoomController::class, 'updateRoomtypeStatus']);
     });
 });
 

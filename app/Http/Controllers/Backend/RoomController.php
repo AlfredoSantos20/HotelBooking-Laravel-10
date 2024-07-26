@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Session;
 use App\Models\Room;
 use App\Models\RoomType;
+use Illuminate\Validation\Rule;
 use Image;
 class RoomController extends Controller
 {
@@ -23,16 +24,17 @@ class RoomController extends Controller
     {
         Session::put('page', 'rooms');
 
+
         $roomType = RoomType::get()->toArray();
 
         if ($id == "") {
             // Add room
-            $room = new room;
+            $room = new Room;
             $message = "Room Added successfully!";
             $title = "Add Room";
         } else {
             // Update room
-            $room = room::find($id);
+            $room = Room::find($id);
             $message = "Room Updated successfully!";
             $title = "Edit Room";
         }
@@ -84,7 +86,123 @@ class RoomController extends Controller
             $room->save();
             return response()->json(['success' => true, 'message' => $message]);
         }
-        return view('Backend.rooms.add_edit_rooms')->with(compact('title','room','roomType'));
+        return view('Backend.Rooms.add_edit_rooms')->with(compact('title','room','roomType'));
+    }
+
+      //Update Room status
+      public function updateRoomStatus(Request $request){
+
+        if($request->ajax()){
+            $data = $request->all();
+            if($data['status']=="Active"){
+                $status = 0;
+            }else{
+                $status = 1;
+            }
+           Room::where('id',$data['room_id'])->update(['status'=>$status]);
+            return response()->json(['status'=>$status,'room_id'=>$data['room_id']]);
+        }
+    }
+
+       //Delete Room
+       public function deleteRoom($id)
+       {
+           // Get Room Image
+           $room = Room::findOrFail($id);
+
+           // Get Room Image Path
+           $room_image_path = public_path('Frontend/images/rooms/');
+
+           // Check if the Room image exists
+           if (!empty($room->image) && file_exists($room_image_path . $room->image)) {
+               // Delete Room Image
+               unlink($room_image_path . $room->image);
+           }
+
+           // Delete banner from database
+           $room->delete();
+
+           $message = "Room deleted successfully!";
+           return redirect('rooms-management/rooms')->with('success_message', $message);
+       }
+
+//--- START Room Type
+    public function roomtype(){
+        Session::put('page','room-type');
+
+        $roomType = RoomType::get()->toArray();
+
+       // dd($rooms);
+        return view('Backend.Rooms.room_type')->with(compact('roomType'));
+    }
+
+      //Update Room status
+      public function updateRoomtypeStatus(Request $request){
+
+        if($request->ajax()){
+            $data = $request->all();
+            if($data['status']=="Active"){
+                $status = 0;
+            }else{
+                $status = 1;
+            }
+           Room::where('id',$data['room_id'])->update(['status'=>$status]);
+            return response()->json(['status'=>$status,'room_id'=>$data['room_id']]);
+        }
+    }
+
+
+
+    public function AddEditRoomtype(Request $request, $id = null)
+    {
+        Session::put('page', 'room-type');
+
+        if ($id == "") {
+            // Add room
+            $roomType = new RoomType;
+            $message = "Room Type Added successfully!";
+            $title = "Add Room Type";
+        } else {
+            // Update room
+            $roomType = RoomType::find($id);
+            $message = "Room Type Updated successfully!";
+            $title = "Edit Room";
+        }
+
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+
+            $rules = [
+                'price' => 'required',
+                'title' => [
+                    'required',
+                    Rule::unique('room_types')->ignore($id)
+                ],
+                'description' => 'required',
+
+
+            ];
+            $customMessages = [
+
+                'title.required' => 'RoomType is Required',
+                'title.unique' => 'RoomType title has already been taken',
+                'price.required' => 'Price is Required',
+                'description.required' => 'Description is Required',
+
+            ];
+
+            $this->validate($request, $rules, $customMessages);
+
+            $roomType->title = $data['title'];
+            $roomType->price = $data['price'];
+            $roomType->description = $data['description'];
+            $roomType->status = 1;
+
+
+            $roomType->save();
+            return response()->json(['success' => true, 'message' => $message]);
+        }
+        return view('Backend.Rooms.add_edit_roomtype')->with(compact('title','roomType'));
     }
 
 }
