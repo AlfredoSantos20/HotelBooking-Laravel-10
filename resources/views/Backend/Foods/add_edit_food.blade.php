@@ -14,7 +14,7 @@
             <!-- Employee Table -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3 text-center" style=" background-color:#17A2B8;">
-                    <a style="float:left; color:white;" title="Back to rooms?" href="{{ url('rooms-management/roomtype')}}"><i class="fa-solid fa-arrow-left"></i> </a>
+                    <a style="float:left; color:white;" title="Back to foods?" href="{{ url('foods-management/foods')}}"><i class="fa-solid fa-arrow-left"></i> </a>
 
                     <h6 class="m-0 font-weight-bold text-white">{{ $title }}</h6>
                 </div>
@@ -47,23 +47,35 @@
                 </div>
             @endif
                     <div class="card-body">
-                        <form id="roomtypeForm" class="forms-sample" @if(empty($roomType['id'])) action="{{ url('rooms-management/add-edit-roomtype') }}" @else action="{{ url('rooms-management/add-edit-roomtype/'.$roomType['id']) }}" @endif method="POST" enctype="multipart/form-data">@csrf
+                        <form id="foodForm" class="forms-sample" @if(empty($foods['id'])) action="{{ url('foods-management/add-edit-foods') }}" @else action="{{ url('foods-management/add-edit-foods/'.$foods['id']) }}" @endif method="post">
                             @csrf
 
                             <div class="form-group">
-                                <label for="price">Room Type:</label>
-                                <input type="text" class="form-control" id="title" name="title" placeholder="Enter RoomType Title" value="{{ $roomType['title'] ?? '' }}" required>
+                                <label for="price">Food Name</label>
+                                <input type="text" class="form-control" id="price" name="name" placeholder="Enter FoodName " value="{{ $foods['name'] ?? '' }}" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="price">Room Price:</label>
-                                <input type="text" class="form-control" id="price" name="price" placeholder="Enter RoomType Price" value="{{ $roomType['price'] ?? '' }}" required>
+                                <label for="food_type">Food Type:</label>
+                                <select title="Select food Type" name="food_type" class="form-control" required>
+                                    <option value="">Select Type</option>
+                                    <option value="main" {{ old('food_type', $foods->food_type) == 'main' ? 'selected' : '' }}>Main Course</option>
+                                    <option value="dessert" {{ old('food_type', $foods->food_type) == 'dessert' ? 'selected' : '' }}>Dessert</option>
+                                    <option value="drink" {{ old('food_type', $foods->food_type) == 'drink' ? 'selected' : '' }}>Drink</option>
+                                </select>
+                            </div>
+                            
+
+                            <div class="form-group">
+                                <label for="price">Price:</label>
+                                <input type="text" class="form-control" id="price" name="price" placeholder="Enter Price" value="{{ $foods['price'] ?? '' }}" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="description">Description:</label>
-                                <textarea type="text" class="form-control" id="description" placeholder="Enter RoomType Description"  name="description" value="{{ $roomType['description'] ?? '' }}" required></textarea>
+                                <textarea name="description" class="form-control" id="description" placeholder="Enter Food Description" required>{{ $foods['description'] ?? '' }}</textarea>
                             </div>
+                            
 
                             <div style="justify-content:center;" class="modal-footer">
                                 <button type="submit" style="background-color:#17A2B8;" class="btn btn-primary">Submit</button>

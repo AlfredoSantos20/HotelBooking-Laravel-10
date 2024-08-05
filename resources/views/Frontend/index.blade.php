@@ -22,7 +22,7 @@
   <!-- END section -->
 
 {{-- START CHECK AVAILABLE --}}
-  <section class="section bg-light pb-0"  >
+  <section class="section bg-light pb-0" data-aos="fade-up" >
     <div class="container">
 
       <div class="row check-availabilty" id="next">
@@ -87,7 +87,7 @@
   <section class="py-5 bg-light">
     <div class="container">
       <div class="row align-items-center">
-        <div class="col-md-12 col-lg-7 ml-auto order-lg-2 position-relative mb-5" data-aos="fade-up">
+        <div class="col-md-12 col-lg-7 ml-auto order-lg-2 position-relative mb-5" data-aos="fade-left">
 
           <figure class="img-absolute">
             @if(isset($circle[0]['image']))
@@ -110,10 +110,10 @@
         @endif
 
         </div>
-        <div class="col-md-12 col-lg-4 order-lg-1" data-aos="fade-up">
-          <h2 class="heading">Welcome!</h2>
-          <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-          <p><a href="#" class="btn btn-primary text-white py-2 mr-3">Learn More</a> <span class="mr-3 font-family-serif"><em>or</em></span> <a href="https://vimeo.com/channels/staffpicks/93951774"  data-fancybox class="text-uppercase letter-spacing-1">See video</a></p>
+        <div class="col-md-12 col-lg-4 order-lg-1">
+          <h2 class="heading" data-aos="fade-right">Welcome!</h2>
+          <p class="mb-4" data-aos="fade-up">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
+          <p data-aos="fade-right"><a href="#" class="btn btn-primary text-white py-2 mr-3">Learn More</a> <span class="mr-3 font-family-serif"><em>or</em></span> <a href="https://vimeo.com/channels/staffpicks/93951774"  data-fancybox class="text-uppercase letter-spacing-1">See video</a></p>
         </div>
 
       </div>
@@ -232,7 +232,14 @@
       <div class="row justify-content-center text-center mb-5">
         <div class="col-md-7">
           <h2 class="heading text-white" data-aos="fade">Our Restaurant Menu</h2>
-          <p class="text-white" data-aos="fade" data-aos-delay="100">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
+          <p class="text-white" data-aos="fade" data-aos-delay="100">Explore our diverse selection of delicious dishes crafted to delight your taste buds. From savory appetizers to hearty mains and indulgent desserts, each item on our menu is made with the freshest ingredients and a touch of creativity. Whether you're here for a quick bite or a leisurely meal, we have something for everyone. Enjoy your dining experience!</p>
+
+          {{-- <p >
+            <div style="justify-content:center;" class="col-md-12 " data-aos="fade" data-aos-delay="100">
+                <a  style="color:white;" href="javascript:;"><u>View More</u></a>
+            </div>
+        </p> --}}
+
         </div>
       </div>
       <div class="food-menu-tabs" data-aos="fade">
@@ -251,121 +258,70 @@
 
 
           <div class="tab-pane fade show active text-left" id="mains" role="tabpanel" aria-labelledby="mains-tab">
+
             <div class="row">
-              <div class="col-md-6">
-                <div class="food-menu mb-5">
-                  <span class="d-block text-primary h4 mb-3">$20.00</span>
-                  <h3 class="text-white"><a href="#" class="text-white">Murgh Tikka Masala</a></h3>
-                  <p class="text-white text-opacity-7">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                </div>
-                <div class="food-menu mb-5">
-                  <span class="d-block text-primary h4 mb-3">$35.00</span>
-                  <h3 class="text-white"><a href="#" class="text-white">Fish Moilee</a></h3>
-                  <p class="text-white text-opacity-7">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                </div>
-                <div class="food-menu mb-5">
-                  <span class="d-block text-primary h4 mb-3">$15.00</span>
-                  <h3 class="text-white"><a href="#" class="text-white">Safed Gosht</a></h3>
-                  <p class="text-white text-opacity-7">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="food-menu mb-5">
-                  <span class="d-block text-primary h4 mb-3">$10.00</span>
-                  <h3 class="text-white"><a href="#" class="text-white">French Toast Combo</a></h3>
-                  <p class="text-white text-opacity-7">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                </div>
-                <div class="food-menu mb-5">
-                  <span class="d-block text-primary h4 mb-3">$8.35</span>
-                  <h3 class="text-white"><a href="#" class="text-white">Vegie Omelet</a></h3>
-                  <p class="text-white text-opacity-7">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                </div>
-                <div class="food-menu mb-5">
-                  <span class="d-block text-primary h4 mb-3">$22.00</span>
-                  <h3 class="text-white"><a href="#" class="text-white">Chorizo &amp; Egg Omelet</a></h3>
-                  <p class="text-white text-opacity-7">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                </div>
-              </div>
-            </div>
+                @foreach($formattedMainFood->chunk(5) as $chunk)
+                <div class="col-md-6">
+                    @foreach($chunk as $main)
+                        <div class="food-menu mb-5">
 
+                            <h3 class="text-white">{{ $main['name'] }}</h3>
+                            <p class="text-white text-opacity-7">{{ $main['description'] }}</p>
+                            <span class="d-block text-primary h4 mb-3">{{ $main['price'] }}</span>
+                        </div>
+                    @endforeach
+                </div>
 
+                @if ($loop->iteration % 2 == 0 && !$loop->last)
+                    </div>
+                    <div class="row">
+                @endif
+            @endforeach
+        </div>
           </div> <!-- .tab-pane -->
 
           <div class="tab-pane fade text-left" id="desserts" role="tabpanel" aria-labelledby="desserts-tab">
+
             <div class="row">
-              <div class="col-md-6">
-                <div class="food-menu mb-5">
-                  <span class="d-block text-primary h4 mb-3">$11.00</span>
-                  <h3 class="text-white"><a href="#" class="text-white">Banana Split</a></h3>
-                  <p class="text-white text-opacity-7">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+                @foreach($formattedDesFood->chunk(5) as $chunk)
+                <div class="col-md-6">
+                    @foreach($chunk as $dessert)
+                        <div class="food-menu mb-5">
+
+                            <h3 class="text-white">{{ $dessert['name'] }}</h3>
+                            <p class="text-white text-opacity-7">{{ $dessert['description'] }}</p>
+                            <span class="d-block text-primary h4 mb-3">{{ $dessert['price'] }}</span>
+                        </div>
+                    @endforeach
                 </div>
-                <div class="food-menu mb-5">
-                  <span class="d-block text-primary h4 mb-3">$72.00</span>
-                  <h3 class="text-white"><a href="#" class="text-white">Sticky Toffee Pudding</a></h3>
-                  <p class="text-white text-opacity-7">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                </div>
-                <div class="food-menu mb-5">
-                  <span class="d-block text-primary h4 mb-3">$26.00</span>
-                  <h3 class="text-white"><a href="#" class="text-white">Pecan</a></h3>
-                  <p class="text-white text-opacity-7">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="food-menu mb-5">
-                  <span class="d-block text-primary h4 mb-3">$42.00</span>
-                  <h3 class="text-white"><a href="#" class="text-white">Apple Strudel</a></h3>
-                  <p class="text-white text-opacity-7">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                </div>
-                <div class="food-menu mb-5">
-                  <span class="d-block text-primary h4 mb-3">$7.35</span>
-                  <h3 class="text-white"><a href="#" class="text-white">Pancakes</a></h3>
-                  <p class="text-white text-opacity-7">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                </div>
-                <div class="food-menu mb-5">
-                  <span class="d-block text-primary h4 mb-3">$22.00</span>
-                  <h3 class="text-white"><a href="#" class="text-white">Ice Cream Sundae</a></h3>
-                  <p class="text-white text-opacity-7">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                </div>
-              </div>
-            </div>
+
+                @if ($loop->iteration % 2 == 0 && !$loop->last)
+                    </div>
+                    <div class="row">
+                @endif
+            @endforeach
+        </div>
           </div> <!-- .tab-pane -->
           <div class="tab-pane fade text-left" id="drinks" role="tabpanel" aria-labelledby="drinks-tab">
             <div class="row">
-              <div class="col-md-6">
-                <div class="food-menu mb-5">
-                  <span class="d-block text-primary h4 mb-3">$32.00</span>
-                  <h3 class="text-white"><a href="#" class="text-white">Spring Water</a></h3>
-                  <p class="text-white text-opacity-7">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+                @foreach($formattedDriFood->chunk(5) as $chunk)
+                <div class="col-md-6">
+                    @foreach($chunk as $drink)
+                        <div class="food-menu mb-5">
+
+                            <h3 class="text-white">{{ $drink['name'] }}</h3>
+                            <p class="text-white text-opacity-7">{{ $drink['description'] }}</p>
+                            <span class="d-block text-primary h4 mb-3">{{ $drink['price'] }}</span>
+                        </div>
+                    @endforeach
                 </div>
-                <div class="food-menu mb-5">
-                  <span class="d-block text-primary h4 mb-3">$14.00</span>
-                  <h3 class="text-white"><a href="#" class="text-white">Coke, Diet Coke, Coke Zero</a></h3>
-                  <p class="text-white text-opacity-7">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                </div>
-                <div class="food-menu mb-5">
-                  <span class="d-block text-primary h4 mb-3">$93.00</span>
-                  <h3 class="text-white"><a href="#" class="text-white">Orange Fanta</a></h3>
-                  <p class="text-white text-opacity-7">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="food-menu mb-5">
-                  <span class="d-block text-primary h4 mb-3">$18.00</span>
-                  <h3 class="text-white"><a href="#" class="text-white">Lemonade, Lemon Squash</a></h3>
-                  <p class="text-white text-opacity-7">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                </div>
-                <div class="food-menu mb-5">
-                  <span class="d-block text-primary h4 mb-3">$38.35</span>
-                  <h3 class="text-white"><a href="#" class="text-white">Sparkling Mineral Water</a></h3>
-                  <p class="text-white text-opacity-7">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                </div>
-                <div class="food-menu mb-5">
-                  <span class="d-block text-primary h4 mb-3">$69.00</span>
-                  <h3 class="text-white"><a href="#" class="text-white">Lemon, Lime &amp; Bitters</a></h3>
-                  <p class="text-white text-opacity-7">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                </div>
-              </div>
-            </div>
+
+                @if ($loop->iteration % 2 == 0 && !$loop->last)
+                    </div>
+                    <div class="row">
+                @endif
+            @endforeach
+        </div>
           </div> <!-- .tab-pane -->
         </div>
       </div>
@@ -456,6 +412,7 @@
   </section>
 
 
+
   {{-- <section class="section blog-post-entry bg-light">
     <div class="container">
       <div class="row justify-content-center text-center mb-5">
@@ -501,16 +458,17 @@
     </div>
   </section> --}}
 
-  <section class="section bg-image overlay" style="background-image: url('{{ url('Frontend/images/hero_4.jp') }}g');">
+  <section class="section bg-image overlay" style="background-image: url('{{ url('Frontend/images/hero_4.jpg') }}');">
       <div class="container" >
         <div class="row align-items-center">
           <div class="col-12 col-md-6 text-center mb-4 mb-md-0 text-md-left" data-aos="fade-up">
             <h2 class="text-white font-weight-bold">The Best Place To Stay. Reserve Now!</h2>
           </div>
           <div class="col-12 col-md-6 text-center text-md-right" data-aos="fade-up" data-aos-delay="200">
-            <a href="reservation.html" class="btn btn-outline-white-primary py-3 text-white px-5">Reserve Now</a>
+            <a href="{{ url('/reservation')}}" class="btn btn-outline-white-primary py-3 text-white px-5">Reserve Now</a>
           </div>
         </div>
       </div>
     </section>
+    @include('Frontend.layout.footer')
 @endsection

@@ -81,12 +81,12 @@
                                     </td>
                                     <td class="text-center text-dark">
 
-                                        <a title="Update Room Status" class="updateroomStatus" id="room-{{ $type['id'] }}" room_id="{{ $type['id'] }}" href="javascript:void(0)">
+                                        <a title="Update Room Status" class="updateRoomtypeStatus" id="roomtype-{{ $type['id'] }}" roomtype_id="{{ $type['id'] }}" href="javascript:void(0)">
                                             <i style="font-size: 25px;" class="fa-solid fa-circle-check {{ $type['status'] == 1 ? 'text-success' : 'text-danger' }}" status="{{ $type['status'] == 1 ? 'Active' : 'Inactive' }}"></i>
                                         </a>
                                     </td>
                                     <td class="text-center text-dark">   <a href="{{ url ('rooms-management/add-edit-roomtype/'.$type['id']) }}"><i title="Edit RoomType?" style="color:rgb(0, 128, 128); font-size:20px;" class="fa-solid fa-pen-to-square"></i></a>
-                                       <a href="javascript:void(0)" class="roomtypDelete" module="room" moduleid="{{ $type['id'] }}"><i title="Delete RoomType?" style="color:red; font-size:20px;" class="fa-solid fa-trash"></i></a> </td>
+                                       <a href="javascript:void(0)" class="deleteRoomType" module="roomtype" moduleid="{{ $type['id'] }}"><i title="Delete RoomType?" style="color:red; font-size:20px;" class="fa-solid fa-trash"></i></a> </td>
                                 </tr>
                                 @endforeach
                             </tbody>

@@ -85,7 +85,7 @@
 
 
     <li class="nav-item">
-        <a @if(Session::get('page')=="foods-management" || Session::get('page')=="mains") style="background:#0a515c !important; color:#fff !important;" @endif class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#food"
+        <a @if(Session::get('page')=="foods-management" || Session::get('page')=="foods" ) style="background:#0a515c !important; color:#fff !important;" @endif class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#food"
             aria-expanded="true" aria-controls="collapseUtilities">
             <i class="fa-solid fa-utensils text-light"></i>
             <span>Food Management</span>
@@ -94,7 +94,7 @@
             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header text-dark">Menu</h6>
-                <a @if(Session::get('page')=="mains") style="background:#0a515c !important; color:#fff !important;" @endif class="collapse-item" href="{{ url('foods-management/foods')}}">Mains</a>
+                <a @if(Session::get('page')=="foods") style="background:#0a515c !important; color:#fff !important;" @endif class="collapse-item" href="{{ url('foods-management/foods')}}">Foods</a>
 
             </div>
         </div>
@@ -104,8 +104,7 @@
 
 
     @endif
-    <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block bg-light">
+
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline ">

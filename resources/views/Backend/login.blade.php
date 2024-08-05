@@ -59,7 +59,7 @@
                                     placeholder="Password" @if(isset($_COOKIE["password"])) value="{{ $_COOKIE["password"] }}" @endif required>
                             </div>
                             <div class="form-group">
-                                <div class="custom-control custom-checkbox small">
+                                <div class="custom-control custom-checkbox small ">
                                     <input type="checkbox" class="custom-control-input" id="remember" name="remember" @if(isset($_COOKIE["email"])) checked @endif>
                                     <label class="custom-control-label" for="remember">Remember Me</label>
                                 </div>
@@ -68,8 +68,10 @@
                                 {!! NoCaptcha::renderJs() !!}
                                 {!! NoCaptcha::display() !!}
                             </div>
+
                             <div class="form-group">
-                                <button id="AdminLogin" type="submit" style="background-color:#17A2B8;" class="btn btn-primary btn-user btn-block">
+
+                                <button id="AdminLogin" type="submit" style="background-color:#17A2B8; color:white;" class="btn btn-user btn-block">
                                     Login
                                 </button>
                             </div>

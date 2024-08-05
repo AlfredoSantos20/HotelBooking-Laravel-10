@@ -26,8 +26,6 @@ class AccountsController extends Controller
     }
 
     //Fetching Accounts
-
-
     public function login(Request $request){
 
         if($request->isMethod('post')){

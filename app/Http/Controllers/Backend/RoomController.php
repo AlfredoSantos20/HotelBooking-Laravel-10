@@ -146,11 +146,33 @@ class RoomController extends Controller
             }else{
                 $status = 1;
             }
-           Room::where('id',$data['room_id'])->update(['status'=>$status]);
-            return response()->json(['status'=>$status,'room_id'=>$data['room_id']]);
+            RoomType::where('id',$data['roomtype_id'])->update(['status'=>$status]);
+            return response()->json(['status'=>$status,'roomtype_id'=>$data['roomtype_id']]);
         }
     }
 
+
+      //Delete RoomType
+      public function deleteRoomType($id)
+      {
+          // Get Room Image
+          $roomtype = RoomType::findOrFail($id);
+
+          // Get Room Image Path
+          $roomtype_image_path = public_path('Frontend/images/rooms/');
+
+          // Check if the Room image exists
+          if (!empty($room->image) && file_exists($roomtype_image_path . $roomtype->image)) {
+              // Delete Room Image
+              unlink($roomtype_image_path . $roomtype->image);
+          }
+
+          // Delete banner from database
+          $roomtype->delete();
+
+          $message = "RoomType deleted successfully!";
+          return redirect('rooms-management/roomtype')->with('success_message', $message);
+      }
 
 
     public function AddEditRoomtype(Request $request, $id = null)

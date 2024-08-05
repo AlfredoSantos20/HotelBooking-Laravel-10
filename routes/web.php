@@ -5,7 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AccountsController;
 use App\Http\Controllers\Backend\BannersController;
 use App\Http\Controllers\Backend\RoomController;
+use App\Http\Controllers\Backend\FoodController;
 use App\Http\Controllers\Frontend\IndexController;
+use App\Http\Controllers\Frontend\ReservationController;
+use App\Http\Controllers\Frontend\CustomerController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -41,6 +44,15 @@ require __DIR__.'/auth.php';
 Route::namespace('App\Http\Controllers\Frontend')->group(function(){
 
     Route::get('/',[IndexController::class, 'index']);
+
+    //Reservation Route
+     Route::get('reservation',[ReservationController::class, 'reservation']);
+
+    //Customer singin
+     Route::post('signin', [CustomerController::class, 'signIn']);
+
+    //Customer logout
+    Route::get('logout', [CustomerController::class, 'Logout']);
  });
 
 //Backend Group Routes
@@ -68,7 +80,7 @@ Route::prefix('/hotel-de-luna')->namespace('App\Http\Controllers\Accounts')->gro
     Route::post('api/fetch-barangay', [AccountsController::class, 'fetchBrgy']);
 
 
-    //ACCOUNTS MANAGEMENT
+    //ACCOUNTS MANAGEMENT Route
     Route::prefix('/users-management')->group(function(){
     Route::group(['middleware'=>['midware']],function(){
 
@@ -76,7 +88,7 @@ Route::prefix('/hotel-de-luna')->namespace('App\Http\Controllers\Accounts')->gro
 
     });
 });
-    // USERS MANAGEMENT
+    // USERS MANAGEMENT ROUTE
     Route::prefix('/users-management')->group(function(){
         Route::group(['middleware'=>['midware']],function(){
         Route::get('employee',[AccountsController::class, 'employee']);
@@ -85,7 +97,7 @@ Route::prefix('/hotel-de-luna')->namespace('App\Http\Controllers\Accounts')->gro
         Route::match(['get','post'],'add-edit-employee/{id?}',[AccountsController::class, 'storeEmployee']);
     });
 });
-    //Banners Management
+    //Banners Management Route
     Route::prefix('/banners-management')->group(function(){
         Route::group(['middleware'=>['midware']],function(){
         Route::get('banners',[BannersController::class, 'banners']);
@@ -95,6 +107,7 @@ Route::prefix('/hotel-de-luna')->namespace('App\Http\Controllers\Accounts')->gro
     });
 });
 
+//Rooms Management Route
 Route::prefix('/rooms-management')->group(function(){
     Route::group(['middleware'=>['midware']],function(){
 
@@ -108,9 +121,22 @@ Route::prefix('/rooms-management')->group(function(){
         Route::get('roomtype',[RoomController::class, 'roomtype']);
         Route::match(['get','post'],'add-edit-roomtype/{id?}', [RoomController::class, 'AddEditRoomtype']);
         Route::post('update-roomtype-status',[RoomController::class, 'updateRoomtypeStatus']);
+        Route::get('delete-roomtype/{id}',[RoomController::class, 'deleteRoomType']);
     });
 });
 
+
+//Foods Management Route
+Route::prefix('/foods-management')->group(function(){
+    Route::group(['middleware'=>['midware']],function(){
+
+        Route::get('foods',[FoodController::class, 'foods']);
+        Route::match(['get','post'],'add-edit-foods/{id?}', [FoodController::class, 'AddEditFood']);
+        Route::post('update-foods-status',[FoodController::class, 'updateFoodStatus']);
+        Route::get('delete-food/{id}',[FoodController::class, 'deleteFood']);
+
+    });
+});
 
 
 

@@ -30,7 +30,9 @@
 
     <!-- DATA TABLES -->
     <link rel="stylesheet" href="{{ url('Backend/css/bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ url('Backend/css/dataTables.bootstrap4.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ url('Backend/css/dataTables.bootstrap4.min.css') }}"> --}}
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
 
 </head>
 

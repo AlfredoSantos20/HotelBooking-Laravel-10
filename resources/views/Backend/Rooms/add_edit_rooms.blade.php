@@ -47,7 +47,7 @@
                 </div>
             @endif
                     <div class="card-body">
-                        <form id="roomForm" class="forms-sample" @if(empty($room['id'])) action="{{ url('rooms-management/add-edit-rooms') }}" @else action="{{ url('rooms-management/add-edit-rooms/'.$room['id']) }}" @endif method="post" enctype="multipart/form-data">@csrf
+                        <form id="roomForm" class="forms-sample" @if(empty($room['id'])) action="{{ url('rooms-management/add-edit-rooms') }}" @else action="{{ url('rooms-management/add-edit-rooms/'.$room['id']) }}" @endif method="post" enctype="multipart/form-data">
                             @csrf
 
                             <div class="form-group">

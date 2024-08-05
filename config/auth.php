@@ -44,7 +44,8 @@ return [
         'midware' => [
             'driver' => 'session',
             'provider' => 'accounts', //Provider is kung san ung i poprotect ng auth
-        ]
+        ],
+
     ],
 
     /*
