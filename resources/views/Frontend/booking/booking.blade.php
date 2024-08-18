@@ -11,11 +11,11 @@
         <div class="container">
           <div class="row site-hero-inner justify-content-center align-items-center">
             <div class="col-md-10 text-center" data-aos="fade-up">
-              <h1 class="heading mb-3">Reservation Form</h1>
+              <h1 class="heading mb-3">Booking Form</h1>
               <ul class="custom-breadcrumbs mb-4">
                 <li><a href="{{ url('/')}} ">Home</a></li>
                 <li>&bullet;</li>
-                <li>Reservation</li>
+                <li>Booking</li>
               </ul>
             </div>
           </div>

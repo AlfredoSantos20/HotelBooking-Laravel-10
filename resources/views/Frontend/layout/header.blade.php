@@ -49,7 +49,7 @@
                       <li><a style="font-size:30px;" href="rooms.html">Rooms</a></li>
                       <li><a style="font-size:30px;" href="about.html">About</a></li>
                       <li><a style="font-size:30px;" href="contact.html">Contact</a></li>
-                      <li><a style="font-size:30px;" href="{{ url('/reservation')}}">Reservation</a></li>
+                      <li><a style="font-size:30px;" href="{{ url('/booking')}}">Booking</a></li>
 
                     </ul>
 
@@ -125,7 +125,7 @@
                         {!! NoCaptcha::renderJs() !!}
                         {!! NoCaptcha::display() !!}
                     </div>
-                    <p id="countdown-timer" style="display:none; color:red;">30 seconds</p> <!-- Hidden initially -->
+                    <p id="countdown-timer" style="display:none; color:red;">30 seconds </p> <!-- Hidden initially -->
                 </div>
                 <div class="form-group" style="margin-left:20px;">
                     <a href="javascript:;" class="text-center" data-toggle="modal" data-target="#forgotpassword" data-dismiss="modal"><u>Forgot password?</u></a>

@@ -7,7 +7,7 @@ use App\Http\Controllers\Backend\BannersController;
 use App\Http\Controllers\Backend\RoomController;
 use App\Http\Controllers\Backend\FoodController;
 use App\Http\Controllers\Frontend\IndexController;
-use App\Http\Controllers\Frontend\ReservationController;
+use App\Http\Controllers\Frontend\BookingController;
 use App\Http\Controllers\Frontend\CustomerController;
 /*
 |--------------------------------------------------------------------------
@@ -45,8 +45,8 @@ Route::namespace('App\Http\Controllers\Frontend')->group(function(){
 
     Route::get('/',[IndexController::class, 'index']);
 
-    //Reservation Route
-     Route::get('reservation',[ReservationController::class, 'reservation']);
+    //Booking Route
+     Route::get('booking',[BookingController::class, 'booking']);
 
     //Customer singin
      Route::post('signin', [CustomerController::class, 'signIn']);
