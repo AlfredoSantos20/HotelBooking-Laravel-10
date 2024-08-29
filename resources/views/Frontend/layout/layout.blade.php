@@ -24,6 +24,9 @@
     <link rel="stylesheet" href="{{ url('Frontend/fonts/ionicons/css/ionicons.min.css')}}">
     <link rel="stylesheet" href="{{ url('Frontend/fonts/fontawesome/css/font-awesome.min.css')}}">
 
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.css">
+
     <!-- Fontawesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -40,6 +43,10 @@
 
         @include('Frontend.layout.header')
         @yield('content')
+
+    <!-- Sweetalert-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 
     <script src="{{ url('Frontend/js/jquery-3.3.1.min.js')}}"></script>

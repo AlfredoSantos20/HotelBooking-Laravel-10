@@ -56,6 +56,32 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="price">Childrens:</label>
+                                <select style="color:black;" name="total_children" id="total_children" class="form-control" required>
+                                    <option value="">Select</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                  </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="price">Adults:</label>
+                                <select style="color:black;" name="total_adults" id="total_adults" class="form-control" required>
+                                    <option value="">Select</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                  </select>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="price">Room Price:</label>
                                 <input type="text" class="form-control" id="price" name="price" placeholder="Enter RoomType Price" value="{{ $roomType['price'] ?? '' }}" required>
                             </div>

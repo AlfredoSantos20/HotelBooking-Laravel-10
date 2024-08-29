@@ -34,50 +34,39 @@
         <div class="row">
           <div class="col-md-7" data-aos="fade-up" data-aos-delay="100">
 
-            <form action="#" method="post" class="bg-white p-md-5 p-4 mb-5 border">
+            <form id="bookingForm" action="#" method="post" class="bg-white p-md-5 p-4 mb-5 border">@csrf
                 <div class="form-group">
                     <label class="text-black font-weight-bold" for="name">Room Type:</label>
-                    <select title="Select Room Type" name="room_type" class="form-control" required>
+                    <select title="Select Room Type" name="room_type_id" class="form-control" required>
                         <option value="" >Select Type</option>
-                        @foreach($roomType as $type)
-                        <option value="{{ $type['id'] }}"
-                            @if(old('room_type') == $type['id'])
+                        @foreach($room as $rm)
+                        <option value="{{ $rm['room_type']['id'] }}"
+                            @if(old('room_type') == $rm['room_type']['id'])
                                 selected
-                            @elseif(isset($room->room_type) && $room->room_type == $type['id'])
+                            @elseif(isset($room->room_type) && $room->room_type == $rm['room_type']['id'])
                                 selected
                             @endif>
-                            {{ $type['title'] }}
+                            {{ $rm['room_type']['title'] }}
                         </option>
                     @endforeach
                     </select>
                 </div>
 
               <div class="row">
-                <div class="col-md-6 form-group">
-                  <label class="text-black font-weight-bold" for="name">Name</label>
-                  <input type="text" id="name" class="form-control ">
-                </div>
-                <div class="col-md-6 form-group">
-                  <label class="text-black font-weight-bold" for="phone">Phone</label>
-                  <input type="text" id="phone" class="form-control ">
-                </div>
-              </div>
-
-              <div class="row">
                 <div class="col-md-12 form-group">
-                  <label class="text-black font-weight-bold" for="email">Email</label>
-                  <input type="email" id="email" class="form-control ">
+                  <label class="text-black font-weight-bold" >Price</label>
+                  <input style="color:black;" type="text" class="form-control " readonly>
                 </div>
-              </div>
+            </div>
 
               <div class="row">
                 <div class="col-md-6 form-group">
                   <label class="text-black font-weight-bold" for="checkin_date">Date Check In</label>
-                  <input type="text" id="checkin_date" class="form-control">
+                  <input type="date" name="checkin_date" class="form-control" required>
                 </div>
                 <div class="col-md-6 form-group">
                   <label class="text-black font-weight-bold" for="checkout_date">Date Check Out</label>
-                  <input type="text" id="checkout_date" class="form-control">
+                  <input type="date" name="checkout_date" class="form-control" required>
                 </div>
               </div>
 
@@ -86,11 +75,12 @@
                   <label for="adults" class="font-weight-bold text-black">Adults</label>
                   <div class="field-icon-wrap">
                     <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                    <select name="" id="adults" class="form-control">
-                      <option value="">1</option>
-                      <option value="">2</option>
-                      <option value="">3</option>
-                      <option value="">4+</option>
+                    <select style="color:black;" name="total_adults" id="total_adults" class="form-control" required>
+                      <option value="">Select</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
                     </select>
                   </div>
                 </div>
@@ -98,11 +88,12 @@
                   <label for="children" class="font-weight-bold text-black">Children</label>
                   <div class="field-icon-wrap">
                     <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                    <select name="" id="children" class="form-control">
-                      <option value="">1</option>
-                      <option value="">2</option>
-                      <option value="">3</option>
-                      <option value="">4+</option>
+                    <select style="color:black;" name="total_children" id="total_children" class="form-control" required>
+                        <option value="">Select</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
                     </select>
                   </div>
                 </div>
@@ -113,12 +104,12 @@
               <div class="row mb-4">
                 <div class="col-md-12 form-group">
                   <label class="text-black font-weight-bold" for="message">Notes</label>
-                  <textarea name="message" id="message" class="form-control " cols="30" rows="8"></textarea>
+                  <textarea name="note" id="message" class="form-control " cols="30" rows="8" placeholder="Add Notes Here..."></textarea>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-md-6 form-group">
-                  <input type="submit" value="Reserve Now" class="btn btn-primary text-white py-3 px-5 font-weight-bold">
+              <div class="row justify-content-center">
+                <div class="col-md-6 form-group text-center">
+                  <input type="submit" value="Book Now" class="btn btn-primary text-white py-3 px-5 font-weight-bold">
                 </div>
               </div>
             </form>
@@ -127,9 +118,9 @@
           <div class="col-md-5" data-aos="fade-up" data-aos-delay="200">
             <div class="row">
               <div class="col-md-10 ml-auto contact-info">
-                <p><span class="d-block">Address:</span> <span class="text-black"> 98 West 21th Street, Suite 721 New York NY 10016</span></p>
-                <p><span class="d-block">Phone:</span> <span class="text-black"> (+1) 435 3533</span></p>
-                <p><span class="d-block">Email:</span> <span class="text-black"> info@yourdomain.com</span></p>
+                <p><span class="d-block">Address:</span> <span class="text-black">Nueva Ecija, Philippines</span></p>
+                <p><span class="d-block">Phone:</span> <span class="text-black"> (+63) 123 456 789</span></p>
+                <p><span class="d-block">Email:</span> <span class="text-black"> hoteldeluna@gmail.com</span></p>
               </div>
             </div>
           </div>

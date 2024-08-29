@@ -6,16 +6,19 @@
     </style>
     <div class="container-fluid">
       <div class="row align-items-center">
-        <div class="col-6 col-lg-4 site-logo dropdown" data-aos="fade"><a type="button" data-toggle="dropdown" href="javascript:;" >
+        <div style="font-size:20px;" class="col-6 col-lg-4 site-logo dropdown" data-aos="fade"><a type="button" data-toggle="dropdown" href="javascript:;" >
                 @if(Auth::check()) My Account @else Sign-up/Sign-in @endif
 
             <ul class="dropdown-menu">
                 @if(Auth::check())
                            {{-- gonna put account settings, logout etc here --}}
-                <li><a title="Sign-in" style="font-size:20px;" class="text-dark" href="{{url('logout')}}">&nbsp;  <i class="fa-solid fa-right-to-bracket"></i> Logout</a></li>
+                <li><a title="My Booked" style="font-size:15px;" class="text-dark" href="#">&nbsp; <i class="fa-solid fa-door-open"></i></i></i></i> My Booked</a> (2)</li>
+                <li><a title="Setting" style="font-size:15px;" class="text-dark" href="#">&nbsp;  <i class="fa-solid fa-gear"></i></i> Settings</a></li>
+                <li><a title="Logout" style="font-size:15px;" class="text-dark" href="{{url('logout')}}">&nbsp;  <i class="fa-solid fa-right-to-bracket"></i> Logout</a></li>
                @else
-                <li><a title="Sign-in" style="font-size:20px;" class="text-dark" href="javascript:;" data-toggle="modal" data-target="#signin">&nbsp;  <i class="fa-solid fa-right-to-bracket"></i> Sign-in</a></li>
-                <li><a title="Sign-up" style="font-size:20px;"  class="text-dark" href="javascript:;" data-toggle="modal" data-target="#signup">&nbsp;  <i class="fa-solid fa-user-plus"></i> Sign-up</a></li>
+               <li><a title="Sign-in" style="font-size:15px;" class="text-dark" href="javascript:;" data-toggle="modal" data-target="#Empsignin">&nbsp;  <i class="fa-solid fa-right-to-bracket"></i> Employee</a></li>
+                <li><a title="Sign-in" style="font-size:15px;" class="text-dark" href="javascript:;" data-toggle="modal" data-target="#signin">&nbsp;  <i class="fa-solid fa-right-to-bracket"></i> Customer </a></li>
+                {{-- <li><a title="Sign-up" style="font-size:15px;"  class="text-dark" href="javascript:;" data-toggle="modal" data-target="#signup">&nbsp;  <i class="fa-solid fa-user-plus"></i> Sign-up</a></li> --}}
               @endif
             </ul>
           </div></a>
@@ -94,8 +97,9 @@
      </button>
     </div>
     @endif
-  <!--  Sign-in -->
-  <div class="modal fade" id="signin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+  <!--Customer  Sign-in -->
+<div class="modal fade" id="signin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <form id="loginForm" action="javascript:;" method="post">@csrf
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -140,9 +144,7 @@
 </div>
 
 
-
-
-  <!--  Sign-up -->
+  <!-- Customer Sign-up -->
 
   <div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -220,7 +222,54 @@
     </div>
   </div>
 
-{{-- FORGOT PASSWORD --}}
+{{-- Employee Sign-in --}}
+
+ <div class="modal fade" id="Empsignin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <form id="EmploginForm" action="javascript:;" method="post">@csrf
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Sign-in</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="signin-error"></p>
+                    <div class="form-group">
+                        <label for="employee_email">Email
+                            <span style="color:red;" class="astk">*</span>
+                        </label>
+                        <input type="text" class="form-control" id="user-email" placeholder="Enter Email" name="email" required>
+                        <p id="signin-email"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="employee_password">Password
+                            <span style="color:red;" class="astk">*</span>
+                        </label>
+                        <input type="password" class="form-control" id="user-password" placeholder="Enter Password" name="password" required>
+                        <p id="signin-password"></p>
+                    </div>
+                    <div class="form-group">
+                        {!! NoCaptcha::renderJs() !!}
+                        {!! NoCaptcha::display() !!}
+                    </div>
+                    <p id="countdown-timer" style="display:none; color:red;">30 seconds </p> <!-- Hidden initially -->
+                </div>
+                <div class="form-group" style="margin-left:20px;">
+                    <a href="javascript:;" class="text-center" data-toggle="modal" data-target="#forgotpassword" data-dismiss="modal"><u>Forgot password?</u></a>
+                </div>
+                <div style="justify-content:center;" class="modal-footer">
+                    <button type="submit" id="signin-button" class="btn btn-primary text-white">Sign-in</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+
+{{--Customer FORGOT PASSWORD --}}
 
 <div class="modal fade" id="forgotpassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <form action="">

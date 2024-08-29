@@ -34,14 +34,14 @@
                 <label for="checkin_date" class="font-weight-bold text-black">Check In</label>
                 <div class="field-icon-wrap">
                   <div class="icon"><span class="icon-calendar"></span></div>
-                  <input type="text" id="checkin_date" class="form-control">
+                  <input type="date" id="checkin_date" class="form-control">
                 </div>
               </div>
               <div class="col-md-6 mb-3 mb-lg-0 col-lg-3">
                 <label for="checkout_date" class="font-weight-bold text-black">Check Out</label>
                 <div class="field-icon-wrap">
                   <div class="icon"><span class="icon-calendar"></span></div>
-                  <input type="text" id="checkout_date" class="form-control">
+                  <input type="date" id="checkout_date" class="form-control">
                 </div>
               </div>
               <div class="col-md-6 mb-3 mb-md-0 col-lg-3">
@@ -146,6 +146,7 @@
               <span class="text-uppercase letter-spacing-1">{{$formattedSingleRoomPrice}} | per night</span>
               <br> <span class="text-uppercase letter-spacing-1">  <i class="fa-solid fa-wifi"></i> wifi  <i class="fa-solid fa-circle-check text-success"></i> Included  </span>
               <br> <span class="text-uppercase letter-spacing-1"> <i style ="font-size:20px;" class="fa-solid fa-ban-smoking"></i> no smoking policy</span>
+              <br>  <a type="button" href="{{url('booking')}}" class="btn btn-primary text-white py-2 px-4 font-weight-bold" >Book now</a>
             </div>
 
         </div>
@@ -167,6 +168,7 @@
               <span class="text-uppercase letter-spacing-1">{{ $formattedFamRoomPrice}} | per night</span>
               <br> <span class="text-uppercase letter-spacing-1">  <i class="fa-solid fa-wifi"></i> wifi  <i class="fa-solid fa-circle-check text-success"></i> Included  </span>
               <br> <span class="text-uppercase letter-spacing-1"> <i style ="font-size:20px;" class="fa-solid fa-ban-smoking"></i> no smoking policy</span>
+              <br>  <a type="button" href="{{url('booking')}}" class="btn btn-primary text-white py-2 px-4 font-weight-bold" >Book now</a>
             </div>
 
         </div>
@@ -187,7 +189,8 @@
               <h2>Presidential Room</h2>
               <span class="text-uppercase letter-spacing-1">{{$formattedPresRoomPrice}} | per night </span>
               <br> <span class="text-uppercase letter-spacing-1">  <i class="fa-solid fa-wifi"></i> wifi  <i class="fa-solid fa-circle-check text-success"></i> Included  </span>
-                <br> <span class="text-uppercase letter-spacing-1"> <i style ="font-size:20px;" class="fa-solid fa-ban-smoking"></i> no smoking policy</span>
+              <br> <span class="text-uppercase letter-spacing-1"> <i style ="font-size:20px;" class="fa-solid fa-ban-smoking"></i> no smoking policy</span>
+              <br>  <a type="button" href="{{url('booking')}}" class="btn btn-primary text-white py-2 px-4 font-weight-bold" >Book now</a>
             </div>
 
         </div>
@@ -465,7 +468,7 @@
             <h2 class="text-white font-weight-bold">The Best Place To Stay. Reserve Now!</h2>
           </div>
           <div class="col-12 col-md-6 text-center text-md-right" data-aos="fade-up" data-aos-delay="200">
-            <a href="{{ url('/reservation')}}" class="btn btn-outline-white-primary py-3 text-white px-5">Reserve Now</a>
+            <a href="{{ url('/booking')}}" class="btn btn-outline-white-primary py-3 text-white px-5">Reserve Now</a>
           </div>
         </div>
       </div>

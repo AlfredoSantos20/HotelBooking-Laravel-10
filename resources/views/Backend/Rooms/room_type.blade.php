@@ -53,6 +53,8 @@
                                 <tr>
                                     <th class="text-center text-dark"><strong>ID</strong></th>
                                     <th class="text-center text-dark"><strong>RoomType</strong></th>
+                                    <th class="text-center text-dark"><strong>Children</strong></th>
+                                    <th class="text-center text-dark"><strong>Adult</strong></th>
                                     <th class="text-center text-dark"><strong>Description</strong></th>
                                     <th class="text-center text-dark"><strong>Price</strong></th>
                                     <th class="text-center text-dark"><strong>Status</strong></th>
@@ -72,6 +74,8 @@
                                         {{$type['title']}}
                                         @endif
                                     </td>
+                                    <td class="text-center text-dark">{{ $type['children'] }} </td>
+                                    <td class="text-center text-dark">{{ $type['adults'] }} </td>
                                     <td class="text-center text-dark">{{ $type['description'] }} </td>
                                     <td class="text-center text-dark">{{ $type['price'] }} </td>
                                     <td class="text-center">

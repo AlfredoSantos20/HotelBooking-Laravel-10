@@ -93,14 +93,28 @@
         <div id="food" class="collapse" aria-labelledby="headingUtilities"
             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header text-dark">Menu</h6>
+                <h6 class="collapse-header text-dark">Foods</h6>
                 <a @if(Session::get('page')=="foods") style="background:#0a515c !important; color:#fff !important;" @endif class="collapse-item" href="{{ url('foods-management/foods')}}">Foods</a>
 
             </div>
         </div>
     </li>
 
+    <li class="nav-item">
+        <a @if(Session::get('page')=="booking-management" || Session::get('page')=="booking" ) style="background:#0a515c !important; color:#fff !important;" @endif class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#booking"
+            aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fa-solid fa-utensils text-light"></i>
+            <span>Booking Management</span>
+        </a>
+        <div id="fobookingod" class="collapse" aria-labelledby="headingUtilities"
+            data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header text-dark">Books</h6>
+                <a @if(Session::get('page')=="foods") style="background:#0a515c !important; color:#fff !important;" @endif class="collapse-item" href="{{ url('booking-management/booking')}}">Booking</a>
 
+            </div>
+        </div>
+    </li>
 
 
     @endif

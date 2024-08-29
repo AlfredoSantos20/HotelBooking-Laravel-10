@@ -120,6 +120,73 @@ $(document).ready(function() {
         }
     }
 
+
+
+  // Saving booking
+$('#bookingForm').on('submit', function(e) {
+    e.preventDefault();
+
+    // Serialize form data
+    var formData = $(this).serialize();
+
+    $.ajax({
+        url: '/saveBooking',
+        type: 'POST',
+        data: formData,
+        success: function(response) {
+            if(response.status === 'occupied') {
+                // Show SweetAlert error if all rooms of this type are occupied
+                Swal.fire({
+                    icon: 'error',
+                    title: 'All Rooms Occupied',
+                    text: 'All rooms of this type are occupied for the selected dates.',
+                });
+            } else if(response.message === "Login first to start Booking!") {
+                // Show SweetAlert error if user is not logged in
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: response.message,
+                });
+            } else if(response.status === "capacity_exceeded") {
+                // Show SweetAlert error if children/adults capacity exceeded
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: response.message,
+                });
+            }else if(response.status === "error_checkPersonCapacity") {
+                // Show SweetAlert error if  error checkPersonCapacity
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: response.message,
+                });
+            } else {
+                // If the booking is saved successfully, show SweetAlert success message
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Your booking has been saved in Room ID: ' + response.room_id,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+                // Optionally, clear the form fields
+                $('#bookingForm')[0].reset();
+            }
+        },
+        error: function(xhr, status, error) {
+            // Handle other errors
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong! Please try again.',
+            });
+        }
+    });
+});
+
 });
 
 

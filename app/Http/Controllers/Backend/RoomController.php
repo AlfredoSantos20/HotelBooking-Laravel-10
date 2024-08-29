@@ -217,6 +217,8 @@ class RoomController extends Controller
 
             $roomType->title = $data['title'];
             $roomType->price = $data['price'];
+            $roomType->children = $data['total_children'];
+            $roomType->adults = $data['total_adults'];
             $roomType->description = $data['description'];
             $roomType->status = 1;
 

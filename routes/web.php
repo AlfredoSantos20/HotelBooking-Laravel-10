@@ -40,13 +40,13 @@ require __DIR__.'/auth.php';
 
 
 //Frontend Group Routes
-
 Route::namespace('App\Http\Controllers\Frontend')->group(function(){
 
     Route::get('/',[IndexController::class, 'index']);
 
     //Booking Route
      Route::get('booking',[BookingController::class, 'booking']);
+     Route::post('saveBooking', [BookingController::class, 'saveBooking']);
 
     //Customer singin
      Route::post('signin', [CustomerController::class, 'signIn']);
@@ -125,7 +125,6 @@ Route::prefix('/rooms-management')->group(function(){
     });
 });
 
-
 //Foods Management Route
 Route::prefix('/foods-management')->group(function(){
     Route::group(['middleware'=>['midware']],function(){
@@ -137,6 +136,17 @@ Route::prefix('/foods-management')->group(function(){
 
     });
 });
+
+//Booking Management Route
+Route::prefix('/booking-management')->group(function(){
+    Route::group(['middleware'=>['midware']],function(){
+
+        Route::get('booking',[BookingController::class, 'booking']);
+
+
+    });
+});
+
 
 
 
