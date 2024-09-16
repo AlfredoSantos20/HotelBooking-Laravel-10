@@ -147,6 +147,7 @@
   <!-- Customer Sign-up -->
 
   <div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <form id="signupForm" action="javascript:;" method="post">@csrf
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
@@ -158,69 +159,58 @@
 
         <div class="modal-body">
             <div class="form-group">
-                <label for="firstname">Firstname
-                    <span style="color:red; " class="astk">*</span>
-                </label>
-                <input type="text" class="form-control" id="employee_name" placeholder="Enter Firstname" name="Fname"  pattern="[A-Za-z]+" title="Please enter letters only" required="">
+                <label for="firstname">Firstname <span style="color:red;" class="astk">*</span></label>
+                <input type="text" name="Fname" class="form-control" id="employee_name" placeholder="Enter Firstname" name="Fname" pattern="[A-Za-z]+" title="Please enter letters only" required="">
             </div>
 
             <div class="form-group">
-                <label for="lastname">Lastname
-                    <span style="color:red; " class="astk">*</span>
-                </label>
-                <input type="text" class="form-control" id="employee_lname" placeholder="Enter Lastname" name="Lname"  pattern="[A-Za-z]+" title="Please enter letters only" required="">
+                <label for="lastname">Lastname <span style="color:red;" class="astk">*</span></label>
+                <input type="text" name="Lname" class="form-control" id="employee_lname" placeholder="Enter Lastname" name="Lname" pattern="[A-Za-z]+" title="Please enter letters only" required="">
             </div>
 
             <div class="form-group">
-                <label for="barangay">Current Address
-                    <span style="color:red; " class="astk">*</span>
-                </label>
-                <input type="text" class="form-control" id="employee_address" placeholder="Enter Current Address" name="address"  required="">
+                <label for="barangay">Current Address <span style="color:red;" class="astk">*</span></label>
+                <input type="text" name="address" class="form-control" id="employee_address" placeholder="Enter Current Address" name="address" required="">
             </div>
 
             <div class="form-group">
-                <label for="employee_pnum">Phone Number
-                    <span style="color:red; " class="astk">*</span>
-                </label>
-                <input type="text" id="user-employee_pnum" name="phone_num" class="form-control" placeholder="09XXXXXXXXX"
-                       pattern="^09\d{9}$"
-                       title="Please enter a valid mobile number starting with 09, followed by 9 digits.">
+                <label for="employee_pnum">Phone Number <span style="color:red;" class="astk">*</span></label>
+                <input type="text" name="phone_num" id="user-employee_pnum" name="phone_num" class="form-control" placeholder="09XXXXXXXXX" pattern="^09\d{9}$" title="Please enter a valid mobile number starting with 09, followed by 9 digits.">
+                <span style="color:red;" id="phone_num-error" class="error"></span>
             </div>
 
             <div class="form-group">
-                <label for="employee_age">Email
-                    <span style="color:red; " class="astk">*</span>
-                </label>
-                <input type="text" class="form-control" id="employee_email"  placeholder="Enter Email" name="email" required="">
+                <label for="employee_age">Email <span style="color:red;" class="astk">*</span></label>
+                <input type="email" name="email" class="form-control" id="employee_email" placeholder="Enter Email" name="email" required="">
+                <span style="color:red;" id="email-error" class="error"></span>
             </div>
 
             <div class="form-group">
-                <label for="employee_age">Password
-                    <span style="color:red; " class="astk">*</span>
-                </label>
-                <input type="password" class="form-control" id="employee_password"  placeholder="Enter Password" name="password" required="">
+                <label for="password">Password <span style="color:red;" class="astk">*</span></label>
+                <input type="password" name="password" class="form-control" id="password" placeholder="Enter Password" required>
             </div>
             <div class="form-group">
-              <label for="employee_age">Confirm Password
-                  <span style="color:red; " class="astk">*</span>
-              </label>
-              <input type="confirm_password" class="form-control" id="employee_password"  placeholder="Enter Confirm Password" name="password" required="">
-          </div>
-          <div class="form-group">
+                <label for="password_confirmation">Confirm Password <span style="color:red;" class="astk">*</span></label>
+                <input type="password" name="password_confirmation" class="form-control" id="password_confirmation" placeholder="Confirm Password" required>
+                <small id="passwordHelp" class="form-text text-danger"></small>
+            </div>
 
-            {!! NoCaptcha::renderJs() !!}
-            {!! NoCaptcha::display() !!}
-
-        </div>
+            <div class="form-group">
+                {!! NoCaptcha::renderJs() !!}
+                {!! NoCaptcha::display() !!}
+                <span style="color:red;" id="g-recaptcha-response-error" class="error"></span>
+            </div>
         </div>
 
-            <div style="justify-content:center;" class="modal-footer">
-                <button type="submit" class="btn btn-primary text-white">Sign-up</button>
-              </div>
-              <a  href="javascript:;" class="text-center" data-toggle="modal" data-target="#signin"  data-dismiss="modal"><u>Go to Sign-in?</u></a>
+        <div style="justify-content:center;" class="modal-footer">
+            <button type="submit" id="signup-btn" class="btn btn-primary text-white">Sign-up</button>
+        </div>
+        <a href="javascript:;" class="text-center" data-toggle="modal" data-target="#signin" data-dismiss="modal"><u>Go to Sign-in?</u></a>
       </div>
     </div>
-  </div>
+    </form>
+</div>
+
 
 {{-- Employee Sign-in --}}
 

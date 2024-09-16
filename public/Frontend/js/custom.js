@@ -120,6 +120,80 @@ $(document).ready(function() {
         }
     }
 
+// Signup customer
+
+// JavaScript code for form submission and validation
+$('#signupForm').on('submit', function(e) {
+    e.preventDefault();
+
+    var password = $('#password').val();
+    var confirmPassword = $('#password_confirmation').val();
+
+    if (password !== confirmPassword) {
+        $('#passwordHelp').text('Passwords do not match.');
+        return;
+    } else {
+        $('#passwordHelp').text('');
+    }
+
+    var formData = $(this).serialize();
+
+    $.ajax({
+        url: '/signup',
+        type: 'POST',
+        data: formData,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+            if (response.status === 'createdAccount') {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Your Account Has Been Successfully Created!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                $('#signupForm')[0].reset();
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Wrong Credentials',
+                    text: 'Please check all of the fields.',
+                });
+            }
+        },
+        error: function(xhr) {
+            // To Clear previous errors
+            $('.error').text('');
+
+            if (xhr.status === 422) {
+                // Extract validation errors from the response
+                const errors = xhr.responseJSON.errors;
+
+                // Display errors
+                for (const [field, messages] of Object.entries(errors)) {
+                    $(`#${field}-error`).text(messages.join(', '));
+
+                    //Set time 3secs
+                    setTimeout(function() {
+                        errorElement.text('');
+                    }, 3000);
+
+                }
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong! Please try again.',
+                });
+            }
+        }
+    });
+});
+
+
+
 
 
   // Saving booking
@@ -133,6 +207,9 @@ $('#bookingForm').on('submit', function(e) {
         url: '/saveBooking',
         type: 'POST',
         data: formData,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         success: function(response) {
             if(response.status === 'occupied') {
                 // Show SweetAlert error if all rooms of this type are occupied

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
+use App\Models\User;
 use Auth;
 use Validator;
 
@@ -54,19 +55,36 @@ class CustomerController extends Controller
     }
     public function signUp(Request $request)
     {
-        $data = $request->validated();
-
-        // Create the Customer
-        User::create([
-            'firstname' => $data['Fname'],
-            'lastname' => $data['Lname'],
-            'address' => $data['address'],
-            'phone_num' => $data['phone_num'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+        // Validate incoming request data
+        $validatedData = $request->validate([
+            'Fname' => 'required|string',
+            'Lname' => 'required|string',
+            'address' => 'required|string',
+            'phone_num' => 'required|unique:users',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6|confirmed',
+            'g-recaptcha-response' => 'required',
         ]);
 
-        return redirect()->route('signin')->with('success', 'Account created successfully. Please sign in.');
+        // Create new User instance
+        $saveCustomer = new User;
+        $saveCustomer->Fname = $validatedData['Fname'];
+        $saveCustomer->Lname = $validatedData['Lname'];
+        $saveCustomer->address = $validatedData['address'];
+        $saveCustomer->phone_num = $validatedData['phone_num'];
+        $saveCustomer->email = $validatedData['email'];
+
+        // Hash the password before saving it
+        $saveCustomer->password = bcrypt($validatedData['password']);
+
+        // Save the user to the database
+        $saveCustomer->save();
+
+        // Return success response
+        return response()->json([
+            'message' => 'Account Created Successfully!',
+            'status' => 'createdAccount',
+        ], 201);
     }
 
     public function Logout(){

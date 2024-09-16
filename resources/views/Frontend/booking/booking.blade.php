@@ -52,12 +52,12 @@
                     </select>
                 </div>
 
-              <div class="row">
+              {{-- <div class="row">
                 <div class="col-md-12 form-group">
                   <label class="text-black font-weight-bold" >Price</label>
                   <input style="color:black;" type="text" class="form-control " readonly>
                 </div>
-            </div>
+            </div> --}}
 
               <div class="row">
                 <div class="col-md-6 form-group">

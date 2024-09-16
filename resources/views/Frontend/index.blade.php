@@ -153,7 +153,7 @@
 
         <div class="col-md-6 col-lg-4" data-aos="fade-up">
 
-            <figure class="img-wrap">
+            <figure class="img-wrap ">
                 @if(isset($famRoomImg[0]['image']))
                 <a class="zoomable-image" style="cursor: pointer; display: inline-block; position: relative;" target="blank_" href="{{ url('Frontend/images/rooms/'.$famRoomImg[0]['image'])}}">
                   <img  class="zoomable-img img-fluid mb-3" title="{{ $famRoom['title'] }}" src="{{ asset('Frontend/images/rooms/'.$famRoomImg[0]['image']) }}" alt="alt" >

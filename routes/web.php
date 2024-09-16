@@ -51,6 +51,10 @@ Route::namespace('App\Http\Controllers\Frontend')->group(function(){
     //Customer singin
      Route::post('signin', [CustomerController::class, 'signIn']);
 
+     //Customer SignUp
+     Route::post('signup', [CustomerController::class, 'signUp']);
+
+
     //Customer logout
     Route::get('logout', [CustomerController::class, 'Logout']);
  });
