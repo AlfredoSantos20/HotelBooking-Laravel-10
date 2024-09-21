@@ -54,6 +54,8 @@ Route::namespace('App\Http\Controllers\Frontend')->group(function(){
      //Customer SignUp
      Route::post('signup', [CustomerController::class, 'signUp']);
 
+     //Customer Forgot Password
+     Route::post('forgotUserPassword', [CustomerController::class, 'forgotUserPassword']);
 
     //Customer logout
     Route::get('logout', [CustomerController::class, 'Logout']);

@@ -120,9 +120,8 @@ $(document).ready(function() {
         }
     }
 
-// Signup customer
 
-// JavaScript code for form submission and validation
+// Signup customer
 $('#signupForm').on('submit', function(e) {
     e.preventDefault();
 
@@ -193,8 +192,140 @@ $('#signupForm').on('submit', function(e) {
 });
 
 
+// Forgotpass Form & Request OTP
+let otpTimer; // To hold the timer interval
+let otpTimeLeft = 60; // 60 seconds
 
+$('#forgotpassForm').on('submit', function(e) {
+    e.preventDefault();
 
+    var formData = $(this).serialize();
+
+    $.ajax({
+        url: '/forgotUserPassword',
+        type: 'POST',
+        data: formData,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+            if (response.type === 'success') {
+                var email = $("input[id='email']").val();
+                $("#hiddenEmail").val(email);
+
+                // Hide the Send OTP form and show the Verify OTP form
+                $('#forgotpassForm').hide();
+                $('#otpForm').show();
+
+                // Start the OTP timer
+                startOtpTimer();
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: response.message || 'Please check all of the fields.',
+                });
+            }
+        }
+    });
+});
+
+// Start OTP timer
+function startOtpTimer() {
+    $('#otpTimer').show();
+    $('#resendOtp').hide(); // Hide resend button initially
+    otpTimeLeft = 60; // Reset timer
+    $('#timerDisplay').text(otpTimeLeft);
+
+    otpTimer = setInterval(function() {
+        otpTimeLeft--;
+        $('#timerDisplay').text(otpTimeLeft);
+
+        if (otpTimeLeft <= 0) {
+            clearInterval(otpTimer);
+            $('#otpTimer').hide();
+            $('#resendOtp').show(); // Show resend button after timer expires
+        }
+    }, 1000);
+}
+
+// Resend OTP function
+$('#resendOtp').on('click', function() {
+    var email = $("#hiddenEmail").val();
+
+    $.ajax({
+        url: '/forgotUserPassword',
+        type: 'POST',
+        data: {
+            email: email, // Include the email for OTP resend
+            _token: $('meta[name="csrf-token"]').attr('content') // Include CSRF token
+        },
+        success: function(response) {
+            if (response.type === 'success') {
+                // Reset the timer
+                clearInterval(otpTimer);
+                startOtpTimer();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'New OTP sent to your registered email.',
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: response.message || 'Could not resend OTP.',
+                });
+            }
+        },
+        error: function(xhr) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: xhr.responseJSON.message || 'Something went wrong.',
+            });
+        }
+    });
+});
+
+// Verify OTP
+$('#otpForm').on('submit', function(e) {
+    e.preventDefault();
+
+    var formData = $(this).serialize();
+
+    $.ajax({
+        url: '/forgotUserPassword',
+        type: 'POST',
+        data: formData,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+            if (response.type === 'error') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid OTP',
+                    text: response.message,
+                });
+            } else {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'New password has been sent to your registered email.',
+                });
+
+                // Close modal and reset forms
+                $('#forgotpassword').modal('hide');
+                $('#forgotpassForm')[0].reset();
+                $('#otpForm')[0].reset();
+                $('#otpForm').hide();
+                $('#forgotpassForm').show();
+                clearInterval(otpTimer); // Clear timer
+            }
+        }
+    });
+});
 
   // Saving booking
 $('#bookingForm').on('submit', function(e) {

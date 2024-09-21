@@ -262,30 +262,48 @@
 {{--Customer FORGOT PASSWORD --}}
 
 <div class="modal fade" id="forgotpassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <form action="">
     <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header text-center">
-          <h5 class="modal-title" id="exampleModalLongTitle">Forgot Password</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <div class="form-group">
-                <label for="employee_age">Email
-                    <span style="color:red; " class="astk">*</span>
-                </label>
-                <input type="text" class="form-control" id="employee_email"  placeholder="Enter Email" name="email" required="">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title" id="exampleModalLongTitle">Forgot Password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
 
-        </div>
-        <div style="justify-content:center;" class="modal-footer">
-            <button type="submit" class="btn btn-primary text-white">Recover</button>
-          </div>
-        <a href="javascript:;" class="text-center" data-toggle="modal" data-target="#signin"  data-dismiss="modal"><u>Back to Sign-in?</u></a>
+            <!-- Send OTP Form -->
+            <form id="forgotpassForm" action="javascript:;" method="post">@csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="email">Email <span style="color:red;" class="astk">*</span></label>
+                        <input type="email" id='email' name="email" class="form-control" placeholder="Enter Email" required="">
+                    </div>
+                </div>
+                <div class="modal-footer" style="justify-content:center;">
+                    <button type="submit" class="btn btn-primary text-white">Send OTP</button>
+                </div>
+            </form>
 
-      </div>
+            <!-- Verify OTP Form (Initially Hidden) -->
+            <form id="otpForm" style="display:none;" action="javascript:;" method="post">@csrf
+                <input name="email" id="hiddenEmail" type="hidden">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="otp">Enter OTP <span style="color:red;" class="astk">*</span></label>
+                        <input type="text" name="otp" class="form-control" placeholder="Enter OTP" required="">
+                        <div id="otpTimer" style="color:red;" class="mt-2" style="display: none;">
+                            <span  id="timerDisplay">60</span> seconds remaining
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary text-white">Verify OTP</button>
+                    <button type="button" id="resendOtp" class="btn btn-secondary" style="display: none;">Resend OTP</button>
+                </div>
+            </form>
+        </div>
     </div>
-</form>
-  </div>
+</div>
+
+
+

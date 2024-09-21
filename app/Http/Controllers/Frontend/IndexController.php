@@ -8,6 +8,7 @@ use App\Models\Banner;
 use App\Models\RoomType;
 use App\Models\Food;
 use App\Models\Room;
+
 class IndexController extends Controller
 {
 
