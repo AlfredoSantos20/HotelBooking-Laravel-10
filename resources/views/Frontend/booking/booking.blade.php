@@ -36,9 +36,17 @@
 
             <form id="bookingForm" action="#" method="post" class="bg-white p-md-5 p-4 mb-5 border">@csrf
                 <div class="form-group">
+                    <strong style="color:red;"><label for="caution">Please read the following:</label></strong>
+                    <ul>
+                        <li>Cannot book in the current day.</li>
+                        <li>Can only book for 1 week.</li>
+                        <li>Fill out all the fields.</li>
+                    </ul>
+                </div>
+                <div class="form-group">
                     <label class="text-black font-weight-bold" for="name">Room Type:</label>
                     <select title="Select Room Type" name="room_type_id" class="form-control" required>
-                        <option value="" >Select Type</option>
+                        <option value="">Select Type</option>
                         @foreach($room as $rm)
                         <option value="{{ $rm['room_type']['id'] }}"
                             @if(old('room_type') == $rm['room_type']['id'])
@@ -48,82 +56,85 @@
                             @endif>
                             {{ $rm['room_type']['title'] }}
                         </option>
-                    @endforeach
+                        @endforeach
                     </select>
                 </div>
 
-              {{-- <div class="row">
-                <div class="col-md-12 form-group">
-                  <label class="text-black font-weight-bold" >Price</label>
-                  <input style="color:black;" type="text" class="form-control " readonly>
-                </div>
-            </div> --}}
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label class="text-black font-weight-bold" for="checkin_date">Date Check In</label>
+                        <input type="date" name="checkin_date" class="form-control" required>
+                    </div>
+                    {{-- <div class="col-md-6 form-group">
+                        <label class="text-black font-weight-bold" for="checkin_time">Time Check In</label>
+                        <input type="time" name="checkin_time" class="form-control" required>
+                    </div> --}}
 
-              <div class="row">
-                <div class="col-md-6 form-group">
-                  <label class="text-black font-weight-bold" for="checkin_date">Date Check In</label>
-                  <input type="date" name="checkin_date" class="form-control" required>
+                    <div class="col-md-6 form-group">
+                        <label class="text-black font-weight-bold" for="checkout_date">Date Check Out</label>
+                        <input type="date" name="checkout_date" class="form-control" required>
+                    </div>
+                    {{-- <div class="col-md-6 form-group">
+                        <label class="text-black font-weight-bold" for="checkout_time">Time Check Out</label>
+                        <input type="time" name="checkout_time" class="form-control" required>
+                    </div> --}}
                 </div>
-                <div class="col-md-6 form-group">
-                  <label class="text-black font-weight-bold" for="checkout_date">Date Check Out</label>
-                  <input type="date" name="checkout_date" class="form-control" required>
-                </div>
-              </div>
 
-              <div class="row">
-                <div class="col-md-6 form-group">
-                  <label for="adults" class="font-weight-bold text-black">Adults</label>
-                  <div class="field-icon-wrap">
-                    <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                    <select style="color:black;" name="total_adults" id="total_adults" class="form-control" required>
-                      <option value="">Select</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                    </select>
-                  </div>
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="adults" class="font-weight-bold text-black">Adults</label>
+                        <div class="field-icon-wrap">
+                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                            <select style="color:black;" name="total_adults" id="total_adults" class="form-control" required>
+                                <option value="">Select</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="children" class="font-weight-bold text-black">Children</label>
+                        <div class="field-icon-wrap">
+                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                            <select style="color:black;" name="total_children" id="total_children" class="form-control" required>
+                                <option value="">Select</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-6 form-group">
-                  <label for="children" class="font-weight-bold text-black">Children</label>
-                  <div class="field-icon-wrap">
-                    <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                    <select style="color:black;" name="total_children" id="total_children" class="form-control" required>
-                        <option value="">Select</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
 
-
-
-              <div class="row mb-4">
-                <div class="col-md-12 form-group">
-                  <label class="text-black font-weight-bold" for="message">Notes</label>
-                  <textarea name="note" id="message" class="form-control " cols="30" rows="8" placeholder="Add Notes Here..."></textarea>
+                <div class="row mb-4">
+                    <div class="col-md-12 form-group">
+                        <label class="text-black font-weight-bold" for="message">Notes</label>
+                        <textarea name="note" id="message" class="form-control" cols="30" rows="8" placeholder="Add Notes Here..."></textarea>
+                    </div>
                 </div>
-              </div>
-              <div class="row justify-content-center">
-                <div class="col-md-6 form-group text-center">
-                  <input type="submit" value="Book Now" class="btn btn-primary text-white py-3 px-5 font-weight-bold">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 form-group text-center">
+                        <input type="submit" value="Book Now" class="btn btn-primary text-white py-3 px-5 font-weight-bold">
+                    </div>
                 </div>
-              </div>
             </form>
 
           </div>
           <div class="col-md-5" data-aos="fade-up" data-aos-delay="200">
             <div class="row">
-              <div class="col-md-10 ml-auto contact-info">
-                <p><span class="d-block">Address:</span> <span class="text-black">Nueva Ecija, Philippines</span></p>
-                <p><span class="d-block">Phone:</span> <span class="text-black"> (+63) 123 456 789</span></p>
-                <p><span class="d-block">Email:</span> <span class="text-black"> hoteldeluna@gmail.com</span></p>
-              </div>
+                <div class="col-md-10 ml-auto contact-info">
+                    <p><span class="d-block">Address:</span> <span class="text-black">Licab Nueva Ecija, Philippines</span></p>
+                      <!-- Map Container -->
+            <div id="map" style="height: 200px; width: 100%; margin-top: 10px; margin-bottom: 10px;"></div>
+                    <p><span class="d-block">Phone:</span> <span class="text-black"> (+63) 123 456 789</span></p>
+                    <p><span class="d-block">Email:</span> <span class="text-black"> hoteldeluna@gmail.com</span></p>
+                </div>
             </div>
-          </div>
+        </div>
+
         </div>
       </div>
     </section>
@@ -222,6 +233,29 @@
           </div>
         </div>
       </section>
+
+
+
+<script>
+    let map;
+    let marker;
+
+    function initMap() {
+      const location = { lat: 15.5449, lng: 120.7689 };
+
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 12,
+            center: location,
+        });
+
+        marker = new google.maps.Marker({
+            position: location,
+            map: map,
+            title: "Hotel de Luna",
+        });
+    }
+</script>
+
 
       @include('Frontend.layout.footer')
 

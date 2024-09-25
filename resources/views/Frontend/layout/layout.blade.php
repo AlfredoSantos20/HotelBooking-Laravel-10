@@ -49,7 +49,7 @@
     <!-- Sweetalert-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYCqCYYe2DF_y2WO6GRqioYE7CVwAAQbg&callback=initMap" async defer></script>
 
     <script src="{{ url('Frontend/js/jquery-3.3.1.min.js')}}"></script>
     <script src="{{ url('Frontend/js/jquery-migrate-3.0.1.min.js')}}"></script>

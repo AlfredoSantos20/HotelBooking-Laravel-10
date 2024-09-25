@@ -3,6 +3,10 @@ $(document).ready(function(){
     $('#banner').DataTable();
     $('#room').DataTable();
     $('#foods').DataTable();
+    // $('#booking').DataTable();
+    // $('#foods').DataTable({
+    //     "booking": [[0, "desc"]],
+    // });
 
     //FOR BIRTHDAY TO AGE CONVERTER
     $('#employee_birthday').on('change', function() {

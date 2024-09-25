@@ -12,7 +12,7 @@
             <ul class="dropdown-menu">
                 @if(Auth::check())
                            {{-- gonna put account settings, logout etc here --}}
-                <li><a title="My Booked" style="font-size:15px;" class="text-dark" href="#">&nbsp; <i class="fa-solid fa-door-open"></i></i></i></i> My Booked</a> (2)</li>
+                <li><a title="My Booked" style="font-size:15px;" class="text-dark" href="#">&nbsp; <i class="fa-solid fa-door-open"></i></i></i></i> My Booked</a> ({{ $bookingCount ?? 0 }})</li>
                 <li><a title="Setting" style="font-size:15px;" class="text-dark" href="#">&nbsp;  <i class="fa-solid fa-gear"></i></i> Settings</a></li>
                 <li><a title="Logout" style="font-size:15px;" class="text-dark" href="{{url('logout')}}">&nbsp;  <i class="fa-solid fa-right-to-bracket"></i> Logout</a></li>
                @else
@@ -42,25 +42,34 @@
           </style>
 
 
-          <div class="site-navbar js-site-navbar">
-            <nav role="navigation">
-              <div class="container">
-                <div class="row full-height align-items-center">
-                  <div class="col-md-6 mx-auto">
+<div class="site-navbar js-site-navbar">
+    <nav role="navigation">
+        <div class="container">
+            <div class="row full-height align-items-center">
+                <div class="col-md-6 mx-auto">
                     <ul class="list-unstyled menu">
-                      <li class="active"><a style="font-size:30px;" href="{{ url('/')}}">Home</a></li>
-                      <li><a style="font-size:30px;" href="rooms.html">Rooms</a></li>
-                      <li><a style="font-size:30px;" href="about.html">About</a></li>
-                      <li><a style="font-size:30px;" href="contact.html">Contact</a></li>
-                      <li><a style="font-size:30px;" href="{{ url('/booking')}}">Booking</a></li>
-
+                        <li class="{{ Request::is('/') ? 'active' : '' }}">
+                            <a style="font-size:30px;" href="{{ url('/') }}">Home</a>
+                        </li>
+                        <li class="{{ Request::is('rooms') ? 'active' : '' }}">
+                            <a style="font-size:30px;" href="#">Rooms</a>
+                        </li>
+                        <li class="{{ Request::is('about') ? 'active' : '' }}">
+                            <a style="font-size:30px;" href="#">About</a>
+                        </li>
+                        <li class="{{ Request::is('contact') ? 'active' : '' }}">
+                            <a style="font-size:30px;" href="#">Contact</a>
+                        </li>
+                        <li class="{{ Request::is('booking') ? 'active' : '' }}">
+                            <a style="font-size:30px;" href="{{ url('/booking') }}">Booking</a>
+                        </li>
                     </ul>
-
-                  </div>
                 </div>
-              </div>
-            </nav>
-          </div>
+            </div>
+        </div>
+    </nav>
+</div>
+
         </div>
       </div>
     </div>
@@ -128,6 +137,7 @@
                     <div class="form-group">
                         {!! NoCaptcha::renderJs() !!}
                         {!! NoCaptcha::display() !!}
+                        <span style="color:red;" id="g-recaptcha-response-error" class="error"></span>
                     </div>
                     <p id="countdown-timer" style="display:none; color:red;">30 seconds </p> <!-- Hidden initially -->
                 </div>
@@ -214,49 +224,51 @@
 
 {{-- Employee Sign-in --}}
 
- <div class="modal fade" id="Empsignin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="Empsignin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <form id="EmploginForm" action="javascript:;" method="post">@csrf
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header text-center">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Sign-in</h5>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Employee Sign-in</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p id="signin-error"></p>
+                    <p id="emp-signin-error"></p>
                     <div class="form-group">
                         <label for="employee_email">Email
                             <span style="color:red;" class="astk">*</span>
                         </label>
-                        <input type="text" class="form-control" id="user-email" placeholder="Enter Email" name="email" required>
-                        <p id="signin-email"></p>
+                        <input type="text" class="form-control" id="emp-email" placeholder="Enter Email" name="email" required>
+                        <p id="emp-signin-email"></p>
                     </div>
                     <div class="form-group">
                         <label for="employee_password">Password
                             <span style="color:red;" class="astk">*</span>
                         </label>
-                        <input type="password" class="form-control" id="user-password" placeholder="Enter Password" name="password" required>
-                        <p id="signin-password"></p>
+                        <input type="password" class="form-control" id="emp-password" placeholder="Enter Password" name="password" required>
+                        <p id="emp-signin-password"></p>
+                    </div>
+                    <div class="form-group" >
+                        <input type="checkbox" id="show-password"> Show Password
                     </div>
                     <div class="form-group">
                         {!! NoCaptcha::renderJs() !!}
                         {!! NoCaptcha::display() !!}
                     </div>
-                    <p id="countdown-timer" style="display:none; color:red;">30 seconds </p> <!-- Hidden initially -->
-                </div>
-                <div class="form-group" style="margin-left:20px;">
-                    <a href="javascript:;" class="text-center" data-toggle="modal" data-target="#forgotpassword" data-dismiss="modal"><u>Forgot password?</u></a>
+                    <p id="emp-countdown-timer" style="display:none; color:red;">30 seconds </p> <!-- Hidden initially -->
                 </div>
                 <div style="justify-content:center;" class="modal-footer">
-                    <button type="submit" id="signin-button" class="btn btn-primary text-white">Sign-in</button>
+                    <button type="submit" id="emp-signin-button" class="btn btn-primary text-white">Sign-in</button>
                 </div>
-
             </div>
         </div>
     </form>
 </div>
+
+
+
 
 
 {{--Customer FORGOT PASSWORD --}}
@@ -292,7 +304,7 @@
                         <label for="otp">Enter OTP <span style="color:red;" class="astk">*</span></label>
                         <input type="text" name="otp" class="form-control" placeholder="Enter OTP" required="">
                         <div id="otpTimer" style="color:red;" class="mt-2" style="display: none;">
-                            <span  id="timerDisplay">60</span> seconds remaining
+                            <span  id="timerDisplay">60</span> seconds remaining <br> OTP has been sent please check your registered email.
                         </div>
                     </div>
                 </div>

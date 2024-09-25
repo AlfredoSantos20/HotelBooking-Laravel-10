@@ -16,7 +16,6 @@
         <tr><td>&nbsp;</td></tr>
         <tr><td>Password: {{ $password }}</td></tr>
         <tr><td>&nbsp;</td></tr>
-        <tr><td>&nbsp;</td></tr>
         <tr><td>Thanks & Regards,</td></tr>
         <tr><td>Hotel De Luna Team</td></tr>
         </table>

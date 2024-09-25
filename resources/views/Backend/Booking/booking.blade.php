@@ -41,25 +41,21 @@
             <div class="card shadow mb-4">
                 <div class="card-header py-3" style="background-color:#17A2B8;">
                     <h6 class="m-0 font-weight-bold text-white">Booking's List</h6>
-
-                    <a href="{{url('booking-management/add-edit-booking')}}" style="max-width: 150px; float: right; display: inline-block;" type="button" class="btn btn-block btn-outline-light btn-sm">+ Add Booking</a>
-
                 </div>
 
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover" id="book" width="100%" cellspacing="0">
+                        <table class="table table-bordered table-hover" id="booking" width="100%" cellspacing="0">
                             <thead >
                                 <tr>
                                     <th class="text-center text-dark"><strong>ID</strong></th>
-                                    <th class="text-center text-dark"><strong>Image</strong></th>
-                                    <th class="text-center text-dark"><strong>Title</strong></th>
-                                    <th class="text-center text-dark"><strong>Type</strong></th>
-                                    <th class="text-center text-dark"><strong>Link</strong></th>
-                                    <th class="text-center text-dark"><strong>Alt</strong></th>
-                                    <th class="text-center text-dark"><strong>Status</strong></th>
-                                    <th class="text-center text-dark"><strong>Active/Inactive</strong></th>
-                                    <th class="text-center text-dark"><strong>Edit/Delete</strong></th>
+                                    <th class="text-center text-dark"><strong>Customer Name</strong></th>
+                                    <th class="text-center text-dark"><strong>Room ID</strong></th>
+                                    <th class="text-center text-dark"><strong>Checkin Date</strong></th>
+                                    <th class="text-center text-dark"><strong>Checkout Date</strong></th>
+                                    <th class="text-center text-dark"><strong>Note</strong></th>
+                                    <th class="text-center text-dark"><strong>Payment</strong></th>
+                                    <th class="text-center text-dark"><strong>Delete</strong></th>
 
                                 </tr>
                             </thead>
@@ -67,33 +63,18 @@
                                 @foreach($booking as $book)
                                 <tr>
                                     <td class="text-center text-dark">{{ $book['id'] }} </td>
-                                    <td class="text-center ">
-                                        @if(!empty($book['image']))
-                                            <a target="_blank" href="{{ url('Frontend/images/books/'.$book['image']) }}" class="zoomable-image" style="cursor: pointer; display: inline-block; position: relative;">
-                                                <img style="width: 80px; height: 80px; transition: transform 0.2s ease-in-out;" src="{{ asset('Frontend/images/books/'.$book['image']) }}">
-                                            </a>
+                                    <td class="text-center text-dark">@if(empty($book['customer']['Fname']  ))
+                                        No Customer Data.
                                         @else
-                                            <img style="width: 80px; height: 80px; cursor: pointer; transition: transform 0.2s ease-in-out;" src="{{ url('Frontend/images/books/no-image.jpg') }}" class="zoomable-image">
+                                        {{$book['customer']['Fname'] }}  {{$book['customer']['Lname'] }}
                                         @endif
                                     </td>
-
-                                    <td class="text-center text-dark">{{ $book['title'] }} </td>
-                                    <td class="text-center text-dark">{{ $book['type'] }} </td>
-                                    <td class="text-center text-dark">{{ $book['link'] }}</td>
-                                    <td class="text-center text-dark">{{ $book['alt'] }}</td>
-                                    <td class="text-center">
-                                        <label id="status-label-{{ $book['id'] }}" class="badge {{ $book['status'] == 1 ? 'badge-success' : 'badge-danger' }}">
-                                            {{ $book['status'] == 1 ? 'Active' : 'Inactive' }}
-                                        </label>
-                                    </td>
-                                    <td class="text-center text-dark">
-
-                                        <a title="Update book Status" class="updatebookStatus" id="book-{{ $book['id'] }}" book_id="{{ $book['id'] }}" href="javascript:void(0)">
-                                            <i style="font-size: 25px;" class="fa-solid fa-circle-check {{ $book['status'] == 1 ? 'text-success' : 'text-danger' }}" status="{{ $book['status'] == 1 ? 'Active' : 'Inactive' }}"></i>
-                                        </a>
-                                    </td>
-                                    <td class="text-center text-dark">   <a href="{{ url ('books-management/add-edit-books/'.$book['id']) }}"><i title="Edit book?" style="color:rgb(0, 128, 128); font-size:20px;" class="fa-solid fa-pen-to-square"></i></a>
-                                       <a href="javascript:void(0)" class="bookDelete" module="book" moduleid="{{ $book['id'] }}"><i title="Delete book?" style="color:red; font-size:20px;" class="fa-solid fa-trash"></i></a> </td>
+                                    <td class="text-center text-dark">{{ $book['room_id'] }} </td>
+                                    <td class="text-center text-dark">{{date('F j, Y, g:i a', strtotime($book['checkin_date'])); }} </td>
+                                    <td class="text-center text-dark">{{date('F j, Y, g:i a', strtotime($book['checkout_date'])); }} </td>
+                                    <td class="text-center text-dark">{{ $book['note'] }} </td>
+                                    {{-- <td class="text-center text-dark">   <a href="{{ url ('books-management/add-edit-books/'.$book['id']) }}"><i title="Edit book?" style="color:rgb(0, 128, 128); font-size:20px;" class="fa-solid fa-pen-to-square"></i></a>
+                                       <a href="javascript:void(0)" class="bookDelete" module="book" moduleid="{{ $book['id'] }}"><i title="Delete book?" style="color:red; font-size:20px;" class="fa-solid fa-trash"></i></a> </td> --}}
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -102,9 +83,11 @@
                 </div>
             </div>
         </div>
-        @include('Backend.layout.footer')
+
     </div>
+    @include('Backend.layout.footer')
 </div>
+
 @endsection
 
 

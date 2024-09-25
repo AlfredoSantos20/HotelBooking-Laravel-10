@@ -12,7 +12,6 @@
         <tr><td>&nbsp;<br></td></tr>
         <tr><td>Your OTP for password reset is: <strong>{{ $otp }}</strong></td></tr>
         <tr><td>&nbsp;</td></tr>
-        <tr><td>&nbsp;</td></tr>
         <tr><td>Thanks & Regards,</td></tr>
         <tr><td>Hotel De Luna Team</td></tr>
         </table>

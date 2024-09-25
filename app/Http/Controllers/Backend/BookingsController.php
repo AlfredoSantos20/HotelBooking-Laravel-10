@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-class BookingController extends Controller
+use Session;
+use App\Models\Booking;
+class BookingsController extends Controller
 {
-    public function booking(){
+     public function viewbooks(){
         Session::put('page','booking');
 
-        $booking = Booking::get()->toArray();
+        $booking = Booking::with('customer')->get()->toArray();
 
-       // dd($booking);
+        //dd($booking);
         return view('Backend.Booking.booking')->with(compact('booking'));
     }
-
 }

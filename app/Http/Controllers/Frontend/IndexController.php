@@ -8,7 +8,8 @@ use App\Models\Banner;
 use App\Models\RoomType;
 use App\Models\Food;
 use App\Models\Room;
-
+use App\Models\Booking;
+use App\Models\User;
 class IndexController extends Controller
 {
 
@@ -77,7 +78,16 @@ class IndexController extends Controller
         });
 
 
-        return view('Frontend.index')->with(compact('formattedDriFood','formattedDesFood','formattedMainFood','DrinkFood','MainFood','DessertFood','formattedSingleRoomPrice', 'formattedFamRoomPrice', 'formattedPresRoomPrice','sliderBanners','fix1Banner','header','circle','singleRoom','famRoom','presRoom','singleRoomImg','famRoomImg','presRoomImg'));
+        $bookingCount = 0; // Default booking count if user is not authenticated
+        if (auth()->check()) {
+            $customerId = auth()->user()->id; // Retrieve the authenticated user's ID
+            $bookingCount = Booking::where('customer_id', $customerId)->count(); // Count bookings
+        }
+
+        //For checkavailability booking
+        $room = Room::with('RoomType')->get()->toArray();
+
+        return view('Frontend.index')->with(compact('formattedDriFood','formattedDesFood','formattedMainFood','DrinkFood','MainFood','DessertFood','formattedSingleRoomPrice', 'formattedFamRoomPrice', 'formattedPresRoomPrice','sliderBanners','fix1Banner','header','circle','singleRoom','famRoom','presRoom','singleRoomImg','famRoomImg','presRoomImg','bookingCount','room'));
 
     }
 }

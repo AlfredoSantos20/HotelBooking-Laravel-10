@@ -19,6 +19,7 @@ $(document).ready(function() {
     );
 
 
+
     var failedAttempts = 0; // Initialize a counter for failed login attempts
     var countdownActive = false; // Flag to check if the countdown is active
 
@@ -328,11 +329,13 @@ $('#otpForm').on('submit', function(e) {
 });
 
   // Saving booking
-$('#bookingForm').on('submit', function(e) {
+
+  $('#bookingForm').on('submit', function(e) {
     e.preventDefault();
 
     // Serialize form data
     var formData = $(this).serialize();
+    console.log('Form Data:', formData); // Log the form data
 
     $.ajax({
         url: '/saveBooking',
@@ -342,58 +345,135 @@ $('#bookingForm').on('submit', function(e) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response) {
-            if(response.status === 'occupied') {
-                // Show SweetAlert error if all rooms of this type are occupied
-                Swal.fire({
-                    icon: 'error',
-                    title: 'All Rooms Occupied',
-                    text: 'All rooms of this type are occupied for the selected dates.',
-                });
-            } else if(response.message === "Login first to start Booking!") {
-                // Show SweetAlert error if user is not logged in
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: response.message,
-                });
-            } else if(response.status === "capacity_exceeded") {
-                // Show SweetAlert error if children/adults capacity exceeded
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: response.message,
-                });
-            }else if(response.status === "error_checkPersonCapacity") {
-                // Show SweetAlert error if  error checkPersonCapacity
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: response.message,
-                });
-            } else {
-                // If the booking is saved successfully, show SweetAlert success message
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Your booking has been saved in Room ID: ' + response.room_id,
-                    showConfirmButton: false,
-                    timer: 1500
-                });
+            console.log('Response:', response); // Log the response
 
-                // Optionally, clear the form fields
-                $('#bookingForm')[0].reset();
+            // Handle response status and messages
+            if (response.status) {
+                switch (response.status) {
+                    case 'occupied':
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'All Rooms Occupied',
+                            text: response.message || 'All rooms of this type are occupied for the selected dates.',
+                        });
+                        break;
+                    case "capacity_exceeded":
+                    case "error_checkPersonCapacity":
+                    case "invalid_dates":
+                    case "invalid_booking_period":
+                    case "invalid_booking_duration":
+                    case "invalid_booking_span":
+                    case "invalid_checkout_date":
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: response.message,
+                        });
+                        break;
+                    default:
+                        // If the booking is saved successfully, show SweetAlert success message
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Your booking has been saved in Room ID: ' + response.room_id,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+
+                        // Optionally, clear the form fields
+                        $('#bookingForm')[0].reset();
+                }
+            } else if (response.message) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: response.message,
+                });
             }
         },
-        error: function(xhr, status, error) {
-            // Handle other errors
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Something went wrong! Please try again.',
-            });
+        error: function(xhr) {
+            // Log the entire response to help debug
+            console.error('AJAX Error Response:', xhr.responseText);
+
+            // Try to parse JSON if possible
+            try {
+                var jsonResponse = JSON.parse(xhr.responseText);
+                if (jsonResponse.message) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: jsonResponse.message,
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong! Please try again.',
+                    });
+                }
+            } catch (e) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong! Please try again.',
+                });
+            }
         }
     });
 });
+
+
+
+//EMPLOYE SIGN
+$('#EmploginForm').on('submit', function(e) {
+    e.preventDefault();
+
+    let formData = {
+        email: $('#emp-email').val(),  // Corrected the ID
+        password: $('#emp-password').val(),
+        _token: $('input[name="_token"]').val()  // CSRF token
+    };
+
+    // Clear previous errors
+    $('#emp-signin-error, #emp-signin-email, #emp-signin-password').text('');
+
+    // Send AJAX request
+    $.post('/empSignin', formData)
+    .done(function(response) {
+        if (response.success) {
+            window.location.href = response.redirect_url;
+        }else if(response.success){
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: response.message,
+            });
+        }
+    })
+    .fail(function(xhr) {
+        console.log(xhr);  // Log the entire xhr object
+        console.log(xhr.responseJSON);  // Log the responseJSON part
+
+        let errors = xhr.responseJSON.errors || {};
+        $('#emp-signin-email').text(errors.email ? errors.email[0] : '');
+        $('#emp-signin-password').text(errors.password ? errors.password[0] : '');
+        $('#emp-signin-error').text(xhr.responseJSON.message || '');  // Show invalid email or password message
+    });
+
+});
+
+
+// Toggle password visibility
+
+$('#show-password').on('click', function() {
+    var passwordInput = $('#emp-password');
+    if (passwordInput.attr('type') === 'password') {
+        passwordInput.attr('type', 'text');
+    } else {
+        passwordInput.attr('type', 'password');
+    }
+});
+
 
 });
 

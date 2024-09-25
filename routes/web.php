@@ -2,13 +2,18 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+//BACK END CONTROLLERS
 use App\Http\Controllers\Backend\AccountsController;
 use App\Http\Controllers\Backend\BannersController;
 use App\Http\Controllers\Backend\RoomController;
 use App\Http\Controllers\Backend\FoodController;
+use App\Http\Controllers\Backend\BookingsController;
+
+//FRONT END CONTROLLERS
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Frontend\BookingController;
 use App\Http\Controllers\Frontend\CustomerController;
+use App\Http\Controllers\Frontend\EmployeeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -47,6 +52,9 @@ Route::namespace('App\Http\Controllers\Frontend')->group(function(){
     //Booking Route
      Route::get('booking',[BookingController::class, 'booking']);
      Route::post('saveBooking', [BookingController::class, 'saveBooking']);
+
+    //Employee singin
+    Route::post('empSignin', [EmployeeController::class, 'empSignin']);
 
     //Customer singin
      Route::post('signin', [CustomerController::class, 'signIn']);
@@ -147,7 +155,7 @@ Route::prefix('/foods-management')->group(function(){
 Route::prefix('/booking-management')->group(function(){
     Route::group(['middleware'=>['midware']],function(){
 
-        Route::get('booking',[BookingController::class, 'booking']);
+        Route::get('viewbooks',[BookingsController::class, 'viewbooks']);
 
 
     });
