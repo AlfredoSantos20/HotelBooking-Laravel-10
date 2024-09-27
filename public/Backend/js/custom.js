@@ -3,7 +3,7 @@ $(document).ready(function(){
     $('#banner').DataTable();
     $('#room').DataTable();
     $('#foods').DataTable();
-    // $('#booking').DataTable();
+    //$('#booking').DataTable();
     // $('#foods').DataTable({
     //     "booking": [[0, "desc"]],
     // });

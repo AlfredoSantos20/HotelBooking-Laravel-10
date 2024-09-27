@@ -35,7 +35,27 @@
     <!-- Theme Style -->
     <link rel="stylesheet" href="{{ url('Frontend/css/style.css')}}">
 
+    <style>
+            #goUpButton {
+                display: none;
+                position: fixed;
+                bottom: 20px;
+                right: 30px;
+                z-index: 99;
+                border: none;
+                outline: none;
+                background-color: #17A2B8;
+                color: white;
+                padding: 10px 15px;
+                border-radius: 10px;
+                font-size: 18px;
+                cursor: pointer;
+            }
 
+            #goUpButton:hover {
+                background-color: #0a515c;
+            }
+    </style>
   </head>
   <body>
     {{-- <div class="loader">
@@ -44,6 +64,10 @@
 
 
         @include('Frontend.layout.header')
+
+        <!-- Go Up Button -->
+        <button id="goUpButton" title="Go to top">&#9650;</button>
+
         @yield('content')
 
     <!-- Sweetalert-->
@@ -64,5 +88,6 @@
     <script src="{{ url('Frontend/js/jquery.timepicker.min.js')}}"></script>
     <script src="{{ url('Frontend/js/main.js')}}"></script>
     <script src="{{ url('Frontend/js/custom.js')}}"></script>
+    <script src="{{ url('Frontend/js/button-up.js')}}"></script>
   </body>
 </html>

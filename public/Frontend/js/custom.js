@@ -126,16 +126,6 @@ $(document).ready(function() {
 $('#signupForm').on('submit', function(e) {
     e.preventDefault();
 
-    var password = $('#password').val();
-    var confirmPassword = $('#password_confirmation').val();
-
-    if (password !== confirmPassword) {
-        $('#passwordHelp').text('Passwords do not match.');
-        return;
-    } else {
-        $('#passwordHelp').text('');
-    }
-
     var formData = $(this).serialize();
 
     $.ajax({
@@ -158,28 +148,30 @@ $('#signupForm').on('submit', function(e) {
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Wrong Credentials',
+                    title: 'Error',
                     text: 'Please check all of the fields.',
                 });
             }
         },
         error: function(xhr) {
-            // To Clear previous errors
+            // Clear previous errors
             $('.error').text('');
 
             if (xhr.status === 422) {
-                // Extract validation errors from the response
                 const errors = xhr.responseJSON.errors;
 
-                // Display errors
+                // Display validation errors in form fields
                 for (const [field, messages] of Object.entries(errors)) {
                     $(`#${field}-error`).text(messages.join(', '));
+                }
 
-                    //Set time 3secs
-                    setTimeout(function() {
-                        errorElement.text('');
-                    }, 3000);
-
+                // Check if there's a g-recaptcha-response error
+                if (errors['g-recaptcha-response']) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'reCAPTCHA Error',
+                        text: errors['g-recaptcha-response'].join(', '),  // Show reCAPTCHA error in SweetAlert
+                    });
                 }
             } else {
                 Swal.fire({
@@ -191,6 +183,8 @@ $('#signupForm').on('submit', function(e) {
         }
     });
 });
+
+
 
 
 // Forgotpass Form & Request OTP
@@ -328,8 +322,35 @@ $('#otpForm').on('submit', function(e) {
     });
 });
 
-  // Saving booking
+//Hide un hide select date and days
+$('#selectDaysBtn').click(function() {
+    $('#daySelection').show(); // Show the day selection
+    $('#dateSelection').hide(); // Hide the date selection
+    clearInputsDateSelection(); // Clear previous date inputs
+    $('#day').focus(); // Focus on the day select to avoid invalid control error
+});
 
+$('#selectDatesBtn').click(function() {
+    $('#dateSelection').show();
+    $('#daySelection').hide();
+    clearInputsDaySelection(); // Clear day selection inputs
+    $('input[name="checkin_date"], input[name="checkout_date"]').prop('required', true); // Set required
+    $('select[name="day"]').prop('required', false); // Remove required
+});
+
+function clearInputsDateSelection() {
+    $('input[name="checkin_date"]').val('');
+    $('input[name="checkout_date"]').val('');
+}
+
+function clearInputsDaySelection() {
+    $('#day').val(''); // Clear the day select element
+}
+
+
+
+
+//   // Saving booking
   $('#bookingForm').on('submit', function(e) {
     e.preventDefault();
 
@@ -362,8 +383,8 @@ $('#otpForm').on('submit', function(e) {
                     case "invalid_dates":
                     case "invalid_booking_period":
                     case "invalid_booking_duration":
-                    case "invalid_booking_span":
                     case "invalid_checkout_date":
+                    case "occupied_days":
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
@@ -373,11 +394,11 @@ $('#otpForm').on('submit', function(e) {
                     default:
                         // If the booking is saved successfully, show SweetAlert success message
                         Swal.fire({
-                            position: 'top-end',
+
                             icon: 'success',
-                            title: 'Your booking has been saved in Room ID: ' + response.room_id,
-                            showConfirmButton: false,
-                            timer: 1500
+                            title: 'Your booking has been saved in Room No: ' + response.room_id,
+                            showConfirmButton: true,
+
                         });
 
                         // Optionally, clear the form fields
@@ -424,6 +445,69 @@ $('#otpForm').on('submit', function(e) {
 
 
 
+
+
+//CHECK AVAILABLE ROOM
+$('#availabilityForm').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+
+    // Serialize form data
+    var formData = $(this).serialize();
+
+    $.ajax({
+        url: '/checkAvailableRoom',
+        type: 'POST',
+        data: formData,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+            let title, text;
+
+            // Determine the title and text based on the response status
+            if (response.status === 'available') {
+                title = 'Room Available!';
+                text = 'Room No: ' + response.room_id + ' is available.';
+            } else if (response.status === 'invalid_booking_period' || response.status === 'invalid_checkout') {
+                title = 'Sorry!';
+                text = response.message;
+            } else {
+                title = 'Sorry!';
+                text = response.message; // Reuse the message for invalid states
+            }
+
+            // Display a success or error message using SweetAlert
+            Swal.fire({
+                icon: response.status === 'available' ? 'success' : 'error',
+                title: title,
+                text: text,
+            });
+        },
+        error: function(xhr) {
+            let errors = xhr.responseJSON.errors;
+            let errorMessages = '';
+
+            // Loop through validation errors and concatenate them
+            $.each(errors, function(key, messages) {
+                errorMessages += messages.join('<br>') + '<br>';
+            });
+
+            // Display validation error messages using SweetAlert
+            Swal.fire({
+                icon: 'error',
+                title: 'Sorry!',
+                html: errorMessages // Use html to render line breaks
+            });
+        }
+    });
+});
+
+
+
+
+
+
+
 //EMPLOYE SIGN
 $('#EmploginForm').on('submit', function(e) {
     e.preventDefault();
@@ -463,8 +547,7 @@ $('#EmploginForm').on('submit', function(e) {
 });
 
 
-// Toggle password visibility
-
+// Employee password visibility
 $('#show-password').on('click', function() {
     var passwordInput = $('#emp-password');
     if (passwordInput.attr('type') === 'password') {
@@ -474,7 +557,35 @@ $('#show-password').on('click', function() {
     }
 });
 
+$('#show-password-signup').on('click', function() {
+    var passwordInput = $('#signup-password');
+    var passwordConfirmationInput = $('#signup-password_confirmation');
 
+    if (passwordInput.attr('type') === 'password') {
+        passwordInput.attr('type', 'text');
+        passwordConfirmationInput.attr('type', 'text');
+    } else {
+        passwordInput.attr('type', 'password');
+        passwordConfirmationInput.attr('type', 'password');
+    }
 });
 
+
+$('#show-password-signin').on('click', function() {
+    var passwordInput = $('#user-password');
+    if (passwordInput.attr('type') === 'password') {
+        passwordInput.attr('type', 'text');
+    } else {
+        passwordInput.attr('type', 'password');
+    }
+});
+
+ // Get today's date in YYYY-MM-DD format
+ let today = new Date().toISOString().split('T')[0];
+
+ // Set the min attribute to disable past dates
+ $('#checkin_dates').attr('min', today);
+ $('#checkout_dates').attr('min', today);
+
+});
 

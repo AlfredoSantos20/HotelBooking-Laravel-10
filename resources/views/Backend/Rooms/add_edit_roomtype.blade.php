@@ -56,30 +56,25 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="price">Childrens:</label>
+                                <label for="total_children">Children:</label>
                                 <select style="color:black;" name="total_children" id="total_children" class="form-control" required>
                                     <option value="">Select</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                  </select>
+                                    @for ($i = 1; $i <= 7; $i++)
+                                        <option value="{{ $i }}" {{ ($roomType->children == $i) ? 'selected' : '' }}>{{ $i }}</option>
+                                    @endfor
+                                </select>
                             </div>
 
                             <div class="form-group">
-                                <label for="price">Adults:</label>
+                                <label for="total_adults">Adults:</label>
                                 <select style="color:black;" name="total_adults" id="total_adults" class="form-control" required>
                                     <option value="">Select</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                  </select>
+                                    @for ($i = 1; $i <= 7; $i++)
+                                        <option value="{{ $i }}" {{ ($roomType->adults == $i) ? 'selected' : '' }}>{{ $i }}</option>
+                                    @endfor
+                                </select>
                             </div>
+
 
                             <div class="form-group">
                                 <label for="price">Room Price:</label>
@@ -87,8 +82,13 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="price">Discount:</label>
+                                <input type="text" class="form-control" id="discount" name="discount" placeholder="Enter RoomType Discount" value="{{ $roomType['discount'] ?? 0 }}" required>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="description">Description:</label>
-                                <textarea type="text" class="form-control" id="description" placeholder="Enter RoomType Description"  name="description" value="{{ $roomType['description'] ?? '' }}" required></textarea>
+                                <textarea class="form-control" id="description" placeholder="Enter RoomType Description" name="description" required>{{ $roomType->description ?? '' }}</textarea>
                             </div>
 
                             <div style="justify-content:center;" class="modal-footer">

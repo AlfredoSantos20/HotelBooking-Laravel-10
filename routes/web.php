@@ -14,6 +14,7 @@ use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Frontend\BookingController;
 use App\Http\Controllers\Frontend\CustomerController;
 use App\Http\Controllers\Frontend\EmployeeController;
+use App\Http\Controllers\Frontend\RoomGalleryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,7 +52,10 @@ Route::namespace('App\Http\Controllers\Frontend')->group(function(){
 
     //Booking Route
      Route::get('booking',[BookingController::class, 'booking']);
-     Route::post('saveBooking', [BookingController::class, 'saveBooking']);
+     Route::post('saveBooking', [BookingController::class, 'saveBooking'])->name('saveBooking');
+
+     //Room Route
+     Route::get('roomGallery',[RoomGalleryController::class, 'roomGallery']);
 
     //Employee singin
     Route::post('empSignin', [EmployeeController::class, 'empSignin']);
@@ -59,14 +63,18 @@ Route::namespace('App\Http\Controllers\Frontend')->group(function(){
     //Customer singin
      Route::post('signin', [CustomerController::class, 'signIn']);
 
-     //Customer SignUp
-     Route::post('signup', [CustomerController::class, 'signUp']);
+    //Customer SignUp
+    Route::post('signup', [CustomerController::class, 'signUp']);
 
-     //Customer Forgot Password
-     Route::post('forgotUserPassword', [CustomerController::class, 'forgotUserPassword']);
+    //Customer Forgot Password
+    Route::post('forgotUserPassword', [CustomerController::class, 'forgotUserPassword']);
+
+    //Check Room Available
+    Route::post('/checkAvailableRoom', [IndexController::class, 'checkAvailableRoom']);
 
     //Customer logout
     Route::get('logout', [CustomerController::class, 'Logout']);
+
  });
 
 //Backend Group Routes
@@ -83,8 +91,9 @@ Route::prefix('/hotel-de-luna')->namespace('App\Http\Controllers\Accounts')->gro
     Route::group(['middleware'=>['midware']],function(){
         Route::get('dashboard',[AccountsController::class, 'dashboard']);
 
-        // Profile
-        Route::get('user-profile',[AccountsController::class, 'UserProfile']);
+    // Profile
+    Route::get('user-profile',[AccountsController::class, 'UserProfile']);
+
     });
     });
 

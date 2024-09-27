@@ -69,11 +69,11 @@ class CustomerController extends Controller
             'phone_num' => 'required|unique:users',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
-            'g-recaptcha-response' => 'required',
+            'g-recaptcha-response' => 'required|captcha',
         ]);
 
         // Create new User instance
-        $saveCustomer = new User;
+        $saveCustomer = new User();
         $saveCustomer->Fname = $validatedData['Fname'];
         $saveCustomer->Lname = $validatedData['Lname'];
         $saveCustomer->address = $validatedData['address'];

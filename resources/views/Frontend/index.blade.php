@@ -28,43 +28,41 @@
       <div class="row check-availabilty" id="next">
         <div class="block-32" data-aos="fade-up" data-aos-offset="-200">
 
-          <form action="#">
-            <div class="row">
-                <div class="form-group" style="margin-left:15px;">
-                    <label class="text-black font-weight-bold" for="name">Room Type:</label>
-                    <select title="Select Room Type" name="room_type_id" class="form-control" required>
-                        <option value="" >Select Type</option>
-                        @foreach($room as $rm)
-                        <option value="{{ $rm['room_type']['id'] }}"
-                            @if(old('room_type') == $rm['room_type']['id'])
-                                selected
-                            @elseif(isset($room->room_type) && $room->room_type == $rm['room_type']['id'])
-                                selected
-                            @endif>
-                            {{ $rm['room_type']['title'] }}
-                        </option>
-                    @endforeach
-                    </select>
+            <form id="availabilityForm" action="/checkAvailableRoom" method="POST">
+                @csrf <!-- I Include CSRF token for security -->
+                <div class="row">
+                    <!-- Room Type Selection -->
+                    <div class="col-md-6 mb-3 mb-lg-0 col-lg-3">
+                        <label class="text-black font-weight-bold" for="room_type_id">Room Type:</label>
+                        <select title="Select Room Type" name="room_type_id" class="form-control" required>
+                            <option value="">Select Type</option>
+                            @foreach(collect($room)->unique('room_type.id') as $rm)
+                            <option value="{{ $rm['room_type']['id'] }}">
+                                {{ $rm['room_type']['title'] }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Check-in Date -->
+                    <div class="col-md-6 mb-3 mb-lg-0 col-lg-3">
+                        <label for="checkin_date" class="font-weight-bold text-black">Check In</label>
+                        <input type="date" name="checkin_date" class="form-control" required id="checkin_dates">
+                    </div>
+
+                    <!-- Check-out Date -->
+                    <div class="col-md-6 mb-3 mb-lg-0 col-lg-3">
+                        <label for="checkout_date" class="font-weight-bold text-black">Check Out</label>
+                        <input type="date" name="checkout_date" class="form-control" required id="checkout_dates">
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="col-md-6 col-lg-3 align-self-end">
+                        <button type="submit" class="btn btn-primary btn-block text-white">Check Availability</button>
+                    </div>
                 </div>
-              <div class="col-md-6 mb-3 mb-lg-0 col-lg-3">
-                <label for="checkin_date" class="font-weight-bold text-black">Check In</label>
-                <div class="field-icon-wrap">
-                  <div class="icon"><span class="icon-calendar"></span></div>
-                  <input type="date" id="checkin_date" class="form-control">
-                </div>
-              </div>
-              <div class="col-md-6 mb-3 mb-lg-0 col-lg-3">
-                <label for="checkout_date" class="font-weight-bold text-black">Check Out</label>
-                <div class="field-icon-wrap">
-                  <div class="icon"><span class="icon-calendar"></span></div>
-                  <input type="date" id="checkout_date" class="form-control">
-                </div>
-              </div>
-              <div class="col-md-6 col-lg-3 align-self-end" style="margin-bottom:20px">
-                <button class="btn btn-primary btn-block text-white">Check Availabilty</button>
-              </div>
-            </div>
-          </form>
+            </form>
+
         </div>
 
 
@@ -122,7 +120,7 @@
             <figure class="img-wrap">
                 @if(isset($singleRoomImg[0]['image']))
                     <a class="zoomable-image" style="cursor: pointer; display: inline-block; position: relative;" target="_blank" href="{{ url('Frontend/images/rooms/'.$singleRoomImg[0]['image']) }}">
-                        <img class="zoomable-img img-fluid mb-3" title="{{ $singleRoom['title'] }}" src="{{ asset('Frontend/images/rooms/'.$singleRoomImg[0]['image']) }}" alt="alt">
+                        <img class="zoomable-img img-fluid mb-3"  title="{{ $singleRoom['title'] }}" src="{{ asset('Frontend/images/rooms/'.$singleRoomImg[0]['image']) }}" alt="alt">
                     </a>
                 @else
                     <img src="{{ asset('Frontend/images/rooms/no-image.jpg') }}" class="img-fluid mb-3">
@@ -132,6 +130,7 @@
             <div style ="justify-content:center;" class="p-3 text-center room-info">
               <h2>Single Room</h2>
               <span class="text-uppercase letter-spacing-1">{{$formattedSingleRoomPrice}} | per night</span>
+
               <br> <span class="text-uppercase letter-spacing-1">  <i class="fa-solid fa-wifi"></i> wifi  <i class="fa-solid fa-circle-check text-success"></i> Included  </span>
               <br> <span class="text-uppercase letter-spacing-1"> <i style ="font-size:20px;" class="fa-solid fa-ban-smoking"></i> no smoking policy</span>
               <br>  <a type="button" href="{{url('booking')}}" class="btn btn-primary text-white py-2 px-4 font-weight-bold" >Book now</a>
@@ -154,6 +153,7 @@
             <div class="p-3 text-center room-info">
               <h2>Family Room</h2>
               <span class="text-uppercase letter-spacing-1">{{ $formattedFamRoomPrice}} | per night</span>
+
               <br> <span class="text-uppercase letter-spacing-1">  <i class="fa-solid fa-wifi"></i> wifi  <i class="fa-solid fa-circle-check text-success"></i> Included  </span>
               <br> <span class="text-uppercase letter-spacing-1"> <i style ="font-size:20px;" class="fa-solid fa-ban-smoking"></i> no smoking policy</span>
               <br>  <a type="button" href="{{url('booking')}}" class="btn btn-primary text-white py-2 px-4 font-weight-bold" >Book now</a>
@@ -176,15 +176,19 @@
             <div style="text-align:justify;" class="p-3 text-center room-info">
               <h2>Presidential Room</h2>
               <span class="text-uppercase letter-spacing-1">{{$formattedPresRoomPrice}} | per night </span>
+
               <br> <span class="text-uppercase letter-spacing-1">  <i class="fa-solid fa-wifi"></i> wifi  <i class="fa-solid fa-circle-check text-success"></i> Included  </span>
               <br> <span class="text-uppercase letter-spacing-1"> <i style ="font-size:20px;" class="fa-solid fa-ban-smoking"></i> no smoking policy</span>
               <br>  <a type="button" href="{{url('booking')}}" class="btn btn-primary text-white py-2 px-4 font-weight-bold" >Book now</a>
             </div>
-
         </div>
 
-
       </div>
+
+    </div>
+    <div data-aos="fade-up" class="row justify-content-center" style="margin-top:50px; ">
+
+        <a type="button" title="View More Rooms" href="{{url('roomGallery')}}" class="btn btn-primary text-white py-2 px-4 font-weight-bold" >View More Rooms <i style ="font-size:30px; vertical-align: middle; margin-left: 10px;" class="fa-solid fa-circle-arrow-right"></i></a>
     </div>
   </section>
 
@@ -320,146 +324,22 @@
   </section>
 
   <!-- END section -->
-  <section class="section testimonial-section">
-    <div class="container">
-      <div class="row justify-content-center text-center mb-5">
-        <div class="col-md-7">
-          <h2 class="heading" data-aos="fade-up">People Says</h2>
-        </div>
-      </div>
-      <div class="row">
-        <div class="js-carousel-2 owl-carousel mb-5" data-aos="fade-up" data-aos-delay="200">
-
-          <div class="testimonial text-center slider-item">
-            <div class="author-image mb-3">
-              <img src="{{ url('Frontend/images/person_1.') }}jpg" alt="Image placeholder" class="rounded-circle mx-auto">
-            </div>
-            <blockquote>
-
-              <p>&ldquo;A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.&rdquo;</p>
-            </blockquote>
-            <p><em>&mdash; Jean Smith</em></p>
-          </div>
-
-          <div class="testimonial text-center slider-item">
-            <div class="author-image mb-3">
-              <img src="{{ url('Frontend/images/person_2.jpg') }}" alt="Image placeholder" class="rounded-circle mx-auto">
-            </div>
-            <blockquote>
-              <p>&ldquo;Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.&rdquo;</p>
-            </blockquote>
-            <p><em>&mdash; John Doe</em></p>
-          </div>
-
-          <div class="testimonial text-center slider-item">
-            <div class="author-image mb-3">
-              <img src="{{ url('Frontend/images/person_3.jpg') }}" alt="Image placeholder" class="rounded-circle mx-auto">
-            </div>
-            <blockquote>
-
-              <p>&ldquo;When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane.&rdquo;</p>
-            </blockquote>
-            <p><em>&mdash; John Doe</em></p>
-          </div>
+  @include('Frontend.shared.customer_ratings')
 
 
-          <div class="testimonial text-center slider-item">
-            <div class="author-image mb-3">
-              <img src="{{ url('Frontend/images/person_1.jpg') }}" alt="Image placeholder" class="rounded-circle mx-auto">
-            </div>
-            <blockquote>
-
-              <p>&ldquo;A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.&rdquo;</p>
-            </blockquote>
-            <p><em>&mdash; Jean Smith</em></p>
-          </div>
-
-          <div class="testimonial text-center slider-item">
-            <div class="author-image mb-3">
-              <img src="{{ url('Frontend/images/person_2.jpg') }}" alt="Image placeholder" class="rounded-circle mx-auto">
-            </div>
-            <blockquote>
-              <p>&ldquo;Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.&rdquo;</p>
-            </blockquote>
-            <p><em>&mdash; John Doe</em></p>
-          </div>
-
-          <div class="testimonial text-center slider-item">
-            <div class="author-image mb-3">
-              <img src="{{ url('Frontend/images/person_3.jpg') }}" alt="Image placeholder" class="rounded-circle mx-auto">
-            </div>
-            <blockquote>
-
-              <p>&ldquo;When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane.&rdquo;</p>
-            </blockquote>
-            <p><em>&mdash; John Doe</em></p>
-          </div>
-
-        </div>
-          <!-- END slider -->
-      </div>
-
-    </div>
-  </section>
-
-
-
-  {{-- <section class="section blog-post-entry bg-light">
-    <div class="container">
-      <div class="row justify-content-center text-center mb-5">
-        <div class="col-md-7">
-          <h2 class="heading" data-aos="fade-up">Events</h2>
-          <p data-aos="fade-up">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-4 col-md-6 col-sm-6 col-12 post" data-aos="fade-up" data-aos-delay="100">
-
-          <div class="media media-custom d-block mb-4 h-100">
-            <a href="#" class="mb-4 d-block"><img src="{{ url('Frontend/images/img_1.jpg') }}" alt="Image placeholder" class="img-fluid"></a>
-            <div class="media-body">
-              <span class="meta-post">February 26, 2018</span>
-              <h2 class="mt-0 mb-3"><a href="#">Travel Hacks to Make Your Flight More Comfortable</a></h2>
-              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-            </div>
-          </div>
-
-        </div>
-        <div class="col-lg-4 col-md-6 col-sm-6 col-12 post" data-aos="fade-up" data-aos-delay="200">
-          <div class="media media-custom d-block mb-4 h-100">
-            <a href="#" class="mb-4 d-block"><img src="{{ url('Frontend/images/img_2.jpg') }}" alt="Image placeholder" class="img-fluid"></a>
-            <div class="media-body">
-              <span class="meta-post">February 26, 2018</span>
-              <h2 class="mt-0 mb-3"><a href="#">5 Job Types That Aallow You To Earn As You Travel The World</a></h2>
-              <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6 col-sm-6 col-12 post" data-aos="fade-up" data-aos-delay="300">
-          <div class="media media-custom d-block mb-4 h-100">
-            <a href="#" class="mb-4 d-block"><img src="{{ url('Frontend/images/img_3.jpg') }}" alt="Image placeholder" class="img-fluid"></a>
-            <div class="media-body">
-              <span class="meta-post">February 26, 2018</span>
-              <h2 class="mt-0 mb-3"><a href="#">30 Great Ideas On Gifts For Travelers</a></h2>
-              <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. t is a paradisematic country, in which roasted parts of sentences.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section> --}}
-
-  <section class="section bg-image overlay" style="background-image: url('{{ url('Frontend/images/hero_4.jpg') }}');">
+  {{-- @include('Frontend.shared.event') --}}
+  @include('Frontend.shared.booknow')
+{{-- <section class="section bg-image overlay" style="background-image: url('{{ url('Frontend/images/hero_4.jpg') }}');">
       <div class="container" >
         <div class="row align-items-center">
           <div class="col-12 col-md-6 text-center mb-4 mb-md-0 text-md-left" data-aos="fade-up">
-            <h2 class="text-white font-weight-bold">The Best Place To Stay. Reserve Now!</h2>
+            <h2 class="text-white font-weight-bold">The Best Place To Stay. Book Now!</h2>
           </div>
           <div class="col-12 col-md-6 text-center text-md-right" data-aos="fade-up" data-aos-delay="200">
-            <a href="{{ url('/booking')}}" class="btn btn-outline-white-primary py-3 text-white px-5">Reserve Now</a>
+            <a href="{{ url('/booking')}}" class="btn btn-outline-white-primary py-3 text-white px-5">Book Now</a>
           </div>
         </div>
       </div>
-    </section>
+</section> --}}
     @include('Frontend.layout.footer')
 @endsection

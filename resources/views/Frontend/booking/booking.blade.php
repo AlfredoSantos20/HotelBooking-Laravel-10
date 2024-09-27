@@ -34,20 +34,23 @@
         <div class="row">
           <div class="col-md-7" data-aos="fade-up" data-aos-delay="100">
 
-            <form id="bookingForm" action="#" method="post" class="bg-white p-md-5 p-4 mb-5 border">@csrf
+            <form id="bookingForm" action="{{ route('saveBooking') }}" method="post" class="bg-white p-md-5 p-4 mb-5 border" invalidate>@csrf
+
                 <div class="form-group">
                     <strong style="color:red;"><label for="caution">Please read the following:</label></strong>
                     <ul>
-                        <li>Cannot book in the current day.</li>
-                        <li>Can only book for 1 week.</li>
-                        <li>Fill out all the fields.</li>
+                        <li>You cannot checkout for the current day.</li>
+                        <li>You can only book for a maximum of one week.</li>
+
+
                     </ul>
                 </div>
+
                 <div class="form-group">
                     <label class="text-black font-weight-bold" for="name">Room Type:</label>
                     <select title="Select Room Type" name="room_type_id" class="form-control" required>
                         <option value="">Select Type</option>
-                        @foreach($room as $rm)
+                        @foreach(collect($room)->unique('room_type.id') as $rm)
                         <option value="{{ $rm['room_type']['id'] }}"
                             @if(old('room_type') == $rm['room_type']['id'])
                                 selected
@@ -60,24 +63,34 @@
                     </select>
                 </div>
 
-                <div class="row">
+                 <div class="form-group">
+                    <div class="text-center">
+                        <button type="button" id="selectDatesBtn" class="btn btn-success">Select In Dates</button>
+                        <button type="button" id="selectDaysBtn" class="btn btn-success">Select In Days</button>
+                    </div>
+                </div>
+
+                <div id="dateSelection" class="row">
                     <div class="col-md-6 form-group">
                         <label class="text-black font-weight-bold" for="checkin_date">Date Check In</label>
-                        <input type="date" name="checkin_date" class="form-control" required>
+                        <input type="date" name="checkin_date" class="form-control" id="checkin_dates">
                     </div>
-                    {{-- <div class="col-md-6 form-group">
-                        <label class="text-black font-weight-bold" for="checkin_time">Time Check In</label>
-                        <input type="time" name="checkin_time" class="form-control" required>
-                    </div> --}}
+
 
                     <div class="col-md-6 form-group">
                         <label class="text-black font-weight-bold" for="checkout_date">Date Check Out</label>
-                        <input type="date" name="checkout_date" class="form-control" required>
+                        <input type="date" name="checkout_date" class="form-control" id="checkout_dates">
                     </div>
-                    {{-- <div class="col-md-6 form-group">
-                        <label class="text-black font-weight-bold" for="checkout_time">Time Check Out</label>
-                        <input type="time" name="checkout_time" class="form-control" required>
-                    </div> --}}
+                </div>
+
+                <div id="daySelection" class="form-group" style="display:none;">
+                    <label for="day" class="font-weight-bold text-black">Select Days</label>
+                    <select style="color:black;" name="day" id="day" class="form-control" >
+                        <option value="">Select</option>
+                        @for($i = 1; $i <= 7; $i++)
+                            <option value="{{ $i }}">{{ $i }} Day{{ $i > 1 ? 's' : '' }}</option>
+                        @endfor
+                    </select>
                 </div>
 
                 <div class="row">
@@ -100,6 +113,7 @@
                             <div class="icon"><span class="ion-ios-arrow-down"></span></div>
                             <select style="color:black;" name="total_children" id="total_children" class="form-control" required>
                                 <option value="">Select</option>
+                                <option value="0">0</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -122,6 +136,10 @@
                 </div>
             </form>
 
+
+
+
+
           </div>
           <div class="col-md-5" data-aos="fade-up" data-aos-delay="200">
             <div class="row">
@@ -139,104 +157,9 @@
       </div>
     </section>
 
-    <section class="section testimonial-section bg-light">
-      <div class="container">
-        <div class="row justify-content-center text-center mb-5">
-          <div class="col-md-7">
-            <h2 class="heading" data-aos="fade-up">People Says</h2>
-          </div>
-        </div>
-        <div class="row">
-          <div class="js-carousel-2 owl-carousel mb-5" data-aos="fade-up" data-aos-delay="200">
+    @include('Frontend.shared.customer_ratings')
 
-            <div class="testimonial text-center slider-item">
-              <div class="author-image mb-3">
-                <img src="{{ url('Frontend/images/person_1.jpg')}}" alt="Image placeholder" class="rounded-circle mx-auto">
-              </div>
-              <blockquote>
-
-                <p>&ldquo;A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.&rdquo;</p>
-              </blockquote>
-              <p><em>&mdash; Jean Smith</em></p>
-            </div>
-
-            <div class="testimonial text-center slider-item">
-              <div class="author-image mb-3">
-                <img src="{{ url('Frontend/images/person_2.jpg')}}" alt="Image placeholder" class="rounded-circle mx-auto">
-              </div>
-              <blockquote>
-                <p>&ldquo;Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.&rdquo;</p>
-              </blockquote>
-              <p><em>&mdash; John Doe</em></p>
-            </div>
-
-            <div class="testimonial text-center slider-item">
-              <div class="author-image mb-3">
-                <img src="{{ url('Frontend/images/person_3.jpg')}}" alt="Image placeholder" class="rounded-circle mx-auto">
-              </div>
-              <blockquote>
-
-                <p>&ldquo;When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane.&rdquo;</p>
-              </blockquote>
-              <p><em>&mdash; John Doe</em></p>
-            </div>
-
-
-            <div class="testimonial text-center slider-item">
-              <div class="author-image mb-3">
-                <img src="{{ url('Frontend/images/person_1.jpg')}}" alt="Image placeholder" class="rounded-circle mx-auto">
-              </div>
-              <blockquote>
-
-                <p>&ldquo;A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.&rdquo;</p>
-              </blockquote>
-              <p><em>&mdash; Jean Smith</em></p>
-            </div>
-
-            <div class="testimonial text-center slider-item">
-              <div class="author-image mb-3">
-                <img src="{{ url('Frontend/images/person_2.jpg') }}" alt="Image placeholder" class="rounded-circle mx-auto">
-              </div>
-              <blockquote>
-                <p>&ldquo;Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.&rdquo;</p>
-              </blockquote>
-              <p><em>&mdash; John Doe</em></p>
-            </div>
-
-            <div class="testimonial text-center slider-item">
-              <div class="author-image mb-3">
-                <img src="images/person_3.jpg" alt="Image placeholder" class="rounded-circle mx-auto">
-              </div>
-              <blockquote>
-
-                <p>&ldquo;When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane.&rdquo;</p>
-              </blockquote>
-              <p><em>&mdash; John Doe</em></p>
-            </div>
-
-          </div>
-            <!-- END slider -->
-        </div>
-
-      </div>
-    </section>
-
-    <section class="section bg-image overlay" style="background-image: url('{{ url('Frontend/images/hero_4.jpg') }}');">
-        <div class="container" >
-          <div class="row align-items-center">
-            <div class="col-12 col-md-6 text-center mb-4 mb-md-0 text-md-left" data-aos="fade-up">
-              <h2 class="text-white font-weight-bold">The Best Place To Stay. Reserve Now!</h2>
-            </div>
-            <div class="col-12 col-md-6 text-center text-md-right" data-aos="fade-up" data-aos-delay="200">
-              <a href="reservation.html" class="btn btn-outline-white-primary py-3 text-white px-5">Reserve Now</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-
-<script>
+ <script>
     let map;
     let marker;
 
@@ -255,8 +178,9 @@
         });
     }
 </script>
+    @include('Frontend.shared.booknow')
+    @include('Frontend.layout.footer')
 
-
-      @include('Frontend.layout.footer')
+    @include('Frontend.layout.footer')
 
 @endsection

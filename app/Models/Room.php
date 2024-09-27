@@ -17,4 +17,16 @@ class Room extends Model
 {
     return $this->hasMany(Booking::class, 'room_id');
 }
+
+//Added Counting the most booked room type
+public static function mostBooked($limit = 3)
+{
+    return RoomType::withCount(['rooms as bookings_count' => function ($query) {
+        $query->withCount('bookings');
+    }])
+    ->orderBy('bookings_count', 'desc')
+    ->take($limit)
+    ->get();
+}
+
 }

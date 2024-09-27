@@ -30,8 +30,7 @@ class BookingController extends Controller
     }
 
 
-    public function saveBooking(Request $request)
-    {
+public function saveBooking(Request $request)   {
         $data = $request->all();
 
         // Check if user is logged in
@@ -48,13 +47,28 @@ class BookingController extends Controller
         $checkinDate = Carbon::parse($data['checkin_date']);
         $checkoutDate = Carbon::parse($data['checkout_date']);
 
+
+        // Check if selecting in days or specific check-in/check-out dates
+        if (isset($data['day']) && !empty($data['day'])) {
+            // If user selects days, calculate check-in and check-out dates
+            $daysToBook = (int)$data['day'];
+            $checkinDate = $now->addDay(); // Check-in date is tomorrow
+            $checkoutDate = $checkinDate->copy()->addDays($daysToBook);
+        } else {
+            // Otherwise, parse the check-in and check-out dates from the input
+            $checkinDate = Carbon::parse($data['checkin_date']);
+            $checkoutDate = Carbon::parse($data['checkout_date']);
+        }
+
         // Check if the check-in date or check-out date is in the past
-        if ($checkinDate->lt($now) || $checkoutDate->lt($now)) {
+
+        if ($checkoutDate->lte($checkinDate)) {
             return response()->json([
-                'message' => 'Check-in and Check-out dates cannot be in the past or current day.',
-                'status' => 'invalid_dates',
+                'message' => 'Check-out date must be at least one day after the check-in date.',
+                'status' => 'invalid_checkout',
             ], 400);
         }
+
 
         // Check if the check-in date is within 2 months from now
         $twoMonthsFromNow = $now->copy()->addMonths(2);
@@ -124,6 +138,16 @@ class BookingController extends Controller
             ], 400);
         }
 
+        if (!$availableRoom) {
+            // Check if days are selected and room types are occupied
+            if (isset($data['day']) && !empty($data['day'])) {
+                return response()->json([
+                    'message' => 'All rooms of this type are occupied for the selected days.',
+                    'status' => 'occupied_days',
+                ], 400);
+            }
+        }
+
         // Room is available, proceed with booking
         $booking = new Booking;
         $booking->customer_id = $userId;
@@ -143,6 +167,8 @@ class BookingController extends Controller
             'booking' => $booking,
             'room_id' => $availableRoom->id,
         ], 201);
-    }
+}
+
+
 
 }

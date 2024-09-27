@@ -51,8 +51,8 @@
                         <li class="{{ Request::is('/') ? 'active' : '' }}">
                             <a style="font-size:30px;" href="{{ url('/') }}">Home</a>
                         </li>
-                        <li class="{{ Request::is('rooms') ? 'active' : '' }}">
-                            <a style="font-size:30px;" href="#">Rooms</a>
+                        <li class="{{ Request::is('roomGallery') ? 'active' : '' }}">
+                            <a style="font-size:30px;" href="{{ url('/roomGallery') }}">Rooms</a>
                         </li>
                         <li class="{{ Request::is('about') ? 'active' : '' }}">
                             <a style="font-size:30px;" href="#">About</a>
@@ -134,6 +134,9 @@
                         <input type="password" class="form-control" id="user-password" placeholder="Enter Password" name="password" required>
                         <p id="signin-password"></p>
                     </div>
+                    <div class="form-group" >
+                        <input type="checkbox" id="show-password-signin"> Show Password
+                    </div>
                     <div class="form-group">
                         {!! NoCaptcha::renderJs() !!}
                         {!! NoCaptcha::display() !!}
@@ -197,12 +200,15 @@
 
             <div class="form-group">
                 <label for="password">Password <span style="color:red;" class="astk">*</span></label>
-                <input type="password" name="password" class="form-control" id="password" placeholder="Enter Password" required>
+                <input type="password" name="password" class="form-control" id="signup-password" placeholder="Enter Password" required>
             </div>
             <div class="form-group">
                 <label for="password_confirmation">Confirm Password <span style="color:red;" class="astk">*</span></label>
-                <input type="password" name="password_confirmation" class="form-control" id="password_confirmation" placeholder="Confirm Password" required>
+                <input type="password" name="password_confirmation" class="form-control" id="signup-password_confirmation" placeholder="Confirm Password" required>
                 <small id="passwordHelp" class="form-text text-danger"></small>
+            </div>
+            <div class="form-group" >
+                <input type="checkbox" id="show-password-signup"> Show Password
             </div>
 
             <div class="form-group">
