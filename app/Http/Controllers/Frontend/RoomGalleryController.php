@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Banner;
 use App\Models\Room;
 use App\Models\RoomType;
+use App\Models\Booking;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 class RoomGalleryController extends Controller
 {
     public function roomGallery(){
@@ -21,10 +23,39 @@ class RoomGalleryController extends Controller
             $query->where('status', 1);
         }])->get();
 
+        $DiscountedRooms = RoomType::with(['rooms' => function ($query) {
+            $query->where('status', 1);
+        }])
+        ->where('status', 1)
+        ->where('discount', '>', 0) // Only get discounted room types
+        ->get();
+
+
         //Getting the most booked rooms
         $mostBookedRooms = Room::mostBooked();
-       // dd($mostBookedRooms);
-        return view('Frontend.Rooms.room_gallery')->with(compact('roomTypes','header','room','mostBookedRooms'));
+
+        $bookingCount = 0;
+        if (auth()->check()) {
+            $customerId = auth()->user()->id;
+            $today = now()->toDateString(); // Get the current date in 'Y-m-d' format
+
+            // Log the date for debugging purposes
+            Log::info('Today\'s Date: ' . $today);
+
+            // Count bookings where the checkout date is in the future or today
+            $bookingCount = Booking::where('customer_id', $customerId)
+                                   ->whereDate('checkout_date', '>=', $today)
+                                   ->count();
+
+            // Log the query and result for debugging
+            Log::info('Booking Count Query: ' . Booking::where('customer_id', $customerId)
+                                          ->whereDate('checkout_date', '>=', $today)
+                                          ->toSql());
+            Log::info('Booking Count Result: ' . $bookingCount);
+        }
+
+
+        return view('Frontend.Rooms.room_gallery')->with(compact('bookingCount','DiscountedRooms','roomTypes','header','room','mostBookedRooms'));
     }
 
     public function checkAvailableRoom(Request $request)

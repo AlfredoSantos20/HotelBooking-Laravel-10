@@ -11,9 +11,12 @@ class BookingsController extends Controller
      public function viewbooks(){
         Session::put('page','booking');
 
-        $booking = Booking::with('customer')->get()->toArray();
+     //  $booking = Booking::with('customer')->get()->toArray();
 
+        $booking = Booking::with(['room.roomType', 'customer'])->get()->toArray();
         //dd($booking);
         return view('Backend.Booking.booking')->with(compact('booking'));
     }
+
+
 }

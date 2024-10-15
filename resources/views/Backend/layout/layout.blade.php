@@ -128,6 +128,7 @@
     <!-- Page level plugins -->
     <script src="{{ url('Backend/vendor/chart.js/Chart.js') }}"></script>
     <script src="{{ url('Backend/vendor/chart.js/Chart.min.js') }}"></script>
+    <!-- Load Chart.js library first -->
 
         <!-- DataTables plugins -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -136,6 +137,7 @@
     <!-- Page level custom scripts -->
     <script src="{{ url('Backend/js/demo/chart-area-demo.js') }}"></script>
     <script src="{{ url('Backend/js/demo/chart-pie-demo.js') }}"></script>
+
 
 </body>
 

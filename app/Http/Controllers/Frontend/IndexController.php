@@ -11,6 +11,7 @@ use App\Models\Room;
 use App\Models\Booking;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 class IndexController extends Controller
 {
 
@@ -77,15 +78,25 @@ class IndexController extends Controller
         });
 
 
-        $bookingCount = 0; // Default booking count if user is not authenticated
-        if (auth()->check()) {
-            $customerId = auth()->user()->id; // Retrieve the authenticated user's ID
-            $bookingCount = Booking::where('customer_id', $customerId)->count(); // Count bookings
-        }
+        $bookingCount = 0;
+    if (auth()->check()) {
+        $customerId = auth()->user()->id;
+        $today = now()->toDateString(); // Get the current date in 'Y-m-d' format
 
-       // Show Count of Adults Per Room Type
+        // Log the date for debugging purposes
+        Log::info('Today\'s Date: ' . $today);
 
+        // Count bookings where the checkout date is in the future or today
+        $bookingCount = Booking::where('customer_id', $customerId)
+                               ->whereDate('checkout_date', '>=', $today)
+                               ->count();
 
+        // Log the query and result for debugging
+        Log::info('Booking Count Query: ' . Booking::where('customer_id', $customerId)
+                                      ->whereDate('checkout_date', '>=', $today)
+                                      ->toSql());
+        Log::info('Booking Count Result: ' . $bookingCount);
+    }
 
         //For checkavailability booking
         $room = Room::with('RoomType')->get()->toArray();

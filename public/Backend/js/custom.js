@@ -1,13 +1,29 @@
 $(document).ready(function(){
-    $('#employee').DataTable();
-    $('#banner').DataTable();
-    $('#room').DataTable();
-    $('#foods').DataTable();
-    //$('#booking').DataTable();
-    // $('#foods').DataTable({
-    //     "booking": [[0, "desc"]],
-    // });
+    // $('#employee').DataTable();
+    // $('#banner').DataTable();
+    // $('#room').DataTable();
+    // $('#foods').DataTable();
+    //  $('#bookings').DataTable();
 
+    $('#employee').DataTable({
+        "order": [[0, "desc"]]
+    });
+
+    $('#banner').DataTable({
+        "order": [[0, "desc"]]
+    });
+
+    $('#room').DataTable({
+        "order": [[0, "desc"]]
+    });
+
+    $('#foods').DataTable({
+        "order": [[0, "desc"]]
+    });
+
+    $('#bookings').DataTable({
+        "order": [[0, "desc"]]
+    });
     //FOR BIRTHDAY TO AGE CONVERTER
     $('#employee_birthday').on('change', function() {
         var birthdate = new Date($(this).val());
@@ -518,6 +534,7 @@ $('#roomtypeForm').on('submit', function(event) {
     });
 });
 
+
 //Update Roomtype status
 $(document).on("click", ".updateRoomtypeStatus", function(){
     var status = $(this).children("i").attr("status");
@@ -681,5 +698,6 @@ $(document).on("click",".deleteFood",function(){
       });
 });
 // --END ADD EDIT FOOD FUNCTION WITH STATUS AND DELETE
+
 });
 

@@ -11,10 +11,14 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
+use App\Models\Room;
+use App\Models\Banner;
+use App\Models\Booking;
 use Auth;
 use Validator;
 use Hash;
 use Session;
+use Image;
 
 
 class CustomerController extends Controller
@@ -59,6 +63,9 @@ class CustomerController extends Controller
             }
         }
     }
+
+
+
     public function signUp(Request $request)
     {
         // Validate incoming request data
@@ -183,6 +190,83 @@ class CustomerController extends Controller
                 }
             }
         }
+
+    public function settings(){
+
+        $header = Banner::where('type','header')->where('status',1)->get()->toArray();
+
+        $bookingCount = 0;
+        if (auth()->check()) {
+            $customerId = auth()->user()->id;
+            $bookingCount = Booking::where('customer_id', $customerId)->count();
+        }
+
+        return view('Frontend.settings.settings')->with(compact('header','bookingCount'));
+    }
+
+    public function customerSetting(Request $request, $id)
+{
+    // Find the user by id
+    $customerSetting = User::find($id);
+
+    if ($request->isMethod('post')) {
+        $data = $request->all();
+        $rules = [
+            'phone_num' => [
+                'required',
+                Rule::unique('users')->ignore($id),
+            ],
+            'image' => 'image|mimes:jpeg,png,jpg|max:2048',
+        ];
+
+        $customMessages = [
+            'phone_num.required' => 'Phone number is required',
+            'phone_num.unique' => 'This phone number has already been taken',
+            'image.image' => 'The file should be an image',
+            'image.mimes' => 'Only jpeg, png, and jpg images are allowed',
+            'image.max' => 'Image size should not be greater than 2MB',
+        ];
+
+        $this->validate($request, $rules, $customMessages);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image_tmp = $request->file('image');
+            if ($image_tmp->isValid()) {
+                $extension = $image_tmp->getClientOriginalExtension();
+                $imageName = rand(111, 99999) . '.' . $extension;
+                $imagePath = 'Frontend/images/customerImages/' . $imageName;
+                Image::make($image_tmp)->resize(300, 300)->save($imagePath);
+                $customerSetting->image = $imageName;
+            }
+        }
+
+        // Update the customer settings
+        $customerSetting->phone_num = $data['phone_num'];
+        $customerSetting->address = $data['address'];
+        $customerSetting->save();
+
+        // Set success message
+        return redirect()->back()->with('success_message', 'Personal details updated successfully!');
+    }
+
+    return view('customer.setting', compact('customerSetting'));
+}
+
+public function bookingList(){
+    $header = Banner::where('type','header')->where('status',1)->get()->toArray();
+
+    $bookingCount = 0;
+        if (auth()->check()) {
+            $customerId = auth()->user()->id;
+            $bookingCount = Booking::where('customer_id', $customerId)->count();
+        }
+
+        $bookingList = Booking::with('room.roomType')->get()->toArray();
+
+
+    return view('Frontend.booking.customer_booking_list')->with(compact('bookingList','header','bookingCount'));
+}
 
 
     public function Logout(){

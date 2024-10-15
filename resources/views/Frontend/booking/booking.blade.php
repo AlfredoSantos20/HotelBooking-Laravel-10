@@ -34,12 +34,12 @@
         <div class="row">
           <div class="col-md-7" data-aos="fade-up" data-aos-delay="100">
 
-            <form id="bookingForm" action="{{ route('saveBooking') }}" method="post" class="bg-white p-md-5 p-4 mb-5 border" invalidate>@csrf
+            <form id="bookingForm" action="{{ route('saveBooking') }}" method="post" class="bg-white p-md-5 p-4 mb-5 border">@csrf
 
                 <div class="form-group">
                     <strong style="color:red;"><label for="caution">Please read the following:</label></strong>
                     <ul>
-                        <li>You cannot checkout for the current day.</li>
+                        <li>You cannot check out on the same day as your check-in.</li>
                         <li>You can only book for a maximum of one week.</li>
 
 
@@ -48,19 +48,22 @@
 
                 <div class="form-group">
                     <label class="text-black font-weight-bold" for="name">Room Type:</label>
-                    <select title="Select Room Type" name="room_type_id" class="form-control" required>
+                    <select title="Select Room Type" name="room_type_id" id="room_type_id" class="form-control" required>
                         <option value="">Select Type</option>
                         @foreach(collect($room)->unique('room_type.id') as $rm)
                         <option value="{{ $rm['room_type']['id'] }}"
-                            @if(old('room_type') == $rm['room_type']['id'])
-                                selected
-                            @elseif(isset($room->room_type) && $room->room_type == $rm['room_type']['id'])
-                                selected
-                            @endif>
+                            data-price="{{ $rm['room_type']['price'] }}"
+                            data-discounted-price="{{ $rm['room_type']['discounted_price'] }}">
                             {{ $rm['room_type']['title'] }}
                         </option>
                         @endforeach
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="text-black font-weight-bold">Price:</label>
+                    <input type="hidden" name="room_price" id="room_price" value="">
+                    <p id="roomPrice">Please select a room type to see the price.</p>
                 </div>
 
                  <div class="form-group">
@@ -123,6 +126,31 @@
                     </div>
                 </div>
 
+
+                <div class="form-group">
+                    <label class="text-black font-weight-bold" for="payment">Select Payment Option.</label>
+
+                    <div class="form-check" style="display: flex; align-items: center; margin-bottom: 5px;">
+                        <input class="form-check-input" type="radio" name="payment" id="gcash"
+                               style="width: 20px; height: 20px;" value="Paymongo">
+                        <label class="form-check-label" for="gcash" style="display: flex; align-items: center; margin-left: 10px; margin-top: 5px;">
+                            <img src="{{url('Frontend/images/paymentIcon/gcashminilogo.png')}}" width="60" alt="">
+                            <strong style="margin: 0 10px; font-size: 24px;">/</strong>
+                            <img src="{{url('Frontend/images/paymentIcon/mastercardminilogo.png')}}" width="60" alt="">
+                        </label>
+                    </div>
+
+                    <div class="form-check" style="display: flex; align-items: center; margin-bottom: 5px;">
+                        <input class="form-check-input" type="radio" name="payment" id="paypal"
+                               style="width: 20px; height: 20px;" value="Paypal">
+                        <label class="form-check-label" for="paypal" style="display: flex; align-items: center; margin-left: 10px; margin-top: 5px;">
+                            <img src="{{url('Frontend/images/paymentIcon/minipaypalogo.png')}}" width="60" alt="">
+                        </label>
+                    </div>
+                </div>
+
+
+
                 <div class="row mb-4">
                     <div class="col-md-12 form-group">
                         <label class="text-black font-weight-bold" for="message">Notes</label>
@@ -159,6 +187,7 @@
 
     @include('Frontend.shared.customer_ratings')
 
+    {{-- script for googlemaps --}}
  <script>
     let map;
     let marker;
@@ -181,6 +210,6 @@
     @include('Frontend.shared.booknow')
     @include('Frontend.layout.footer')
 
-    @include('Frontend.layout.footer')
+
 
 @endsection

@@ -139,10 +139,13 @@ return [
     | Supported drivers: "file", "cache"
     |
     */
+    'maintenance_mode' => env('APP_MAINTENANCE_MODE', false),
 
     'maintenance' => [
-        'driver' => 'file',
+      'driver' => env('SESSION_DRIVER', 'file'),
+
         // 'store' => 'redis',
+
     ],
 
     /*

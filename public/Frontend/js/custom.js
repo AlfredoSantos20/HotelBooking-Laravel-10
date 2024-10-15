@@ -1,4 +1,10 @@
 $(document).ready(function() {
+
+    $('#bookinglist').DataTable({
+        "order": [[0, "desc"]]
+    });
+
+
     // Function to zoom in on image in table
     function zoomIn(element) {
         $(element).css('transform', 'scale(1.2)');
@@ -41,6 +47,8 @@ $(document).ready(function() {
             url: "/signin",
             type: "POST",
             data: formdata,
+
+
             success: function(resp) {
                 if (resp.type == "error") {
                     $.each(resp.errors, function(i, error) {
@@ -80,6 +88,7 @@ $(document).ready(function() {
         });
     });
 
+
     function startCountdown(id, selector) {
         var countdown = 5;
         var timer = setInterval(function() {
@@ -88,7 +97,7 @@ $(document).ready(function() {
                 clearInterval(timer);
                 $(selector).css({'display': 'none'});
             }
-            // Removed the line that displays the countdown number
+
         }, 1000);
     }
 
@@ -322,35 +331,94 @@ $('#otpForm').on('submit', function(e) {
     });
 });
 
-//Hide un hide select date and days
+// //Hide un hide select date and days
+// $('#selectDaysBtn').click(function() {
+//     $('#daySelection').show(); // Show the day selection
+//     $('#dateSelection').hide(); // Hide the date selection
+//     clearInputsDateSelection(); // Clear previous date inputs
+//     $('#day').focus(); // Focus on the day select to avoid invalid control error
+// });
+
+// $('#selectDatesBtn').click(function() {
+//     $('#dateSelection').show();
+//     $('#daySelection').hide();
+//     clearInputsDaySelection(); // Clear day selection inputs
+//     $('input[name="checkin_date"], input[name="checkout_date"]').prop('required', true); // Set required
+//     $('select[name="day"]').prop('required', false); // Remove required
+// });
+
+// function clearInputsDateSelection() {
+//     $('input[name="checkin_date"]').val('');
+//     $('input[name="checkout_date"]').val('');
+// }
+
+// function clearInputsDaySelection() {
+//     $('#day').val(''); // Clear the day select element
+// }
+
+// Show day selection and hide date selection
 $('#selectDaysBtn').click(function() {
-    $('#daySelection').show(); // Show the day selection
-    $('#dateSelection').hide(); // Hide the date selection
-    clearInputsDateSelection(); // Clear previous date inputs
-    $('#day').focus(); // Focus on the day select to avoid invalid control error
+    $('#daySelection').show();
+    $('#dateSelection').hide();
+    clearInputsDateSelection();
+
+    // Set required attribute correctly
+    $('input[name="checkin_date"], input[name="checkout_date"]').prop('required', false);
+    $('select[name="day"]').prop('required', true);
+
+    $('#day').focus();
 });
 
+// Show date selection and hide day selection
 $('#selectDatesBtn').click(function() {
     $('#dateSelection').show();
     $('#daySelection').hide();
-    clearInputsDaySelection(); // Clear day selection inputs
-    $('input[name="checkin_date"], input[name="checkout_date"]').prop('required', true); // Set required
-    $('select[name="day"]').prop('required', false); // Remove required
+    clearInputsDaySelection();
+
+    // Set required attribute correctly
+    $('input[name="checkin_date"], input[name="checkout_date"]').prop('required', true);
+    $('select[name="day"]').prop('required', false);
+
+    $('input[name="checkin_date"]').focus();
 });
 
+// Clear date selection inputs
 function clearInputsDateSelection() {
     $('input[name="checkin_date"]').val('');
     $('input[name="checkout_date"]').val('');
 }
 
+// Clear day selection input
 function clearInputsDaySelection() {
-    $('#day').val(''); // Clear the day select element
+    $('#day').val('');
 }
 
+//Showing Price of room type
+$('#room_type_id').on('change', function() {
+    var selectedOption = $('option:selected', this);
+    var price = selectedOption.data('price');
+    var discountedPrice = selectedOption.data('discounted-price');
 
+    // Reset to default message if no room type is selected
+    if ($(this).val() === "") {
+        $('#roomPrice').text('Please select a room type to see the price.');
+        $('#room_price').val(''); // Clear the hidden input
+        return; // Exit the function if no selection is made
+    }
 
-
-//   // Saving booking
+    // Set the price to the hidden input
+    if (discountedPrice && discountedPrice !== price) {
+        $('#roomPrice').text('Discounted Price: ₱' + discountedPrice.toFixed(2));
+        $('#room_price').val(discountedPrice); // Set hidden input to discounted price
+    } else if (price) {
+        $('#roomPrice').text('Price: ₱' + price.toFixed(2));
+        $('#room_price').val(price); // Set hidden input to regular price
+    } else {
+        $('#roomPrice').text('Please select a room type to see the price.');
+        $('#room_price').val(''); // Clear the hidden input
+    }
+});
+  // Saving booking
   $('#bookingForm').on('submit', function(e) {
     e.preventDefault();
 
@@ -445,8 +513,6 @@ function clearInputsDaySelection() {
 
 
 
-
-
 //CHECK AVAILABLE ROOM
 $('#availabilityForm').on('submit', function(e) {
     e.preventDefault(); // Prevent default form submission
@@ -504,58 +570,47 @@ $('#availabilityForm').on('submit', function(e) {
 
 
 
-
-
-
-
 //EMPLOYE SIGN
-$('#EmploginForm').on('submit', function(e) {
-    e.preventDefault();
+// $('#EmploginForm').on('submit', function(e) {
+//     e.preventDefault();
 
-    let formData = {
-        email: $('#emp-email').val(),  // Corrected the ID
-        password: $('#emp-password').val(),
-        _token: $('input[name="_token"]').val()  // CSRF token
-    };
+//     let formData = {
+//         email: $('#emp-email').val(),  // Corrected the ID
+//         password: $('#emp-password').val(),
+//         _token: $('input[name="_token"]').val()  // CSRF token
+//     };
 
-    // Clear previous errors
-    $('#emp-signin-error, #emp-signin-email, #emp-signin-password').text('');
+//     // Clear previous errors
+//     $('#emp-signin-error, #emp-signin-email, #emp-signin-password').text('');
 
-    // Send AJAX request
-    $.post('/empSignin', formData)
-    .done(function(response) {
-        if (response.success) {
-            window.location.href = response.redirect_url;
-        }else if(response.success){
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: response.message,
-            });
-        }
-    })
-    .fail(function(xhr) {
-        console.log(xhr);  // Log the entire xhr object
-        console.log(xhr.responseJSON);  // Log the responseJSON part
+//     // Send AJAX request
+//     $.post('/empSignin', formData)
+//     .done(function(response) {
+//         if (response.success) {
+//             window.location.href = response.redirect_url;
+//         }else if(response.success){
+//             Swal.fire({
+//                 icon: 'error',
+//                 title: 'Oops...',
+//                 text: response.message,
+//             });
+//         }
+//     })
+//     .fail(function(xhr) {
+//         console.log(xhr);  // Log the entire xhr object
+//         console.log(xhr.responseJSON);  // Log the responseJSON part
 
-        let errors = xhr.responseJSON.errors || {};
-        $('#emp-signin-email').text(errors.email ? errors.email[0] : '');
-        $('#emp-signin-password').text(errors.password ? errors.password[0] : '');
-        $('#emp-signin-error').text(xhr.responseJSON.message || '');  // Show invalid email or password message
-    });
+//         let errors = xhr.responseJSON.errors || {};
+//         $('#emp-signin-email').text(errors.email ? errors.email[0] : '');
+//         $('#emp-signin-password').text(errors.password ? errors.password[0] : '');
+//         $('#emp-signin-error').text(xhr.responseJSON.message || '');  // Show invalid email or password message
+//     });
 
-});
+// });
 
 
 // Employee password visibility
-$('#show-password').on('click', function() {
-    var passwordInput = $('#emp-password');
-    if (passwordInput.attr('type') === 'password') {
-        passwordInput.attr('type', 'text');
-    } else {
-        passwordInput.attr('type', 'password');
-    }
-});
+
 
 $('#show-password-signup').on('click', function() {
     var passwordInput = $('#signup-password');

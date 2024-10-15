@@ -37,7 +37,7 @@
     <!-- Content Row -->
     <div class="row">
         <div class="col-lg-12 grid-margin stretch-card">
-            <!-- book Table -->
+            <!-- Booking Table -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3" style="background-color:#17A2B8;">
                     <h6 class="m-0 font-weight-bold text-white">Booking's List</h6>
@@ -45,49 +45,59 @@
 
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover" id="booking" width="100%" cellspacing="0">
-                            <thead >
+                        <table id="bookings" class="table table-bordered table-hover" width="100%" cellspacing="0">
+                            <thead>
                                 <tr>
                                     <th class="text-center text-dark"><strong>ID</strong></th>
-                                    <th class="text-center text-dark"><strong>Customer Name</strong></th>
                                     <th class="text-center text-dark"><strong>Room ID</strong></th>
-                                    <th class="text-center text-dark"><strong>Checkin Date</strong></th>
-                                    <th class="text-center text-dark"><strong>Checkout Date</strong></th>
-                                    <th class="text-center text-dark"><strong>Note</strong></th>
-                                    <th class="text-center text-dark"><strong>Payment</strong></th>
-                                    <th class="text-center text-dark"><strong>Delete</strong></th>
+                                    <th class="text-center text-dark"><strong>Amount</strong></th>
+                                    <th class="text-center text-dark"><strong>Customer</strong></th>
+                                    <th class="text-center text-dark"><strong>Room Type</strong></th>
+                                    <th class="text-center text-dark"><strong>Check-in Date</strong></th>
+                                    <th class="text-center text-dark"><strong>Check-out Date</strong></th>
+                                    <th class="text-center text-dark"><strong>Notes</strong></th>
+
 
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($booking as $book)
                                 <tr>
-                                    <td class="text-center text-dark">{{ $book['id'] }} </td>
-                                    <td class="text-center text-dark">@if(empty($book['customer']['Fname']  ))
-                                        No Customer Data.
+                                    <td class="text-center text-dark">{{ $book['id'] }}</td>
+                                    <td class="text-center text-dark">{{ $book['room']['id'] }} </td>
+                                    <td class="text-center text-dark">{{ $book['amount'] }} </td>
+                                    <td class="text-center text-dark">
+                                        @if(empty($book['customer']['Fname']))
+                                            No Customer Data.
                                         @else
-                                        {{$book['customer']['Fname'] }}  {{$book['customer']['Lname'] }}
+                                            {{ $book['customer']['Fname'] }} {{ $book['customer']['Lname'] }}
                                         @endif
                                     </td>
-                                    <td class="text-center text-dark">{{ $book['room_id'] }} </td>
-                                    <td class="text-center text-dark">{{date('F j, Y, g:i a', strtotime($book['checkin_date'])); }} </td>
-                                    <td class="text-center text-dark">{{date('F j, Y, g:i a', strtotime($book['checkout_date'])); }} </td>
-                                    <td class="text-center text-dark">{{ $book['note'] }} </td>
-                                    {{-- <td class="text-center text-dark">   <a href="{{ url ('books-management/add-edit-books/'.$book['id']) }}"><i title="Edit book?" style="color:rgb(0, 128, 128); font-size:20px;" class="fa-solid fa-pen-to-square"></i></a>
-                                       <a href="javascript:void(0)" class="bookDelete" module="book" moduleid="{{ $book['id'] }}"><i title="Delete book?" style="color:red; font-size:20px;" class="fa-solid fa-trash"></i></a> </td> --}}
+                                    <td class="text-center text-dark">{{ $book['room_id'] }}</td>
+                                    <td class="text-center text-dark">{{ date('F j, Y, g:i a', strtotime($book['checkin_date'])) }}</td>
+                                    <td class="text-center text-dark">{{ date('F j, Y, g:i a', strtotime($book['checkout_date'])) }}</td>
+                                    <td class="text-center text-dark">
+                                        @if(trim($book['note']) === "")
+                                        No note.
+                                    @else
+                                        {{ $book['note'] }}
+                                    @endif</td>
+
+
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
+
+
             </div>
         </div>
 
+        @include('Backend.layout.footer')
     </div>
-    @include('Backend.layout.footer')
 </div>
-
 @endsection
 
 

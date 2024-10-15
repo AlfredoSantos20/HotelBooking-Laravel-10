@@ -59,6 +59,7 @@ class RoomController extends Controller
             $this->validate($request, $rules, $customMessages);
 
             $room->room_type = $data['room_type'];
+            $room->occupancy = "Available";
             $room->status = 1;
 
             $width = 350;
@@ -130,7 +131,8 @@ class RoomController extends Controller
     public function roomtype(){
         Session::put('page','room-type');
 
-        $roomType = RoomType::get()->toArray();
+        $roomType = RoomType::all();
+
 
        // dd($rooms);
         return view('Backend.Rooms.room_type')->with(compact('roomType'));
@@ -175,58 +177,123 @@ class RoomController extends Controller
       }
 
 
-    public function AddEditRoomtype(Request $request, $id = null)
-    {
-        Session::put('page', 'room-type');
+// public function AddEditRoomtype(Request $request, $id = null)
+//     {
+//         Session::put('page', 'room-type');
 
-        if ($id == "") {
-            // Add room
-            $roomType = new RoomType;
-            $message = "Room Type Added successfully!";
-            $title = "Add Room Type";
-        } else {
-            // Update room
-            $roomType = RoomType::find($id);
-            $message = "Room Type Updated successfully!";
-            $title = "Edit Room";
-        }
+//         if ($id == "") {
+//             // Add room
+//             $roomType = new RoomType;
+//             $message = "Room Type Added successfully!";
+//             $title = "Add Room Type";
+//         } else {
+//             // Update room
+//             $roomType = RoomType::find($id);
+//             $message = "Room Type Updated successfully!";
+//             $title = "Edit Room";
+//         }
 
-        if ($request->isMethod('post')) {
-            $data = $request->all();
+//         if ($request->isMethod('post')) {
+//             $data = $request->all();
 
-            $rules = [
-                'price' => 'required',
-                'title' => [
-                    'required',
-                    Rule::unique('room_types')->ignore($id)
-                ],
-                'description' => 'required',
-
-
-            ];
-            $customMessages = [
-
-                'title.required' => 'RoomType is Required',
-                'title.unique' => 'RoomType title has already been taken',
-                'price.required' => 'Price is Required',
-                'description.required' => 'Description is Required',
-
-            ];
-
-            $this->validate($request, $rules, $customMessages);
-
-            $roomType->title = $data['title'];
-            $roomType->price = $data['price'];
-            $roomType->children = $data['total_children'];
-            $roomType->adults = $data['total_adults'];
-            $roomType->description = $data['description'];
-            $roomType->status = 1;
+//             $rules = [
+//                 'price' => 'required',
+//                 'title' => [
+//                     'required',
+//                     Rule::unique('room_types')->ignore($id)
+//                 ],
+//                 'description' => 'required',
 
 
-            $roomType->save();
-            return response()->json(['success' => true, 'message' => $message]);
-        }
-        return view('Backend.Rooms.add_edit_roomtype')->with(compact('title','roomType'));
+//             ];
+//             $customMessages = [
+
+//                 'title.required' => 'RoomType is Required',
+//                 'title.unique' => 'RoomType title has already been taken',
+//                 'price.required' => 'Price is Required',
+//                 'description.required' => 'Description is Required',
+
+//             ];
+
+//             $this->validate($request, $rules, $customMessages);
+
+//             $roomType->title = $data['title'];
+//             $roomType->price = $data['price'];
+//             $roomType->children = $data['total_children'];
+//             $roomType->adults = $data['total_adults'];
+//             $roomType->description = $data['description'];
+//             $roomType->status = 1;
+
+
+//             $roomType->save();
+//             return response()->json(['success' => true, 'message' => $message]);
+//         }
+//         return view('Backend.Rooms.add_edit_roomtype')->with(compact('title','roomType'));
+// }
+
+public function AddEditRoomtype(Request $request, $id = null)
+{
+    Session::put('page', 'room-type');
+
+    if ($id == "") {
+        // Add room type
+        $roomType = new RoomType;
+        $message = "Room Type Added successfully!";
+        $title = "Add Room Type";
+    } else {
+        // Update room type
+        $roomType = RoomType::find($id);
+        $message = "Room Type Updated successfully!";
+        $title = "Edit Room";
     }
+
+
+
+    if ($request->isMethod('post')) {
+        $data = $request->all();
+
+        // Validation rules
+        $rules = [
+            'price' => 'required|numeric',
+            'title' => [
+                'required',
+                Rule::unique('room_types')->ignore($id),
+            ],
+            'discount' => 'nullable|numeric|min:0|max:100', // Add this rule
+            'description' => 'required',
+        ];
+
+        $customMessages = [
+            'title.required' => 'RoomType is Required',
+            'title.unique' => 'RoomType title has already been taken',
+            'price.required' => 'Price is Required',
+            'discount.max' => 'Discount cannot be more than 100%',
+            'discount.min' => 'Discount cannot be less than 0%',
+            'description.required' => 'Description is Required',
+        ];
+
+        $this->validate($request, $rules, $customMessages);
+
+        // Assign data to the room type
+        $roomType->title = $data['title'];
+        $roomType->price = $data['price'];
+        $roomType->children = $data['total_children'];
+        $roomType->adults = $data['total_adults'];
+        $roomType->description = $data['description'];
+        $roomType->discount = $data['discount'] ?? 0;
+        $roomType->status = 1;
+
+        // Save to the database
+        $roomType->save();
+
+        // Return success message
+        return response()->json(['success' => true, 'message' => $message]);
+    }
+
+    // Pass room types to the view
+    return view('Backend.Rooms.add_edit_roomtype')->with(compact('title', 'roomType'));
+}
+
+
 
 }

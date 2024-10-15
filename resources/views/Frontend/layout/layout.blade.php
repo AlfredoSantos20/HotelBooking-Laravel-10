@@ -20,6 +20,9 @@
     <link rel="stylesheet" href="{{ url('Frontend/css/jquery.timepicker.css')}}">
     <link rel="stylesheet" href="{{ url('Frontend/css/fancybox.min.css')}}">
     <link rel="stylesheet" href="{{ url('Frontend/css/zoom.css')}}">
+
+    <!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
     <!-- THIS IS FOR THE BROWSER'S ICON-->
     <link rel="shortcut icon" href="{{ url('Backend/img/mylogo.png') }} " />
 
@@ -88,6 +91,13 @@
     <script src="{{ url('Frontend/js/jquery.timepicker.min.js')}}"></script>
     <script src="{{ url('Frontend/js/main.js')}}"></script>
     <script src="{{ url('Frontend/js/custom.js')}}"></script>
+    <script src="{{ url('Frontend/js/employee.js')}}"></script>
     <script src="{{ url('Frontend/js/button-up.js')}}"></script>
+
+    {{-- plugin dataTables --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="{{ url('Backend/vendor/datatables/jquery.dataTables.js') }}"></script>
+    <script src="{{ url('Backend/vendor/datatables/jquery.dataTables.min.js') }}"></script>
   </body>
 </html>

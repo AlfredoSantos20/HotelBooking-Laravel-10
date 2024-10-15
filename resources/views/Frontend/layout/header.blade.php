@@ -1,23 +1,55 @@
 <header class="site-header js-site-header">
     <style>
-        .dropdown-item:hover {
-            cursor: pointer;
-        }
+    .dropdown-menu {
+    top: 30px !important;
+    margin-top: 0px !important;
+    padding: 0px;
+    border-radius: 5px;
+    }
+
+    .counter {
+        position: absolute;
+        top: 0px;
+
+        background-color: red;
+        color: white;
+        padding: 2px 6px;
+        border-radius: 50%;
+        font-size: 12px;
+    }
     </style>
     <div class="container-fluid">
       <div class="row align-items-center">
         <div style="font-size:20px;" class="col-6 col-lg-4 site-logo dropdown" data-aos="fade"><a type="button" data-toggle="dropdown" href="javascript:;" >
-                @if(Auth::check()) My Account @else Sign-up/Sign-in @endif
+                @if(Auth::check())<div class="testimonial text-center slider-item">
+                    <div class="author-image ">
 
-            <ul class="dropdown-menu">
+                    @if(!empty(Auth::user()->image))
+                      <img title="Profile" src="{{ url('Frontend/images/customerImages/'.Auth::user()->image)}}" alt="Image placeholder" class="rounded-circle mx-auto">
+
+                      @else
+                      <img title="Profile" src="{{ url('Frontend/images/customerImages/no-user-image.png')}}" alt="Image placeholder" class="rounded-circle mx-auto">
+                      @endif
+
+                      <label for="profile" style=" cursor: pointer;">{{Auth::user()->Fname}} {{Auth::user()->Lname}}</label> </div>
+                </div>  @else Sign-up/Sign-in @endif
+
+            <ul class="dropdown-menu" style="margin-top: 0%;">
                 @if(Auth::check())
                            {{-- gonna put account settings, logout etc here --}}
-                <li><a title="My Booked" style="font-size:15px;" class="text-dark" href="#">&nbsp; <i class="fa-solid fa-door-open"></i></i></i></i> My Booked</a> ({{ $bookingCount ?? 0 }})</li>
-                <li><a title="Setting" style="font-size:15px;" class="text-dark" href="#">&nbsp;  <i class="fa-solid fa-gear"></i></i> Settings</a></li>
-                <li><a title="Logout" style="font-size:15px;" class="text-dark" href="{{url('logout')}}">&nbsp;  <i class="fa-solid fa-right-to-bracket"></i> Logout</a></li>
+                           <li style="position: relative;">
+                            <a title="My Booked" style="font-size: 15px;" class="text-dark" href="{{url('bookingList')}}">
+                                &nbsp; <i class="fa-solid fa-rectangle-list"></i> My Booked
+                                <span class="counter">{{ $bookingCount ?? 0 }}</span>
+                            </a>
+                        </li>
+
+                </li>
+                <li style="position: relative;"><a title="Setting" href="{{url('settings')}}" style="font-size:15px;" class="text-dark" href="#">&nbsp;  <i class="fa-solid fa-gear"></i></i> Settings</a></li>
+                <li style="position: relative;"><a title="Logout" style="font-size:15px;" class="text-dark" href="{{url('logout')}}">&nbsp;  <i class="fa-solid fa-right-to-bracket"></i> Logout</a></li>
                @else
-               <li><a title="Sign-in" style="font-size:15px;" class="text-dark" href="javascript:;" data-toggle="modal" data-target="#Empsignin">&nbsp;  <i class="fa-solid fa-right-to-bracket"></i> Employee</a></li>
-                <li><a title="Sign-in" style="font-size:15px;" class="text-dark" href="javascript:;" data-toggle="modal" data-target="#signin">&nbsp;  <i class="fa-solid fa-right-to-bracket"></i> Customer </a></li>
+               <li style="position: relative;"><a title="Sign-in" style="font-size:15px;" class="text-dark" href="javascript:;" data-toggle="modal" data-target="#Empsignin">&nbsp;  <i class="fa-solid fa-right-to-bracket"></i> Employee</a></li>
+                <li style="position: relative;"><a title="Sign-in" style="font-size:15px;" class="text-dark" href="javascript:;" data-toggle="modal" data-target="#signin">&nbsp;  <i class="fa-solid fa-right-to-bracket"></i> Customer </a></li>
                 {{-- <li><a title="Sign-up" style="font-size:15px;"  class="text-dark" href="javascript:;" data-toggle="modal" data-target="#signup">&nbsp;  <i class="fa-solid fa-user-plus"></i> Sign-up</a></li> --}}
               @endif
             </ul>
@@ -79,33 +111,6 @@
 
 
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
-  @if(Session::has('success_message'))
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-   <strong>Success:</strong> {{ Session::get('success_message')}}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-    </button>
-   </div>
-   @endif
-
-   @if(Session::has('error_message'))
-   <div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <strong>Error:</strong> {{ Session::get('error_message')}}
-     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-     <span aria-hidden="true">&times;</span>
-     </button>
-    </div>
-    @endif
-
-    @if($errors->any())
-   <div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <strong>Error:</strong> <?php echo implode('', $errors->all('<div>:message</div>')); ?>
-     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-     <span aria-hidden="true">&times;</span>
-     </button>
-    </div>
-    @endif
 
   <!--Customer  Sign-in -->
 <div class="modal fade" id="signin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -230,7 +235,7 @@
 
 {{-- Employee Sign-in --}}
 
-<div class="modal fade" id="Empsignin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+{{-- <div class="modal fade" id="Empsignin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <form id="EmploginForm" action="javascript:;" method="post">@csrf
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -241,40 +246,81 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p id="emp-signin-error"></p>
+
+                    <p id="emp-signin-error" style="color:red;"></p>
+
+                    <!-- Email input -->
                     <div class="form-group">
-                        <label for="employee_email">Email
-                            <span style="color:red;" class="astk">*</span>
-                        </label>
+                        <label for="employee_email">Email <span style="color:red;" class="astk">*</span></label>
                         <input type="text" class="form-control" id="emp-email" placeholder="Enter Email" name="email" required>
-                        <p id="emp-signin-email"></p>
+
+                        <p id="emp-signin-email" style="color:red;"></p>
                     </div>
+
+                    <!-- Password input -->
                     <div class="form-group">
-                        <label for="employee_password">Password
-                            <span style="color:red;" class="astk">*</span>
-                        </label>
+                        <label for="employee_password">Password <span style="color:red;" class="astk">*</span></label>
                         <input type="password" class="form-control" id="emp-password" placeholder="Enter Password" name="password" required>
-                        <p id="emp-signin-password"></p>
+
+                        <p id="emp-signin-password" style="color:red;"></p>
                     </div>
-                    <div class="form-group" >
-                        <input type="checkbox" id="show-password"> Show Password
+
+                    <!-- Show password checkbox -->
+                    <div class="form-group">
+                        <input type="checkbox" id="emp-show-password"> Show Password
                     </div>
+
+                    <!-- Google reCAPTCHA -->
                     <div class="form-group">
                         {!! NoCaptcha::renderJs() !!}
                         {!! NoCaptcha::display() !!}
                     </div>
-                    <p id="emp-countdown-timer" style="display:none; color:red;">30 seconds </p> <!-- Hidden initially -->
+
+                    <!-- Countdown timer (hidden initially) -->
+                    <p id="emp-countdown-timer" style="display:none; color:red;">30 seconds</p>
                 </div>
-                <div style="justify-content:center;" class="modal-footer">
+
+                <div class="modal-footer" style="justify-content:center;">
+                    <!-- Submit button for sign-in -->
                     <button type="submit" id="emp-signin-button" class="btn btn-primary text-white">Sign-in</button>
                 </div>
             </div>
         </div>
     </form>
+</div> --}}
+
+
+<div class="modal fade" id="Empsignin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <form id="EmploginForm" action="javascript:;" method="post">@csrf
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Validate Employee Email</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <p id="emp-signin-error" style="color:red;"></p>
+
+                    <!-- Email input -->
+                    <div class="form-group">
+                        <label for="employee_email">Email <span style="color:red;" class="astk">*</span></label>
+                        <input type="text" class="form-control" id="emp-email" placeholder="Enter Email" name="email" required>
+
+                        <p id="emp-signin-email" style="color:red;"></p>
+                    </div>
+                </div>
+
+                <div class="modal-footer" style="justify-content:center;">
+                    <!-- Submit button for sign-in -->
+                    <button type="submit" id="emp-signin-button" class="btn btn-primary text-white">Validate Email</button>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
-
-
-
 
 
 {{--Customer FORGOT PASSWORD --}}

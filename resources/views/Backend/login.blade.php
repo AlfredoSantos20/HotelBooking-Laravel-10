@@ -55,9 +55,10 @@
                                     placeholder="Enter Email Address" @if(isset($_COOKIE["email"])) value="{{ $_COOKIE["email"] }}" @endif required>
                             </div>
                             <div class="form-group">
-                                <input name="password" type="password" class="form-control form-control-user"
+                                <input name="password" type="password" id="emp-password" class="form-control form-control-user"
                                     placeholder="Password" @if(isset($_COOKIE["password"])) value="{{ $_COOKIE["password"] }}" @endif required>
                             </div>
+
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox small ">
                                     <input type="checkbox" class="custom-control-input" id="remember" name="remember" @if(isset($_COOKIE["email"])) checked @endif>

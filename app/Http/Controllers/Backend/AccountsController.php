@@ -9,15 +9,31 @@ use App\Models\Barangay;
 use App\Models\City;
 use App\Models\Province;
 use App\Models\Region;
+use App\Models\Booking;
+use App\Models\User;
+use App\Models\Room;
 use Yajra\Address\HasAddress;
 use Auth;
+use Carbon\Carbon;
 use Image;
 use Session;
 class AccountsController extends Controller
 {
     public function dashboard(){
         Session::put('page','dashboard');
-        return view('Backend.dashboard');
+        $booksCount = Booking::count();
+        $usersCount = User::count();
+        $roomsCount = Room::count();
+        $employeeCount = Employee::count();
+
+        $current_month_bookings = Booking::whereYear('checkin_date',Carbon::now()->year)->whereMonth('checkin_date',Carbon::now()->month)->count();
+        $before_1_month_bookings = Booking::whereYear('checkin_date',Carbon::now()->year)->whereMonth('checkin_date',Carbon::now()->subMonth(1))->count();
+        $before_2_month_bookings = Booking::whereYear('checkin_date',Carbon::now()->year)->whereMonth('checkin_date',Carbon::now()->subMonth(2))->count();
+        $before_3_month_bookings = Booking::whereYear('checkin_date',Carbon::now()->year)->whereMonth('checkin_date',Carbon::now()->subMonth(3))->count();
+
+           $bookingsCount = array($current_month_bookings, $before_1_month_bookings, $before_2_month_bookings, $before_3_month_bookings);
+
+        return view('Backend.dashboard')->with(compact('bookingsCount','booksCount','usersCount','roomsCount','employeeCount'));
     }
 
     //Error 404
@@ -41,7 +57,7 @@ class AccountsController extends Controller
                 'email.required' => "Email is Required!",
                 'email.email' => "Valid Email is Required!",
                 'password.required' => "Password is Required!",
-                 'g-recaptcha-response.required' => 'reCaptcha is required!'
+                //  'g-recaptcha-response.required' => 'reCaptcha is required!'
 
             ];
             $this->validate($request,$rules,$customMessages);
@@ -244,7 +260,7 @@ public function employee() {
     //Logout
     public function logout(){
         Auth::guard('midware')->logout();
-        return redirect('hotel-de-luna/login');
+        return redirect('/');
     }
 
 }

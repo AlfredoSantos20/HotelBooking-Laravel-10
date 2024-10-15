@@ -118,6 +118,8 @@
     </div>
   </section> --}}
 
+
+{{-- Normal Rooms --}}
 <section class="section">
     <div class="container">
         <div class="row">
@@ -155,6 +157,7 @@
     }
 </style>
 
+  {{-- Popular Rooms --}}
 <section class="section bg-light">
     <div class="container">
         <div class="row justify-content-center text-center mb-5">
@@ -167,35 +170,81 @@
         @php
             // Keep track of displayed room types to avoid duplicates
             $displayedRoomTypes = [];
-            $rankings = ['1st', '2nd', '3rd']; // Define rankings
+            $rankings = ['1st', '2nd', '3rd'];
         @endphp
 
         @foreach($mostBookedRooms as $index => $roomType)
-            @if (!in_array($roomType->id, $displayedRoomTypes))
-                <div class="site-block-half d-block d-lg-flex bg-white" data-aos="fade" data-aos-delay="{{ 100 * ($index + 1) }}">
-                    <a href="#" class="image d-block bg-image-2 {{ $index % 2 === 0 ? '' : 'order-2' }}" style="background-image: url('{{ url('Frontend/images/rooms/' . $roomType->rooms->first()->image) }}');"></a>
-                    <div class="text {{ $index % 2 === 0 ? '' : 'order-1' }}">
-                        <span class="d-block mb-4">
-                            <span class="display-4 text-primary">{{ '₱ ' . number_format($roomType->price, 0, '.', ',') }}</span>
-                            <span class="text-uppercase letter-spacing-2">/ per night</span>
-                        </span>
-                        <h2 class="mb-4 roomtype-title">
-                            {{ $rankings[$index] ?? '' }} - {{ $roomType->title }} ({{ $roomType->bookings_count }} bookings)
-                        </h2>
-                        <p>{{ $roomType->description }}</p>
-                        <p><a href="{{ url('booking/' . $roomType->rooms->first()->id) }}" class="btn btn-primary text-white">Book Now</a></p>
-                    </div>
+            <div class="site-block-half d-block d-lg-flex bg-white" data-aos="fade" data-aos-delay="{{ 100 * ($index + 1) }}">
+                <a href="#" class="image d-block bg-image-2 {{ $index % 2 === 0 ? '' : 'order-2' }}" style="background-image: url('{{ url('Frontend/images/rooms/' . $roomType->rooms->first()->image) }}');"></a>
+                <div class="text {{ $index % 2 === 0 ? '' : 'order-1' }}">
+                    <span class="d-block mb-4">
+                        <span class="display-4 text-primary">{{ '₱ ' . number_format($roomType->price, 0, '.', ',') }}</span>
+                        <span class="text-uppercase letter-spacing-2">/ per night</span>
+                    </span>
+                    <h2 class="mb-4 roomtype-title">
+                        {{ $rankings[$index] ?? '' }} - {{ $roomType->title }} ({{ $roomType->bookings_count }} bookings)
+                    </h2>
+                    <p>{{ $roomType->description }}</p>
+                    <p><a href="{{ url('booking/' . $roomType->rooms->first()->id) }}" class="btn btn-primary text-white">Book Now</a></p>
                 </div>
+            </div>
 
-                @php
-                    // Add this room type to the displayed list
-                    $displayedRoomTypes[] = $roomType->id;
-                @endphp
-            @endif
+            @php
+                // Add this room type to the displayed list
+                $displayedRoomTypes[] = $roomType->id;
+            @endphp
         @endforeach
     </div>
 </section>
 
+
+{{-- Discounted Rooms --}}
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center text-center mb-5">
+            <div class="col-md-7">
+                <h2 class="heading" data-aos="fade">Discounted Rooms</h2>
+                <p data-aos="fade">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
+            </div>
+        </div>
+        <div class="row">
+            @foreach($DiscountedRooms as $discount)
+                @if ($discount->rooms->isNotEmpty())
+                    <div class="col-md-6 col-lg-4 mb-5" data-aos="fade-up">
+                        <a href="javascript:;" class="room">
+                            <figure class="img-wrap">
+                                <img src="{{ asset('Frontend/images/rooms/' . $discount->rooms->first()->image) }}" alt="{{ $discount->title }} image" class="img-fluid mb-3">
+                            </figure>
+                            <div class="p-3 text-center room-info ">
+                                <h2 >{{ $discount->title }}</h2>
+                                <span class="text-uppercase letter-spacing-1 text-dark">
+                                    Original Price: {{$discount->price}}
+                                </span><br>
+                                <span class="text-uppercase letter-spacing-1 text-dark">
+                                    <span>
+
+                                        Discounted Price:
+                                        <span style="text-decoration: line-through; color: red;">
+                                        ₱ {{ $discount->discountedPrice() }}
+                                        </span>
+
+                                </td>
+                                    </span><br>
+
+                                </span>
+
+                                <br> <span class="text-uppercase letter-spacing-1 text-dark"> <i class="fa-solid fa-people-group"></i> {{ $discount->adults }} Adults | {{ $discount->children }} Childrens </span>
+                                <br> <span class="text-uppercase letter-spacing-1 text-dark">  <i class="fa-solid fa-wifi text-dark"></i> wifi  <i class="fa-solid fa-circle-check text-success"></i> Included  </span>
+                                <br> <span class="text-uppercase letter-spacing-1 text-dark "> <i style ="font-size:20px;" class="text-dark fa-solid fa-ban-smoking"></i> no smoking policy</span>
+                                <br>  <a type="button" href="{{url('booking')}}" class="btn btn-primary text-white py-2 px-4 font-weight-bold" >Book now</a>
+                            </div>
+                        </a>
+                    </div>
+                @endif
+            @endforeach
+        </div>
+    </div>
+</section>
 
 
 
